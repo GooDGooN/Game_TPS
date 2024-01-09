@@ -9,22 +9,22 @@ public class PlayerFireUpperState : PlayerBaseFSM
     private float delay;
     public override void StateEnter()
     {
-        playerControl.MyAnimator.SetBool("Fire", true);
+        player.MyAnimator.SetBool("Fire", true);
         delay = 0.0f;
     }
 
     public override void StateExit()
     {
-        playerControl.MyAnimator.SetBool("Fire", false);
+        player.MyAnimator.SetBool("Fire", false);
     }
 
     public override void StateFixedUpdate()
     {
-        if (playerControl.ReloadPressed)
+        if (player.ReloadPressed)
         {
             playerStateController.ChangeUpperState(GlobalEnums.CharacterUpperState.Reloading);
         }
-        if (!playerControl.FirePressing)
+        if (!player.FirePressing)
         {
             playerStateController.ChangeUpperState(GlobalEnums.CharacterUpperState.Normal);
         }
@@ -35,14 +35,14 @@ public class PlayerFireUpperState : PlayerBaseFSM
         delay -= 0.1f;
         if (delay <= 0.0f)
         {
-            delay = playerControl.FireRate;
-            playerControl.MyAnimator.Play("UpperFire", 1);
-            BulletContainer.Instance.BulletActive(playerControl.BulletHitPoint, GlobalEnums.BulletPoolType.Player);
+            delay = player.FireRate;
+            player.MyAnimator.Play("UpperFire", 1);
+            BulletContainer.Instance.BulletActive(player.BulletHitPoint, GlobalEnums.BulletPoolType.Player);
         }
 
-        if(playerControl.MyAnimator.GetCurrentAnimatorStateInfo(1).normalizedTime > 1.0f)
+        if(player.MyAnimator.GetCurrentAnimatorStateInfo(1).normalizedTime > 1.0f)
         {
-            playerControl.MyAnimator.Play("UpperFireDelayState", 1);
+            player.MyAnimator.Play("UpperFireDelayState", 1);
         }
     }
 }

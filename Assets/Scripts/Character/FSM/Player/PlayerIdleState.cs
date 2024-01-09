@@ -9,34 +9,34 @@ public class PlayerIdleState : PlayerBaseFSM
     public PlayerIdleState(PlayerControl target, PlayerStateController stateController) : base(target, stateController) { }
     public override void StateEnter()
     {
-        playerControl.TempMoveDirection = Vector3.zero;
-        playerControl.BlendPos = Vector2.zero;
+        player.TempMoveDirection = Vector3.zero;
+        player.BlendPos = Vector2.zero;
     }
     public override void StateExit()
     {
     }
     public override void StateUpdate()
     {
-        if (playerControl.RightPressing ^ playerControl.LeftPressing || playerControl.ForwardPressing ^ playerControl.BackPressing)
+        if (player.RightPressing ^ player.LeftPressing || player.ForwardPressing ^ player.BackPressing)
         {
             playerStateController.ChangeState(CharacterState.Move);
         }
-        if (playerControl.JumpPressed)
+        if (player.JumpPressed)
         {
-            playerControl.CheckJump = true;
+            player.CheckJump = true;
         }
-        playerControl.MyRigidbody.velocity = new Vector3(playerControl.MyRigidbody.velocity.x, 0.0f, playerControl.MyRigidbody.velocity.z);
+        player.MyRigidbody.velocity = new Vector3(player.MyRigidbody.velocity.x, 0.0f, player.MyRigidbody.velocity.z);
     }
     public override void StateFixedUpdate() 
     {
-        Physics.Raycast(playerControl.MyRigidbody.position, Vector3.down, out var playerRay, float.PositiveInfinity, playerControl.SolidLayer);
-        if (playerRay.distance > playerControl.ColliderHeight + 0.2f)
+        Physics.Raycast(player.MyRigidbody.position, Vector3.down, out var playerRay, float.PositiveInfinity, player.SolidLayer);
+        if (playerRay.distance > player.ColliderHeight + 0.2f)
         {
             playerStateController.ChangeState(CharacterState.MidAir);
         }
-        if (playerControl.CheckJump)
+        if (player.CheckJump)
         {
-            playerControl.MyRigidbody.AddForce(Vector3.up * playerControl.JumpPower);
+            player.MyRigidbody.AddForce(Vector3.up * player.JumpPower);
             playerStateController.ChangeState(CharacterState.MidAir);
         }
     }

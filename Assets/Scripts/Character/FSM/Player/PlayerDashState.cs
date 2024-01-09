@@ -7,47 +7,47 @@ public class PlayerDashState : PlayerBaseFSM
     public PlayerDashState(PlayerControl target, PlayerStateController stateController) : base(target, stateController) { }
     public override void StateEnter()
     {
-        playerControl.BlendPos = Vector2.up;
-        playerControl.MyAnimator.SetLayerWeight(1, 0);
-        playerControl.MyAnimator.SetBool("Dash", true);
-        playerControl.MyAnimator.SetBool("Reload", false);
-        playerControl.MyAnimator.Play("UpperIdle", 1, 0.0f);
-        playerControl.MoveSpeed = 350.0f;
+        player.BlendPos = Vector2.up;
+        player.MyAnimator.SetLayerWeight(1, 0);
+        player.MyAnimator.SetBool("Dash", true);
+        player.MyAnimator.SetBool("Reload", false);
+        player.MyAnimator.Play("UpperIdle", 1, 0.0f);
+        player.MoveSpeed = 350.0f;
     }
     public override void StateExit()
     {
-        playerControl.MyAnimator.SetLayerWeight(1, 1);
-        playerControl.MyAnimator.SetBool("Dash", false);
+        player.MyAnimator.SetLayerWeight(1, 1);
+        player.MyAnimator.SetBool("Dash", false);
     }
 
     public override void StateFixedUpdate()
     {
-        playerControl.TempMoveDirection = playerControl.PlayerBody.transform.forward;
-        Physics.Raycast(playerControl.MyRigidbody.position, Vector3.down, out var playerRay, float.PositiveInfinity, playerControl.SolidLayer);
-        if (playerRay.distance > playerControl.ColliderHeight + 0.2f)
+        player.TempMoveDirection = player.PlayerBody.transform.forward;
+        Physics.Raycast(player.MyRigidbody.position, Vector3.down, out var playerRay, float.PositiveInfinity, player.SolidLayer);
+        if (playerRay.distance > player.ColliderHeight + 0.2f)
         {
             playerStateController.ChangeState(CharacterState.MidAir);
         }
-        if (playerControl.CheckJump)
+        if (player.CheckJump)
         {
-            playerControl.MyRigidbody.AddForce(Vector3.up * playerControl.JumpPower);
+            player.MyRigidbody.AddForce(Vector3.up * player.JumpPower);
             playerStateController.ChangeState(CharacterState.MidAir);
         }
     }
 
     public override void StateUpdate()
     {
-        if (playerControl.ForwardPressing && !playerControl.DashPressing)
+        if (player.ForwardPressing && !player.DashPressing)
         {
             playerStateController.ChangeState(CharacterState.Move);
         }
-        else if(!playerControl.ForwardPressing)
+        else if(!player.ForwardPressing)
         {
             playerStateController.ChangeState(CharacterState.Idle);
         }
-        if (playerControl.JumpPressed)
+        if (player.JumpPressed)
         {
-            playerControl.CheckJump = true;
+            player.CheckJump = true;
         }
     }
 

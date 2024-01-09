@@ -8,7 +8,7 @@ public class PlayerReloadUpperState : PlayerBaseFSM
     public PlayerReloadUpperState(PlayerControl target, PlayerStateController stateController) : base(target, stateController) { }
     public override void StateEnter()
     {
-        playerControl.MyAnimator.SetBool("Reload", true);
+        player.MyAnimator.SetBool("Reload", true);
     }
 
     public override void StateExit()
@@ -21,7 +21,7 @@ public class PlayerReloadUpperState : PlayerBaseFSM
 
     public override void StateUpdate()
     {
-        if(!playerControl.MyAnimator.GetBool("Reload"))
+        if(!player.MyAnimator.GetBool("Reload"))
         {
             playerStateController.ChangeUpperState(GlobalEnums.CharacterUpperState.Normal);
         }

@@ -20,14 +20,14 @@ public class PlayerNormalUpperState : PlayerBaseFSM
 
     public override void StateUpdate()
     {
-        if (playerControl.ReloadPressed)
+        if (player.ReloadPressed)
         {
-            if (playerControl.MyState != GlobalEnums.CharacterState.Dash)
+            if (player.MyState != GlobalEnums.CharacterState.Dash)
             {
                 playerStateController.ChangeUpperState(GlobalEnums.CharacterUpperState.Reloading);
             }
         }
-        if (playerControl.FirePressing && playerControl.MyState != GlobalEnums.CharacterState.Dash)
+        if (player.FirePressing && player.MyState != GlobalEnums.CharacterState.Dash)
         {
             playerStateController.ChangeUpperState(GlobalEnums.CharacterUpperState.Firing);
         }

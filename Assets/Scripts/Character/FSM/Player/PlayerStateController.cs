@@ -1,9 +1,5 @@
 using CharacterNamespace;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using static GlobalEnums;
-using static UnityEditorInternal.VersionControl.ListControl;
 
 public class PlayerStateController
 {
@@ -20,7 +16,6 @@ public class PlayerStateController
 
 
     public PlayerStateController(PlayerControl target)
-
     {
         playerControl = target;
     }

@@ -10,7 +10,7 @@ public class PlayerMoveState : PlayerBaseFSM
     public PlayerMoveState(PlayerControl target, PlayerStateController stateController) : base(target, stateController) { }
     public override void StateEnter()
     {
-        playerControl.MoveSpeed = 200.0f;
+        player.MoveSpeed = 200.0f;
     }
 
     public override void StateExit()
@@ -21,56 +21,56 @@ public class PlayerMoveState : PlayerBaseFSM
 
     public override void StateUpdate()
     {
-        playerControl.TempMoveDirection = Vector3.zero;
-        playerControl.BlendPos = Vector2.zero;
-        if (playerControl.RightPressing ^ playerControl.LeftPressing)
+        player.TempMoveDirection = Vector3.zero;
+        player.BlendPos = Vector2.zero;
+        if (player.RightPressing ^ player.LeftPressing)
         {
-            var temp = playerControl.PlayerBody.transform.right;
-            playerControl.BlendPos += Vector2.right;
-            if (playerControl.LeftPressing)
+            var temp = player.PlayerBody.transform.right;
+            player.BlendPos += Vector2.right;
+            if (player.LeftPressing)
             {
-                playerControl.BlendPos += Vector2.left * 2;
+                player.BlendPos += Vector2.left * 2;
                 temp = -temp;
             }
-            playerControl.TempMoveDirection += temp;
+            player.TempMoveDirection += temp;
         }
-        if (playerControl.ForwardPressing ^ playerControl.BackPressing)
+        if (player.ForwardPressing ^ player.BackPressing)
         {
-            var temp = playerControl.PlayerBody.transform.forward;
-            playerControl.BlendPos += Vector2.up;
-            if (playerControl.BackPressing)
+            var temp = player.PlayerBody.transform.forward;
+            player.BlendPos += Vector2.up;
+            if (player.BackPressing)
             {
-                playerControl.BlendPos += Vector2.down * 2;
+                player.BlendPos += Vector2.down * 2;
                 temp = -temp;
             }
-            playerControl.TempMoveDirection += temp;
+            player.TempMoveDirection += temp;
         }
 
-        if(playerControl.TempMoveDirection == Vector3.zero)
+        if(player.TempMoveDirection == Vector3.zero)
         {
             playerStateController.ChangeState(CharacterState.Idle);
         }
 
-        if (playerControl.JumpPressed)
+        if (player.JumpPressed)
         {
-            playerControl.CheckJump = true;
+            player.CheckJump = true;
         }
 
-        if (playerControl.DashPressing && playerControl.ForwardPressing)
+        if (player.DashPressing && player.ForwardPressing)
         {
             playerStateController.ChangeState(CharacterState.Dash);
         }
     }
     public override void StateFixedUpdate()
     {
-        Physics.Raycast(playerControl.MyRigidbody.position, Vector3.down, out var playerRay, float.PositiveInfinity, playerControl.SolidLayer);
-        if (playerRay.distance > playerControl.ColliderHeight + 0.2f)
+        Physics.Raycast(player.MyRigidbody.position, Vector3.down, out var playerRay, float.PositiveInfinity, player.SolidLayer);
+        if (playerRay.distance > player.ColliderHeight + 0.2f)
         {
             playerStateController.ChangeState(CharacterState.MidAir);
         }
-        if (playerControl.CheckJump)
+        if (player.CheckJump)
         {
-            playerControl.MyRigidbody.AddForce(Vector3.up * playerControl.JumpPower);
+            player.MyRigidbody.AddForce(Vector3.up * player.JumpPower);
             playerStateController.ChangeState(CharacterState.MidAir);
         }
 
