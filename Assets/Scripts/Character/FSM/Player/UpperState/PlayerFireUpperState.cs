@@ -3,12 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerFireUpperState : PlayerBaseFSM
+public class PlayerFireUpperState : CharacterBaseFSM
 {
-    public PlayerFireUpperState(PlayerControl target, PlayerStateController stateController) : base(target, stateController) { }
+    private PlayerControl player;
+    public PlayerFireUpperState(CharacterStateController stateController, PlayerControl player) : base(stateController, player) { }
     private float delay;
     public override void StateEnter()
     {
+        player = characterInfo as PlayerControl;
         player.MyAnimator.SetBool("Fire", true);
         delay = 0.0f;
     }
@@ -22,11 +24,11 @@ public class PlayerFireUpperState : PlayerBaseFSM
     {
         if (player.ReloadPressed)
         {
-            playerStateController.ChangeUpperState(GlobalEnums.CharacterUpperState.Reloading);
+            characterStateController.ChangeUpperState(GlobalEnums.CharacterUpperState.Reloading);
         }
         if (!player.FirePressing)
         {
-            playerStateController.ChangeUpperState(GlobalEnums.CharacterUpperState.Normal);
+            characterStateController.ChangeUpperState(GlobalEnums.CharacterUpperState.Normal);
         }
     }
 

@@ -4,12 +4,17 @@ using Unity.Physics;
 using UnityEngine;
 using UnityEngine.Rendering;
 using static GlobalEnums;
+using static UnityEngine.GraphicsBuffer;
 
-public class PlayerMoveState : PlayerBaseFSM
+public class PlayerMoveState : CharacterBaseFSM
 {
-    public PlayerMoveState(PlayerControl target, PlayerStateController stateController) : base(target, stateController) { }
+    private PlayerControl player;
+    public PlayerMoveState(CharacterStateController stateController, PlayerControl player) : base(stateController, player) { }
+
     public override void StateEnter()
     {
+        player = characterInfo as PlayerControl;
+
         player.MoveSpeed = 200.0f;
     }
 
@@ -48,7 +53,7 @@ public class PlayerMoveState : PlayerBaseFSM
 
         if(player.TempMoveDirection == Vector3.zero)
         {
-            playerStateController.ChangeState(CharacterState.Idle);
+            characterStateController.ChangeState(CharacterState.Idle);
         }
 
         if (player.JumpPressed)
@@ -58,7 +63,7 @@ public class PlayerMoveState : PlayerBaseFSM
 
         if (player.DashPressing && player.ForwardPressing)
         {
-            playerStateController.ChangeState(CharacterState.Dash);
+            characterStateController.ChangeState(CharacterState.Dash);
         }
     }
     public override void StateFixedUpdate()
@@ -66,12 +71,12 @@ public class PlayerMoveState : PlayerBaseFSM
         Physics.Raycast(player.MyRigidbody.position, Vector3.down, out var playerRay, float.PositiveInfinity, player.SolidLayer);
         if (playerRay.distance > player.ColliderHeight + 0.2f)
         {
-            playerStateController.ChangeState(CharacterState.MidAir);
+            characterStateController.ChangeState(CharacterState.MidAir);
         }
         if (player.CheckJump)
         {
             player.MyRigidbody.AddForce(Vector3.up * player.JumpPower);
-            playerStateController.ChangeState(CharacterState.MidAir);
+            characterStateController.ChangeState(CharacterState.MidAir);
         }
 
     }

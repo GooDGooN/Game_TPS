@@ -60,13 +60,6 @@ namespace CharacterNamespace
         #endregion
 
         #region STATE_FIELD
-        public CharacterState MyState { get => myState; set => myState = value; }
-        private CharacterState myState = CharacterState.Idle;
-
-        public CharacterUpperState MyUpperState { get => myUpperState; set => myUpperState = value; }
-        private CharacterUpperState myUpperState = CharacterUpperState.Normal;
-
-        private PlayerStateController stateController;
         public bool CheckFlying { get => checkFlying; }
         private bool checkFlying;
 
@@ -115,9 +108,9 @@ namespace CharacterNamespace
         {
             myCollider = GetComponent<CapsuleCollider>();
             myRigidbody = GetComponent<Rigidbody>();
-            stateController = new PlayerStateController(this);
-            stateController.ChangeState(myState);
-            stateController.ChangeUpperState(myUpperState);
+            stateController = new CharacterStateController(this);
+            stateController.ChangeState(CharacterState.Idle);
+            stateController.ChangeUpperState(CharacterUpperState.Normal);
             colliderHeight = myCollider.height * 0.5f;
             colliderRadius = myCollider.radius;
 

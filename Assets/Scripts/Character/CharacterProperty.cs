@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static GlobalEnums;
 
 public class CharacterProperty : MonoBehaviour
 {
@@ -15,6 +16,15 @@ public class CharacterProperty : MonoBehaviour
     public float JumpPower { get => jumpPower; }
     protected float jumpPower = 40.0f;
 
+    #region FSM
+    public CharacterState MyState { get => myState; set => myState = value; }
+    protected CharacterState myState = CharacterState.Idle;
+
+    public CharacterUpperState MyUpperState { get => myUpperState; set => myUpperState = value; }
+    protected CharacterUpperState myUpperState = CharacterUpperState.Normal;
+
+    protected CharacterStateController stateController;
+    #endregion
 
     public Rigidbody MyRigidbody { get => myRigidbody; }
     protected Rigidbody myRigidbody;

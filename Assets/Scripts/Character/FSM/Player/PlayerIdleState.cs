@@ -4,11 +4,14 @@ using Unity.Physics;
 using UnityEngine;
 using static GlobalEnums;
 
-public class PlayerIdleState : PlayerBaseFSM
+public class PlayerIdleState : CharacterBaseFSM
 {
-    public PlayerIdleState(PlayerControl target, PlayerStateController stateController) : base(target, stateController) { }
+    private PlayerControl player;
+    public PlayerIdleState(CharacterStateController stateController, PlayerControl player) : base(stateController, player) { }
     public override void StateEnter()
     {
+        player = characterInfo as PlayerControl;
+
         player.TempMoveDirection = Vector3.zero;
         player.BlendPos = Vector2.zero;
     }
@@ -19,7 +22,7 @@ public class PlayerIdleState : PlayerBaseFSM
     {
         if (player.RightPressing ^ player.LeftPressing || player.ForwardPressing ^ player.BackPressing)
         {
-            playerStateController.ChangeState(CharacterState.Move);
+            characterStateController.ChangeState(CharacterState.Move);
         }
         if (player.JumpPressed)
         {
@@ -32,12 +35,12 @@ public class PlayerIdleState : PlayerBaseFSM
         Physics.Raycast(player.MyRigidbody.position, Vector3.down, out var playerRay, float.PositiveInfinity, player.SolidLayer);
         if (playerRay.distance > player.ColliderHeight + 0.2f)
         {
-            playerStateController.ChangeState(CharacterState.MidAir);
+            characterStateController.ChangeState(CharacterState.MidAir);
         }
         if (player.CheckJump)
         {
             player.MyRigidbody.AddForce(Vector3.up * player.JumpPower);
-            playerStateController.ChangeState(CharacterState.MidAir);
+            characterStateController.ChangeState(CharacterState.MidAir);
         }
     }
 }

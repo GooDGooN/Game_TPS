@@ -21,6 +21,7 @@ public class GlobalEnums
         Move,
         Dash,
         MidAir,
+        Attack,
     }
     public enum CharacterUpperState
     {

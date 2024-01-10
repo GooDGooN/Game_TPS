@@ -2,12 +2,15 @@ using CharacterNamespace;
 using UnityEngine;
 using static GlobalEnums;
 
-public class PlayerMidAirState : PlayerBaseFSM
+public class PlayerMidAirState : CharacterBaseFSM
 {
-    public PlayerMidAirState(PlayerControl target, PlayerStateController stateController) : base(target, stateController) { }
+    private PlayerControl player;
+    public PlayerMidAirState(CharacterStateController stateController, PlayerControl player) : base(stateController, player) { }
 
     public override void StateEnter()
     {
+        player = characterInfo as PlayerControl;
+
         player.MyAnimator.SetBool("MidAir", true);
     }
 
@@ -27,7 +30,7 @@ public class PlayerMidAirState : PlayerBaseFSM
         }
         else
         {
-            playerStateController.ChangeState(CharacterState.Idle);
+            characterStateController.ChangeState(CharacterState.Idle);
             //playerStateController.ChangeState(playerStateController.LastState);
         }
     }

@@ -3,11 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerNormalUpperState : PlayerBaseFSM
+public class PlayerNormalUpperState : CharacterBaseFSM
 {
-    public PlayerNormalUpperState(PlayerControl target, PlayerStateController stateController) : base(target, stateController) { }
+    private PlayerControl player;
+    public PlayerNormalUpperState(CharacterStateController stateController, PlayerControl player) : base(stateController, player) { }
     public override void StateEnter()
     {
+        player = characterInfo as PlayerControl;
     }
 
     public override void StateExit()
@@ -24,12 +26,12 @@ public class PlayerNormalUpperState : PlayerBaseFSM
         {
             if (player.MyState != GlobalEnums.CharacterState.Dash)
             {
-                playerStateController.ChangeUpperState(GlobalEnums.CharacterUpperState.Reloading);
+                characterStateController.ChangeUpperState(GlobalEnums.CharacterUpperState.Reloading);
             }
         }
         if (player.FirePressing && player.MyState != GlobalEnums.CharacterState.Dash)
         {
-            playerStateController.ChangeUpperState(GlobalEnums.CharacterUpperState.Firing);
+            characterStateController.ChangeUpperState(GlobalEnums.CharacterUpperState.Firing);
         }
     }
 }
