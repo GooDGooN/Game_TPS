@@ -25,7 +25,7 @@ public class PlayerReloadUpperState : CharacterBaseFSM
     {
         if(!player.MyAnimator.GetBool("Reload"))
         {
-            characterStateController.ChangeUpperState(GlobalEnums.CharacterUpperState.Normal);
+            characterStateController.ChangeState(CharacterUpperState.Normal);
         }
     }
 

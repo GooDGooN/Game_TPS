@@ -24,11 +24,11 @@ public class PlayerFireUpperState : CharacterBaseFSM
     {
         if (player.ReloadPressed)
         {
-            characterStateController.ChangeUpperState(GlobalEnums.CharacterUpperState.Reloading);
+            characterStateController.ChangeState(CharacterUpperState.Reloading);
         }
         if (!player.FirePressing)
         {
-            characterStateController.ChangeUpperState(GlobalEnums.CharacterUpperState.Normal);
+            characterStateController.ChangeState(CharacterUpperState.Normal);
         }
     }
 
@@ -39,7 +39,7 @@ public class PlayerFireUpperState : CharacterBaseFSM
         {
             delay = player.FireRate;
             player.MyAnimator.Play("UpperFire", 1);
-            BulletContainer.Instance.BulletActive(player.BulletHitPoint, GlobalEnums.BulletPoolType.Player);
+            BulletContainer.Instance.BulletActive(player.BulletHitPoint, BulletPoolType.Player);
         }
 
         if(player.MyAnimator.GetCurrentAnimatorStateInfo(1).normalizedTime > 1.0f)

@@ -1,6 +1,5 @@
 using CharacterNamespace;
 using System;
-using static GlobalEnums;
 
 public class CharacterStateController
 {
@@ -30,16 +29,13 @@ public class CharacterStateController
         }
         currentState?.StateExit();
 
-        if(targetCharacter is PlayerControl)
-        {
-            currentState = PlayerState.ReturnState(state, this);
-        }
-
+        currentState = CharacterStatePIcker.GetState(state, this);
         targetCharacter.MyState = state;
+
         currentState.StateEnter();
     }
 
-    public void ChangeUpperState(CharacterUpperState state)
+    public void ChangeState(CharacterUpperState state)
     {
         if(lastUpperState != targetCharacter.MyUpperState)
         {
@@ -48,11 +44,9 @@ public class CharacterStateController
 
         currentUpperState?.StateExit();
 
-        if(targetCharacter is PlayerControl)
-        {
-            currentUpperState = PlayerState.ReturnUpperState(state, this);
-        }
+        currentUpperState = CharacterStatePIcker.GetState(state, this);
         targetCharacter.MyUpperState = state;
+
         currentUpperState.StateEnter();
     }
 }

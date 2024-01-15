@@ -3,7 +3,6 @@ using System;
 using Unity.Physics;
 using UnityEngine;
 using UnityEngine.Rendering;
-using static GlobalEnums;
 using static UnityEngine.GraphicsBuffer;
 
 public class PlayerMoveState : CharacterBaseFSM
@@ -26,6 +25,34 @@ public class PlayerMoveState : CharacterBaseFSM
 
     public override void StateUpdate()
     {
+        if (player.TempMoveDirection == Vector3.zero)
+        {
+            characterStateController.ChangeState(CharacterState.Idle);
+        }
+
+        if (player.JumpPressed)
+        {
+            player.CheckJump = true;
+        }
+
+        if (player.DashPressing && player.ForwardPressing)
+        {
+            characterStateController.ChangeState(CharacterState.Dash);
+        }
+    }
+    public override void StateFixedUpdate()
+    {
+        Physics.Raycast(player.MyRigidbody.position, Vector3.down, out var playerRay, float.PositiveInfinity, player.SolidLayer);
+        if (playerRay.distance > player.CapsuleColliderHeight + 0.2f)
+        {
+            characterStateController.ChangeState(CharacterState.MidAir);
+        }
+        if (player.CheckJump)
+        {
+            player.MyRigidbody.AddForce(Vector3.up * player.JumpPower);
+            characterStateController.ChangeState(CharacterState.MidAir);
+        }
+
         player.TempMoveDirection = Vector3.zero;
         player.BlendPos = Vector2.zero;
         if (player.RightPressing ^ player.LeftPressing)
@@ -50,34 +77,5 @@ public class PlayerMoveState : CharacterBaseFSM
             }
             player.TempMoveDirection += temp;
         }
-
-        if(player.TempMoveDirection == Vector3.zero)
-        {
-            characterStateController.ChangeState(CharacterState.Idle);
-        }
-
-        if (player.JumpPressed)
-        {
-            player.CheckJump = true;
-        }
-
-        if (player.DashPressing && player.ForwardPressing)
-        {
-            characterStateController.ChangeState(CharacterState.Dash);
-        }
-    }
-    public override void StateFixedUpdate()
-    {
-        Physics.Raycast(player.MyRigidbody.position, Vector3.down, out var playerRay, float.PositiveInfinity, player.SolidLayer);
-        if (playerRay.distance > player.ColliderHeight + 0.2f)
-        {
-            characterStateController.ChangeState(CharacterState.MidAir);
-        }
-        if (player.CheckJump)
-        {
-            player.MyRigidbody.AddForce(Vector3.up * player.JumpPower);
-            characterStateController.ChangeState(CharacterState.MidAir);
-        }
-
     }
 }

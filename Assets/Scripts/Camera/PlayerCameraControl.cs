@@ -18,7 +18,7 @@ namespace CharacterNamespace
         private float camDeltadistSave = 0.0f;
         private Vector2 camAxisXRange = new Vector2(-55.0f, 55.0f);
         private Vector2 camFreeViewXRange = new Vector2(-15.0f, 180.0f);
-        private Vector2 camZoomRange = new Vector2(-2.0f, -4.0f);
+        private Vector2 camZoomRange = new Vector2(-1.5f, -3.0f);
         private Vector3 rotationXSave = Vector3.zero;
         private Vector3 rotationYSave = Vector3.zero;
         public Vector3 RotationYSave { get => rotationYSave; }
@@ -80,12 +80,22 @@ namespace CharacterNamespace
             #region CAMERA ZOOMINOUT
             /*camDeltadistValue += Input.mouseScrollDelta.y * 20.0f * Time.deltaTime;
             camDeltadistValue = Mathf.Clamp(camDeltadistValue, 0.0f, 2.0f);*/
+            var player = GlobalVarStorage.Instance.PlayerScript;
+            if (player.MyState != CharacterState.Dash && player.MyUpperState != CharacterUpperState.Reloading)
+            {
+                CamDeltadistValue = player.ZoomInPressing ? 1.5f : 0.0f;
+            }
+            else
+            {
+                CamDeltadistValue = 0.0f;
+            }
             camDistance = camZoomRange.y + camDeltadistValue;
             if (Physics.Raycast(transform.position, -cameraObj.transform.forward, out RaycastHit rayhit, -camDistance, solidMask))
             {
                 camDistance = -rayhit.distance < camZoomRange.x ? -rayhit.distance + camDeltadistValue : camZoomRange.x;
             }
             cameraObj.transform.localPosition = new Vector3(0.40f, 0.15f, camDistance);
+            cameraObj.transform.localPosition -= GlobalVarStorage.Instance.PlayerScript.MyState == CharacterState.Dash ? Vector3.forward * 1.5f : Vector3.zero;
             #endregion
         }
 

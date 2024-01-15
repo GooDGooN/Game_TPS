@@ -24,14 +24,14 @@ public class PlayerNormalUpperState : CharacterBaseFSM
     {
         if (player.ReloadPressed)
         {
-            if (player.MyState != GlobalEnums.CharacterState.Dash)
+            if (player.MyState != CharacterState.Dash)
             {
-                characterStateController.ChangeUpperState(GlobalEnums.CharacterUpperState.Reloading);
+                characterStateController.ChangeState(CharacterUpperState.Reloading);
             }
         }
-        if (player.FirePressing && player.MyState != GlobalEnums.CharacterState.Dash)
+        if (player.FirePressing && player.MyState != CharacterState.Dash)
         {
-            characterStateController.ChangeUpperState(GlobalEnums.CharacterUpperState.Firing);
+            characterStateController.ChangeState(CharacterUpperState.Firing);
         }
     }
 }

@@ -1,7 +1,6 @@
 using CharacterNamespace;
 using System;
 using UnityEngine;
-using static GlobalEnums;
 
 public class PlayerDashState : CharacterBaseFSM
 {
@@ -28,7 +27,7 @@ public class PlayerDashState : CharacterBaseFSM
     {
         player.TempMoveDirection = player.PlayerBody.transform.forward;
         Physics.Raycast(player.MyRigidbody.position, Vector3.down, out var playerRay, float.PositiveInfinity, player.SolidLayer);
-        if (playerRay.distance > player.ColliderHeight + 0.2f)
+        if (playerRay.distance > player.CapsuleColliderHeight + 0.2f)
         {
             characterStateController.ChangeState(CharacterState.MidAir);
         }

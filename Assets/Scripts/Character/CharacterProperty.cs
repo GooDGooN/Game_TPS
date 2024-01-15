@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static GlobalEnums;
 
 public class CharacterProperty : MonoBehaviour
 {
@@ -29,8 +28,8 @@ public class CharacterProperty : MonoBehaviour
     public Rigidbody MyRigidbody { get => myRigidbody; }
     protected Rigidbody myRigidbody;
 
-    public Animator MyAnimator { get => myanimator; }
-    protected Animator myanimator
+    public Animator MyAnimator { get => myAnimator; }
+    protected Animator myAnimator
     {
         get
         { 
@@ -42,6 +41,21 @@ public class CharacterProperty : MonoBehaviour
             return comp;
         }
     }
+
+    public CapsuleCollider MyCapsuleCollider { get => myCapsuleCollider; }
+    protected CapsuleCollider myCapsuleCollider
+    {
+        get
+        {
+            var comp = GetComponent<CapsuleCollider>(); 
+            if(comp == null)
+            {
+                comp = GetComponentInChildren<CapsuleCollider>();
+            }
+            return comp;
+        }
+    }
+
 
     public void GetDamage(int value) => health -= value;
 

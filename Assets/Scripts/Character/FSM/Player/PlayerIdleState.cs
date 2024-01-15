@@ -2,7 +2,6 @@
 using CharacterNamespace;
 using Unity.Physics;
 using UnityEngine;
-using static GlobalEnums;
 
 public class PlayerIdleState : CharacterBaseFSM
 {
@@ -33,7 +32,7 @@ public class PlayerIdleState : CharacterBaseFSM
     public override void StateFixedUpdate() 
     {
         Physics.Raycast(player.MyRigidbody.position, Vector3.down, out var playerRay, float.PositiveInfinity, player.SolidLayer);
-        if (playerRay.distance > player.ColliderHeight + 0.2f)
+        if (playerRay.distance > player.CapsuleColliderHeight + 0.2f)
         {
             characterStateController.ChangeState(CharacterState.MidAir);
         }

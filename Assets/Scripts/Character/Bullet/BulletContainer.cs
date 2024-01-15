@@ -16,7 +16,7 @@ public class BulletContainer : Singleton<BulletContainer>
         }
     }
 
-    public void BulletActive(Vector3 worldposition, GlobalEnums.BulletPoolType targetType)
+    public void BulletActive(Vector3 worldposition, BulletPoolType targetType)
     {
         foreach(GameObject bullet in hitScanBullets) 
         { 

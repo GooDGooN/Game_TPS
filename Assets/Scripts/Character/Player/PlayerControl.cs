@@ -1,11 +1,11 @@
 using System;
+using System.Collections;
 using System.Linq;
 using Unity.Entities.UniversalDelegates;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
-using static GlobalEnums;
 
 namespace CharacterNamespace
 {
@@ -26,14 +26,6 @@ namespace CharacterNamespace
         #region BODY_FIELD
         public GameObject PlayerBody { get => playerBody; }
         [SerializeField] private GameObject playerBody;
-
-        private CapsuleCollider myCollider;
-
-        public float ColliderHeight { get => colliderHeight; }
-        private float colliderHeight;
-
-        private float colliderRadius;
-        [SerializeField] private PlayerCameraControl playerCameraControlScr;
 
         private float animBlendPosX = 0.0f;
         private float animBlendPosXVelocity = 0.0f;
@@ -102,18 +94,22 @@ namespace CharacterNamespace
 
         public GameObject RifleMuzzle { get => rifleMuzzle; }
         [SerializeField] private GameObject rifleMuzzle;
+
+        public float CapsuleColliderHeight { get => capsuleColliderHeight; }
+        private float capsuleColliderHeight;
+        private float capsuleColliderRadius;
+        [SerializeField] private PlayerCameraControl playerCameraControlScr;
+
         #endregion
 
         private void Awake()
         {
-            myCollider = GetComponent<CapsuleCollider>();
             myRigidbody = GetComponent<Rigidbody>();
             stateController = new CharacterStateController(this);
             stateController.ChangeState(CharacterState.Idle);
-            stateController.ChangeUpperState(CharacterUpperState.Normal);
-            colliderHeight = myCollider.height * 0.5f;
-            colliderRadius = myCollider.radius;
-
+            stateController.ChangeState(CharacterUpperState.Normal);
+            capsuleColliderHeight = myCapsuleCollider.height * 0.5f;
+            capsuleColliderRadius = myCapsuleCollider.radius;
             moveSpeed = 200.0f;
             health = 100;
         }
@@ -142,11 +138,11 @@ namespace CharacterNamespace
         {
             if(myState != CharacterState.MidAir)
             {
-                Physics.SphereCast(myRigidbody.position, colliderRadius, Vector3.down, out var playerSphere, float.PositiveInfinity, solidLayer);
+                Physics.SphereCast(myRigidbody.position, capsuleColliderRadius, Vector3.down, out var playerSphere, float.PositiveInfinity, solidLayer);
                 myRigidbody.velocity = new Vector3(myRigidbody.velocity.x, 0.0f, myRigidbody.velocity.z);
                 if (playerSphere.normal.y >= 0.8f)
                 {
-                    var pos = new Vector3(myRigidbody.position.x, playerSphere.point.y + colliderHeight, myRigidbody.position.z);
+                    var pos = new Vector3(myRigidbody.position.x, playerSphere.point.y + capsuleColliderHeight, myRigidbody.position.z);
                     myRigidbody.MovePosition(pos);
                 }
             }
@@ -184,18 +180,10 @@ namespace CharacterNamespace
                 animBlendPosX = Mathf.Approximately(animBlendPosX, 0.0f) ? 0.0f : animBlendPosX;
                 animBlendPosY = Mathf.Approximately(animBlendPosY, 0.0f) ? 0.0f : animBlendPosY;
             }
-            myanimator.SetFloat("MotionX", animBlendPosX);
-            myanimator.SetFloat("MotionY", animBlendPosY);
+            myAnimator.SetFloat("MotionX", animBlendPosX);
+            myAnimator.SetFloat("MotionY", animBlendPosY);
 
 
-            if(myState != CharacterState.Dash && myUpperState != CharacterUpperState.Reloading)
-            {
-                playerCameraControlScr.CamDeltadistValue = zoomInPressing ? 2.0f : 0.0f;
-            }
-            else
-            {
-                playerCameraControlScr.CamDeltadistValue = 0.0f;
-            }
             //Debug.Log(stateController.LastState);
             //Debug.Log(MyState);
             //Debug.Log(MyUpperState);
@@ -279,7 +267,7 @@ namespace CharacterNamespace
             Gizmos.DrawLine(rifleMuzzle.transform.position, (rifleMuzzle.transform.forward * 100.0f)+ rifleMuzzle.transform.position);
             Gizmos.color = Color.blue;
             Gizmos.DrawLine(playerSpine.transform.position, (playerBody.transform.forward * 100.0f) + playerSpine.transform.position);
-            var spine = myanimator.GetBoneTransform(HumanBodyBones.Spine);
+            var spine = myAnimator.GetBoneTransform(HumanBodyBones.Spine);
             Gizmos.DrawLine(spine.position, spine.forward * 100.0f);
         }
     }

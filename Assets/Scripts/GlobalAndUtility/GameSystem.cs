@@ -2,15 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-using static GlobalEnums;
 
 
 public class GameSystem : Singleton<GameSystem>
 {
     private float mouseSensitive = 3.0f;
     public float MouseSensitive { get => mouseSensitive; }
-    private float cameraDampValue = 0.05f;
-    public float CameraDampValue { get => cameraDampValue; }
     private float playerRotDampSmoothTimeValue = 0.025f;
     public float PlayerRotDampSmoothTimeValue { get => playerRotDampSmoothTimeValue; }
 
