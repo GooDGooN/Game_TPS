@@ -22,7 +22,7 @@ public class SlimeRabbitMoveState : CharacterBaseFSM
 
     public override void StateFixedUpdate()
     {
-        if (mySelf.Jumping)
+        if (mySelf.Jumping || mySelf.IsMidAir)
         {
             mySelf.MyNavMeshAgent.SetDestination(player.transform.position - (Vector3.up * player.CapsuleColliderHeight));
         }

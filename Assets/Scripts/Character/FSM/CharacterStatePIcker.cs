@@ -80,6 +80,13 @@ public class CharacterStatePIcker
                 case EnemyType.SlimeRabbit: return new SlimeRabbitAttackState(stateController, enemy);
             }
         }
+        else if (state == CharacterState.Death)
+        {
+            switch (enemy.MyType)
+            {
+                case EnemyType.SlimeRabbit: return new SlimeRabbitDeathState(stateController, enemy);
+            }
+        }
 
         return null;
     }

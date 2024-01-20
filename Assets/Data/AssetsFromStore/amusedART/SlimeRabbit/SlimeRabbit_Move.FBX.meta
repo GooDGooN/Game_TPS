@@ -194,6 +194,13 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
+      - time: 0.32262772
+        functionName: SlimeRabbitAttack
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: fa9df4ab0d964f34c86170bddfcaa240, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}

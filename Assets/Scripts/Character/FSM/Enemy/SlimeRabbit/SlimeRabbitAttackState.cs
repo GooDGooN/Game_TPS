@@ -25,6 +25,15 @@ public class SlimeRabbitAttackState : CharacterBaseFSM
 
     public override void StateUpdate()
     {
+        if(mySelf.Attack)
+        {
+            if(Vector3.Distance(player.transform.position, mySelf.transform.position) < 1.0f)
+            {
+                player.GetDamage(mySelf.AtkDamage);
+                mySelf.Attack = false;
+            }
+        }
+
         if (!mySelf.MyAnimator.GetBool("IsAttack"))
         {
             characterStateController.ChangeState(CharacterState.Move);

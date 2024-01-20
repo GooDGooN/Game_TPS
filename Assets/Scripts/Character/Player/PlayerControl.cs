@@ -14,6 +14,7 @@ namespace CharacterNamespace
         #region SPINE_FIELD
         [SerializeField] private GameObject playerHead;
         [SerializeField] private GameObject playerSpine;
+        [SerializeField] private GameObject dummyCameraObj;
         [SerializeField] private GameObject cameraObj;
         [SerializeField] private GameObject rifleObj;
         private RaycastHit[] cameraCastHits = new RaycastHit[5];
@@ -84,32 +85,26 @@ namespace CharacterNamespace
 
         #region CHARCTER_FIELD
         public float FireRate { get => fireRate; }
-        private float fireRate = 3.0f;
+        private float fireRate = 0.5f;
+
+        public float FireDelay { get => fireDelay; set => fireDelay = value; }
+        private float fireDelay = 0.0f;
 
         public Vector3 BulletHitPoint { get => bulletHitPoint; }
         private Vector3 bulletHitPoint;
 
-        public LayerMask SolidLayer { get => solidLayer; }
-        [SerializeField] private LayerMask solidLayer;
-
         public GameObject RifleMuzzle { get => rifleMuzzle; }
         [SerializeField] private GameObject rifleMuzzle;
 
-        public float CapsuleColliderHeight { get => capsuleColliderHeight; }
-        private float capsuleColliderHeight;
-        private float capsuleColliderRadius;
         [SerializeField] private PlayerCameraControl playerCameraControlScr;
 
         #endregion
 
-        private void Awake()
+        private void Start()
         {
-            myRigidbody = GetComponent<Rigidbody>();
             stateController = new CharacterStateController(this);
             stateController.ChangeState(CharacterState.Idle);
             stateController.ChangeState(CharacterUpperState.Normal);
-            capsuleColliderHeight = myCapsuleCollider.height * 0.5f;
-            capsuleColliderRadius = myCapsuleCollider.radius;
             moveSpeed = 200.0f;
             health = 100;
         }
@@ -183,7 +178,7 @@ namespace CharacterNamespace
             myAnimator.SetFloat("MotionX", animBlendPosX);
             myAnimator.SetFloat("MotionY", animBlendPosY);
 
-
+            fireDelay = fireDelay > 0.0f ? fireDelay - Time.deltaTime : 0.0f;
             //Debug.Log(stateController.LastState);
             //Debug.Log(MyState);
             //Debug.Log(MyUpperState);
@@ -210,10 +205,10 @@ namespace CharacterNamespace
 
         private void CharacterAngleUpdate()
         {
-            cameraLookForward = cameraObj.transform.forward;
+            cameraLookForward = dummyCameraObj.transform.forward;
             playerBody.transform.eulerAngles = new Vector3(0.0f, playerCameraControlScr.RotationYSave.y, 0.0f);
 
-            var camTransform = cameraObj.transform;
+            var camTransform = dummyCameraObj.transform;
             var raycount = Physics.RaycastNonAlloc(camTransform.position, cameraLookForward, cameraCastHits, 100.0f);
             if (!Input.GetMouseButton(2))
             {
@@ -225,7 +220,7 @@ namespace CharacterNamespace
                         var isAtForward = Vector3.Dot(playerBody.transform.forward, (cameraCastHits[i - 1].point - playerBody.transform.position).normalized) > 0.0f;
                         if (angle > -25.0f && isAtForward)
                         {
-                            camRayDistanceSave = cameraCastHits[i - 1].distance - cameraObj.transform.localPosition.z;
+                            camRayDistanceSave = cameraCastHits[i - 1].distance - dummyCameraObj.transform.localPosition.z;
                             sightHitPoint = cameraCastHits[i - 1].point;
                             break;
                         }
@@ -254,13 +249,14 @@ namespace CharacterNamespace
         {
             Physics.Raycast(cameraObj.transform.position, cameraObj.transform.forward, out var bulletHit, float.PositiveInfinity);
             var camLongestPoint = cameraObj.transform.position + (cameraObj.transform.forward * 100.0f);
-            bulletHit.point = bulletHit.point == Vector3.zero ? camLongestPoint : bulletHit.point;
-            bulletHitPoint = bulletHit.point;
+            bulletHitPoint = bulletHit.point == Vector3.zero ? camLongestPoint : bulletHit.point;
         }
+
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawSphere(sightHitPoint, 0.25f);
+            Gizmos.DrawWireCube(bulletHitPoint, Vector3.one * 0.5f);
+            /*Gizmos.DrawSphere(sightHitPoint, 0.25f);
             Gizmos.DrawLine(rifleMuzzle.transform.position, sightHitPoint);
             Gizmos.DrawLine(playerSpine.transform.position, sightHitPoint);
             Gizmos.color = Color.green;
@@ -268,7 +264,7 @@ namespace CharacterNamespace
             Gizmos.color = Color.blue;
             Gizmos.DrawLine(playerSpine.transform.position, (playerBody.transform.forward * 100.0f) + playerSpine.transform.position);
             var spine = myAnimator.GetBoneTransform(HumanBodyBones.Spine);
-            Gizmos.DrawLine(spine.position, spine.forward * 100.0f);
+            Gizmos.DrawLine(spine.position, spine.forward * 100.0f);*/
         }
     }
 }

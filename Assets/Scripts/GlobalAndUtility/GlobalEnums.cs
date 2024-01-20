@@ -19,6 +19,7 @@ public enum CharacterState
     Dash,
     MidAir,
     Attack,
+    Death,
 }
 
 public enum CharacterUpperState

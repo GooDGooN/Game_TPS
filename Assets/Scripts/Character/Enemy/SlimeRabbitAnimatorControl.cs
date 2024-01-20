@@ -12,12 +12,19 @@ public class SlimeRabbitAnimatorControl : MonoBehaviour
     }
     public void SlimeRabbitStartJump()
     {
-        parent.MyNavMeshAgent.speed = parent.MoveSpeed;
         parent.Jumping = true;
     }
+
     public void SlimeRabbitEndJump()
     {
-        parent.MyNavMeshAgent.speed = 0.0f;
         parent.Jumping = false;
+    }
+
+    public void SlimeRabbitAttack()
+    {
+        if(parent.MyState == CharacterState.Attack)
+        {
+            parent.Attack = true;
+        }
     }
 }
