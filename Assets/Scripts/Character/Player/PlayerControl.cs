@@ -11,17 +11,31 @@ namespace CharacterNamespace
 {
     public class PlayerControl : CharacterProperty
     {
+        #region RIFLE
+        public GameObject HitScanBullet { get => hitScanBullet; }
+        [SerializeField] private GameObject hitScanBullet;
+        [SerializeField] private GameObject rifleObj;
+
+        public float FireDelay { get => fireDelay; set => fireDelay = value; }
+        private float fireDelay = 0.0f;
+
+        public Vector3 BulletHitPoint { get => bulletHitPoint; }
+        private Vector3 bulletHitPoint;
+
+        private RaycastHit[] bulletRaycastHits = new RaycastHit[5];
+/*
+        public GameObject RifleMuzzle { get => rifleMuzzle; }
+        [SerializeField] private GameObject rifleMuzzle;*/
+        
+        public float FireRate { get => fireRate; }
+        private float fireRate = 0.5f;
+        #endregion
+
         #region SPINE_FIELD
         [SerializeField] private GameObject playerHead;
         [SerializeField] private GameObject playerSpine;
-        [SerializeField] private GameObject dummyCameraObj;
-        [SerializeField] private GameObject cameraObj;
-        [SerializeField] private GameObject rifleObj;
-        private RaycastHit[] cameraCastHits = new RaycastHit[5];
-        private Vector3 cameraLookForward;
         private Vector3 sightHitPoint;
         private Vector3 spineRotationSave;
-        private float camRayDistanceSave = 100.0f;
         #endregion
 
         #region BODY_FIELD
@@ -83,20 +97,13 @@ namespace CharacterNamespace
 
         #endregion
 
-        #region CHARCTER_FIELD
-        public float FireRate { get => fireRate; }
-        private float fireRate = 0.5f;
-
-        public float FireDelay { get => fireDelay; set => fireDelay = value; }
-        private float fireDelay = 0.0f;
-
-        public Vector3 BulletHitPoint { get => bulletHitPoint; }
-        private Vector3 bulletHitPoint;
-
-        public GameObject RifleMuzzle { get => rifleMuzzle; }
-        [SerializeField] private GameObject rifleMuzzle;
-
+        #region CAMERA_FIELD
         [SerializeField] private PlayerCameraControl playerCameraControlScr;
+        [SerializeField] private GameObject dummyCameraObj;
+        [SerializeField] private GameObject cameraObj;
+        private RaycastHit[] cameraCastHits = new RaycastHit[5];
+        private Vector3 cameraLookForward;
+        private float camRayDistanceSave = 100.0f;
 
         #endregion
 
@@ -107,6 +114,7 @@ namespace CharacterNamespace
             stateController.ChangeState(CharacterUpperState.Normal);
             moveSpeed = 200.0f;
             health = 100;
+            hitScanBullet = Instantiate(hitScanBullet, transform);
         }
 
         private void FixedUpdate()
@@ -133,7 +141,7 @@ namespace CharacterNamespace
         {
             if(myState != CharacterState.MidAir)
             {
-                Physics.SphereCast(myRigidbody.position, capsuleColliderRadius, Vector3.down, out var playerSphere, float.PositiveInfinity, solidLayer);
+                Physics.SphereCast(myRigidbody.position, capsuleColliderRadius, Vector3.down, out var playerSphere, float.PositiveInfinity, GlobalVarStorage.Instance.SolidLayer);
                 myRigidbody.velocity = new Vector3(myRigidbody.velocity.x, 0.0f, myRigidbody.velocity.z);
                 if (playerSphere.normal.y >= 0.8f)
                 {
@@ -247,9 +255,19 @@ namespace CharacterNamespace
 
         private void BulletHitPointUpdate()
         {
-            Physics.Raycast(cameraObj.transform.position, cameraObj.transform.forward, out var bulletHit, float.PositiveInfinity);
-            var camLongestPoint = cameraObj.transform.position + (cameraObj.transform.forward * 100.0f);
-            bulletHitPoint = bulletHit.point == Vector3.zero ? camLongestPoint : bulletHit.point;
+            var hitAmount = Physics.RaycastNonAlloc(cameraObj.transform.position, cameraObj.transform.forward, bulletRaycastHits, float.PositiveInfinity);
+            for(int i = 0; i < hitAmount; i++) 
+            {
+                if (bulletRaycastHits[i].collider.isTrigger)
+                {
+                    continue;
+                }
+                else
+                {
+                    var camLongestPoint = cameraObj.transform.position + (cameraObj.transform.forward * 100.0f);
+                    bulletHitPoint = bulletRaycastHits[i].point == Vector3.zero ? camLongestPoint : bulletRaycastHits[i].point;
+                }
+            }
         }
 
         private void OnDrawGizmos()

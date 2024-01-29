@@ -7,12 +7,10 @@ public class PlayerFireUpperState : CharacterBaseFSM
 {
     private PlayerControl player;
     public PlayerFireUpperState(CharacterStateController stateController, PlayerControl player) : base(stateController, player) { }
-    private float delay;
     public override void StateEnter()
     {
         player = characterInfo as PlayerControl;
         player.MyAnimator.SetBool("Fire", true);
-        delay = 0.0f;
     }
 
     public override void StateExit()
@@ -38,7 +36,8 @@ public class PlayerFireUpperState : CharacterBaseFSM
         {
             player.FireDelay = player.FireRate;
             player.MyAnimator.Play("UpperFire", 1);
-            BulletContainer.Instance.BulletActive(player.BulletHitPoint, BulletPoolType.Player);
+            player.HitScanBullet.SetActive(true);
+            player.HitScanBullet.GetComponent<HitScanBullet>().ActiveBullet(player.BulletHitPoint);
         }
 
         if(player.MyAnimator.GetCurrentAnimatorStateInfo(1).normalizedTime > 1.0f)

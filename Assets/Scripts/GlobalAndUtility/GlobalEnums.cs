@@ -28,7 +28,7 @@ public enum CharacterUpperState
     Reloading,
     Firing,
 }
-public enum BulletPoolType
+public enum BulletUserType
 {
     None,
     Player,

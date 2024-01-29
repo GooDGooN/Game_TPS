@@ -71,6 +71,8 @@ public class CharacterStatePIcker
             switch(enemy.MyType)
             {
                 case EnemyType.SlimeRabbit: return new SlimeRabbitMoveState(stateController, enemy);
+                case EnemyType.Mushroom: return new MushroomMoveState(stateController, enemy);
+                case EnemyType.Bee: return new BeeMoveState(stateController, enemy);
             }
         }
         else if (state == CharacterState.Attack)
@@ -78,6 +80,8 @@ public class CharacterStatePIcker
             switch (enemy.MyType)
             {
                 case EnemyType.SlimeRabbit: return new SlimeRabbitAttackState(stateController, enemy);
+                case EnemyType.Mushroom: return new MushroomAttackState(stateController, enemy);
+                case EnemyType.Bee: return new BeeAttackState(stateController, enemy);
             }
         }
         else if (state == CharacterState.Death)

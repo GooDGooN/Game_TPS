@@ -26,16 +26,12 @@ public class CharacterProperty : MonoBehaviour
     public CharacterUpperState MyUpperState { get => myUpperState; set => myUpperState = value; }
     protected CharacterUpperState myUpperState = CharacterUpperState.Normal;
 
-    public LayerMask SolidLayer { get => solidLayer; }
-    [SerializeField] protected LayerMask solidLayer;
-
     protected CharacterStateController stateController;
     #endregion
 
 
     protected virtual void Awake()
     {
-        solidLayer = LayerMask.GetMask("Solid");
         capsuleColliderHeight = myCapsuleCollider.height * 0.5f;
         capsuleColliderRadius = myCapsuleCollider.radius;
     }

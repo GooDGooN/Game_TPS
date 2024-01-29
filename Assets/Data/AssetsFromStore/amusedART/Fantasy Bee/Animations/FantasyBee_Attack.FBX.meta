@@ -221,7 +221,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -233,7 +233,21 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.1733871
+        functionName: BeeCreateBall
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 4602f3a6dd9d123479e3ae4bd715369a, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.516441
+        functionName: BeeFireBall
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 4602f3a6dd9d123479e3ae4bd715369a, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}

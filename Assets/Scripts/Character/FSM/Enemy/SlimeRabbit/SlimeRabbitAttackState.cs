@@ -27,7 +27,7 @@ public class SlimeRabbitAttackState : CharacterBaseFSM
     {
         if(mySelf.Attack)
         {
-            if(Vector3.Distance(player.transform.position, mySelf.transform.position) < 1.0f)
+            if(Vector3.Distance(player.transform.position, mySelf.transform.position) < mySelf.AttackRangeCollider.radius)
             {
                 player.GetDamage(mySelf.AtkDamage);
                 mySelf.Attack = false;
