@@ -21,11 +21,11 @@ public class BeeControl : EnemyProperty
         transform.position += Vector3.up * height;
         myType = EnemyType.Bee;
         PropertySet();
-        if (GlobalVarStorage.Instance.PlayerObj != null)
+        if (GlobalVarStorage.PlayerObject != null)
         {
             myAnimator.SetBool("IsMove", true);
         }
-        attackRangeCollider.includeLayers = GlobalVarStorage.Instance.PlayerLayer;
+        attackRangeCollider.includeLayers = GlobalVarStorage.PlayerLayer;
         stateController = new CharacterStateController(this);
         stateController.ChangeState(CharacterState.Move);
 
@@ -61,7 +61,7 @@ public class BeeControl : EnemyProperty
         if(attackBall != null)
         {
             attackBall.transform.parent = null;
-            attackBall.transform.LookAt(GlobalVarStorage.Instance.PlayerObj.transform.position);
+            attackBall.transform.LookAt(GlobalVarStorage.PlayerObject.transform.position);
             attackBall.GetComponent<BeeAttackBall>().Fire();
         }
     }

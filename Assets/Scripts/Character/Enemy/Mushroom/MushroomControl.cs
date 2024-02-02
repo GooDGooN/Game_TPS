@@ -11,11 +11,11 @@ public class MushroomControl : EnemyProperty
     {
         myType = EnemyType.Mushroom;
         PropertySet();
-        if (GlobalVarStorage.Instance.PlayerObj != null)
+        if (GlobalVarStorage.PlayerObject != null)
         {
             myAnimator.SetBool("IsMove", true);
         }
-        attackRangeCollider.includeLayers = GlobalVarStorage.Instance.PlayerLayer;
+        attackRangeCollider.includeLayers = GlobalVarStorage.PlayerLayer;
         stateController = new CharacterStateController(this);
         stateController.ChangeState(CharacterState.Move);
 

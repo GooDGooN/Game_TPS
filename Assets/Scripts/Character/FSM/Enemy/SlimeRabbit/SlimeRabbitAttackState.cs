@@ -11,7 +11,7 @@ public class SlimeRabbitAttackState : CharacterBaseFSM
     public override void StateEnter()
     {
         mySelf = characterInfo as SlimeRabbitControl;
-        player = GlobalVarStorage.Instance.PlayerScript;
+        player = GlobalVarStorage.PlayerScript;
     }
 
     public override void StateExit()

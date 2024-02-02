@@ -10,7 +10,7 @@ public class HitScanBullet : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if((GlobalVarStorage.Instance.EnemyLayer & 1 << other.gameObject.layer) != 0)
+        if((GlobalVarStorage.EnemyLayer & 1 << other.gameObject.layer) != 0)
         {
             if (other.gameObject.TryGetComponent<CharacterProperty>(out var result) && !other.isTrigger)
             {

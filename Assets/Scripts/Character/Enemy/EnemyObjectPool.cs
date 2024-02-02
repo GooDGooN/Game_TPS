@@ -30,7 +30,7 @@ public class EnemyObjectPool : Singleton<EnemyObjectPool>
     {
         if(Input.GetKeyDown(KeyCode.P))
         {
-            beeSpawnTest(new Vector3(0.0f, 2.0f, 0.0f));
+            SlimeRabbitSpawnTest(new Vector3(0.0f, 2.0f, 0.0f));
         }
     }
 

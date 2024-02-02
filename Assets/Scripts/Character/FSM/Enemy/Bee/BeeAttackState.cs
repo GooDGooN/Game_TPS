@@ -11,7 +11,7 @@ public class BeeAttackState : CharacterBaseFSM
     public override void StateEnter()
     {
         mySelf = characterInfo as BeeControl;
-        player = GlobalVarStorage.Instance.PlayerScript;
+        player = GlobalVarStorage.PlayerScript;
         mySelf.MyNavMeshAgent.speed = 0.0f;
         mySelf.MyNavMeshAgent.updateRotation = false;
     }

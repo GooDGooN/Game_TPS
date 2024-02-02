@@ -12,23 +12,22 @@ namespace CharacterNamespace
     public class PlayerControl : CharacterProperty
     {
         #region RIFLE
+
+        public PlayerRifleControl PlayerRifle { get => playerRifle; }
+        [SerializeField] private PlayerRifleControl playerRifle;
+
         public GameObject HitScanBullet { get => hitScanBullet; }
         [SerializeField] private GameObject hitScanBullet;
-        [SerializeField] private GameObject rifleObj;
-
-        public float FireDelay { get => fireDelay; set => fireDelay = value; }
-        private float fireDelay = 0.0f;
 
         public Vector3 BulletHitPoint { get => bulletHitPoint; }
         private Vector3 bulletHitPoint;
 
-        private RaycastHit[] bulletRaycastHits = new RaycastHit[5];
-/*
-        public GameObject RifleMuzzle { get => rifleMuzzle; }
-        [SerializeField] private GameObject rifleMuzzle;*/
-        
+        private RaycastHit[] bulletRaycastHits = new RaycastHit[15];
+
+        public float FireDelay = 0.0f;
+
         public float FireRate { get => fireRate; }
-        private float fireRate = 0.5f;
+        private float fireRate = 0.4f;
         #endregion
 
         #region SPINE_FIELD
@@ -62,8 +61,15 @@ namespace CharacterNamespace
         public Vector2 BlendPos { get => blendPos; set => blendPos = value; }
         private Vector2 blendPos = Vector2.zero;
 
-        public float MoveDirDampSmooth { get => moveDirDampSmooth; }
+        public Vector3 BottomCastBox { get => bottomCastBox; }
+        private Vector3 bottomCastBox = new Vector3(0.2f, 0.01f, 0.2f);
+
+        public float MoveDirDampSmooth { get => moveDirDampSmooth; set => moveDirDampSmooth = value; }
         private float moveDirDampSmooth = 0.1f;
+
+        public float DefaultMoveSpeed { get => defaultMoveSpeed; }
+        private float defaultMoveSpeed;
+
         #endregion
 
         #region STATE_FIELD
@@ -101,20 +107,18 @@ namespace CharacterNamespace
         [SerializeField] private PlayerCameraControl playerCameraControlScr;
         [SerializeField] private GameObject dummyCameraObj;
         [SerializeField] private GameObject cameraObj;
-        private RaycastHit[] cameraCastHits = new RaycastHit[5];
         private Vector3 cameraLookForward;
-        private float camRayDistanceSave = 100.0f;
 
         #endregion
 
         private void Start()
         {
             stateController = new CharacterStateController(this);
+            hitScanBullet = Instantiate(hitScanBullet, transform);
             stateController.ChangeState(CharacterState.Idle);
             stateController.ChangeState(CharacterUpperState.Normal);
-            moveSpeed = 200.0f;
+            defaultMoveSpeed = moveSpeed = 200.0f;
             health = 100;
-            hitScanBullet = Instantiate(hitScanBullet, transform);
         }
 
         private void FixedUpdate()
@@ -136,12 +140,11 @@ namespace CharacterNamespace
         {
             GeneralLateUpdate();
         }
-
         private void GeneralFixedUpdate()
         {
             if(myState != CharacterState.MidAir)
             {
-                Physics.SphereCast(myRigidbody.position, capsuleColliderRadius, Vector3.down, out var playerSphere, float.PositiveInfinity, GlobalVarStorage.Instance.SolidLayer);
+                Physics.SphereCast(myRigidbody.position, capsuleColliderRadius, Vector3.down, out var playerSphere, float.PositiveInfinity, GlobalVarStorage.SolidLayer);
                 myRigidbody.velocity = new Vector3(myRigidbody.velocity.x, 0.0f, myRigidbody.velocity.z);
                 if (playerSphere.normal.y >= 0.8f)
                 {
@@ -149,21 +152,49 @@ namespace CharacterNamespace
                     myRigidbody.MovePosition(pos);
                 }
             }
+            if (MyState != CharacterState.Dash)
+            {
+                TempMoveDirection = Vector3.zero;
+                BlendPos = Vector2.zero;
+                if (RightPressing ^ LeftPressing)
+                {
+                    var temp = PlayerBody.transform.right;
+                    BlendPos += Vector2.right;
+                    if (LeftPressing)
+                    {
+                        BlendPos += Vector2.left * 2;
+                        temp = -temp;
+                    }
+                    TempMoveDirection += temp;
+                }
+                if (ForwardPressing ^ BackPressing)
+                {
+                    var temp = PlayerBody.transform.forward;
+                    BlendPos += Vector2.up;
+                    if (BackPressing)
+                    {
+                        BlendPos += Vector2.down * 2;
+                        temp = -temp;
+                    }
+                    TempMoveDirection += temp;
+                }
+            }
+
             var dir = moveDirection * moveSpeed * Time.deltaTime;
             myRigidbody.velocity = new Vector3(dir.x, myRigidbody.velocity.y, dir.z);
         }
 
         private void GeneralUpdate()
         {
-            rightPressing = GameSystem.Instance.GetKey(KeyInputs.MoveRight);
-            leftPressing = GameSystem.Instance.GetKey(KeyInputs.MoveLeft);
-            forwardPressing = GameSystem.Instance.GetKey(KeyInputs.MoveFoward);
-            backPressing = GameSystem.Instance.GetKey(KeyInputs.MoveBack);
-            dashPressing = GameSystem.Instance.GetKey(KeyInputs.Dash);
-            firePressing = GameSystem.Instance.GetKey(KeyInputs.Fire);
-            zoomInPressing = GameSystem.Instance.GetKey(KeyInputs.ZoomIn);
-            reloadPressed = GameSystem.Instance.GetKeyPressed(KeyInputs.Reload);
-            jumpPressed = GameSystem.Instance.GetKeyPressed(KeyInputs.Jump);
+            rightPressing = GameSystem.GetKey(KeyInputs.MoveRight);
+            leftPressing = GameSystem.GetKey(KeyInputs.MoveLeft);
+            forwardPressing = GameSystem.GetKey(KeyInputs.MoveFoward);
+            backPressing = GameSystem.GetKey(KeyInputs.MoveBack);
+            dashPressing = GameSystem.GetKey(KeyInputs.Dash);
+            firePressing = GameSystem.GetKey(KeyInputs.Fire);
+            zoomInPressing = GameSystem.GetKey(KeyInputs.ZoomIn);
+            reloadPressed = GameSystem.GetKeyPressed(KeyInputs.Reload);
+            jumpPressed = GameSystem.GetKeyPressed(KeyInputs.Jump);
 
             if (tempMoveDirection != Vector3.zero)
             {
@@ -186,9 +217,9 @@ namespace CharacterNamespace
             myAnimator.SetFloat("MotionX", animBlendPosX);
             myAnimator.SetFloat("MotionY", animBlendPosY);
 
-            fireDelay = fireDelay > 0.0f ? fireDelay - Time.deltaTime : 0.0f;
+            FireDelay = FireDelay > 0.0f ? FireDelay - Time.deltaTime : 0.0f;
             //Debug.Log(stateController.LastState);
-            //Debug.Log(MyState);
+            // Debug.Log(MyState);
             //Debug.Log(MyUpperState);
         }
 
@@ -213,42 +244,22 @@ namespace CharacterNamespace
 
         private void CharacterAngleUpdate()
         {
+            var camTransform = dummyCameraObj.transform;
             cameraLookForward = dummyCameraObj.transform.forward;
             playerBody.transform.eulerAngles = new Vector3(0.0f, playerCameraControlScr.RotationYSave.y, 0.0f);
-
-            var camTransform = dummyCameraObj.transform;
-            var raycount = Physics.RaycastNonAlloc(camTransform.position, cameraLookForward, cameraCastHits, 100.0f);
-            if (!Input.GetMouseButton(2))
-            {
-                if (raycount > 0)
-                {
-                    for (int i = raycount; i >= 1; i--)
-                    {
-                        var angle = Vector3.SignedAngle(playerBody.transform.forward, (cameraCastHits[i - 1].point - playerBody.transform.position).normalized, playerBody.transform.right);
-                        var isAtForward = Vector3.Dot(playerBody.transform.forward, (cameraCastHits[i - 1].point - playerBody.transform.position).normalized) > 0.0f;
-                        if (angle > -25.0f && isAtForward)
-                        {
-                            camRayDistanceSave = cameraCastHits[i - 1].distance - dummyCameraObj.transform.localPosition.z;
-                            sightHitPoint = cameraCastHits[i - 1].point;
-                            break;
-                        }
-                        if (i == raycount)
-                        {
-                            sightHitPoint = cameraLookForward * camRayDistanceSave + camTransform.position;
-                        }
-                    }
-                }
-                else
-                {
-                    sightHitPoint = cameraLookForward * camRayDistanceSave + camTransform.position;
-                }
-                spineRotationSave = Quaternion.LookRotation(sightHitPoint - playerSpine.transform.position).eulerAngles;
-            }
-            var spineAxis = Vector3.Cross(playerSpine.transform.up, playerBody.transform.forward);
-            if(myState != CharacterState.Dash)
+            if (myState != CharacterState.Dash)
             {
                 playerSpine.transform.eulerAngles = Vector3.zero;
-                playerSpine.transform.eulerAngles = (Vector3.up * spineRotationSave.y) + (Vector3.up * 47.5f);
+            }
+            if(!Input.GetMouseButton(2))
+            {
+                sightHitPoint = cameraLookForward * 10.0f + camTransform.position;
+            }
+            spineRotationSave = Quaternion.LookRotation(sightHitPoint - playerSpine.transform.position, playerSpine.transform.up).eulerAngles;
+            var spineAxis = Vector3.Cross(playerSpine.transform.up, playerBody.transform.forward);
+            if (myState != CharacterState.Dash)
+            {
+                playerSpine.transform.eulerAngles = Vector3.up * (spineRotationSave.y + 47.5f);
                 playerSpine.transform.Rotate(spineAxis, spineRotationSave.x, Space.World);
             }
         }
@@ -256,16 +267,15 @@ namespace CharacterNamespace
         private void BulletHitPointUpdate()
         {
             var hitAmount = Physics.RaycastNonAlloc(cameraObj.transform.position, cameraObj.transform.forward, bulletRaycastHits, float.PositiveInfinity);
-            for(int i = 0; i < hitAmount; i++) 
+            Debug.Log(hitAmount);
+            bulletRaycastHits = bulletRaycastHits.Take(hitAmount).OrderBy(i => i.distance).ToArray();
+            for (int i = 0; i < hitAmount; i++) 
             {
-                if (bulletRaycastHits[i].collider.isTrigger)
-                {
-                    continue;
-                }
-                else
+                if (!bulletRaycastHits[i].collider.isTrigger)
                 {
                     var camLongestPoint = cameraObj.transform.position + (cameraObj.transform.forward * 100.0f);
                     bulletHitPoint = bulletRaycastHits[i].point == Vector3.zero ? camLongestPoint : bulletRaycastHits[i].point;
+                    break;
                 }
             }
         }
@@ -274,15 +284,11 @@ namespace CharacterNamespace
         {
             Gizmos.color = Color.red;
             Gizmos.DrawWireCube(bulletHitPoint, Vector3.one * 0.5f);
-            /*Gizmos.DrawSphere(sightHitPoint, 0.25f);
-            Gizmos.DrawLine(rifleMuzzle.transform.position, sightHitPoint);
-            Gizmos.DrawLine(playerSpine.transform.position, sightHitPoint);
-            Gizmos.color = Color.green;
-            Gizmos.DrawLine(rifleMuzzle.transform.position, (rifleMuzzle.transform.forward * 100.0f)+ rifleMuzzle.transform.position);
+            Gizmos.DrawSphere(sightHitPoint, 0.25f);
             Gizmos.color = Color.blue;
             Gizmos.DrawLine(playerSpine.transform.position, (playerBody.transform.forward * 100.0f) + playerSpine.transform.position);
             var spine = myAnimator.GetBoneTransform(HumanBodyBones.Spine);
-            Gizmos.DrawLine(spine.position, spine.forward * 100.0f);*/
+            Gizmos.DrawLine(spine.position, spine.forward * 100.0f);
         }
     }
 }

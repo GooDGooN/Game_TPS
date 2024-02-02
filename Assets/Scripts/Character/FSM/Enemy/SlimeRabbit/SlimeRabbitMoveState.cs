@@ -11,7 +11,7 @@ public class SlimeRabbitMoveState : CharacterBaseFSM
     public override void StateEnter()
     {
         mySelf = characterInfo as SlimeRabbitControl;
-        player = GlobalVarStorage.Instance.PlayerScript;
+        player = GlobalVarStorage.PlayerScript;
         mySelf.MyAnimator.SetBool("IsMove", true);
     }
 

@@ -12,7 +12,7 @@ public class BeeMoveState : CharacterBaseFSM
     public override void StateEnter()
     {
         mySelf = characterInfo as BeeControl;
-        player = GlobalVarStorage.Instance.PlayerScript;
+        player = GlobalVarStorage.PlayerScript;
         mySelf.MyAnimator.SetBool("IsMove", true);
         mySelf.MyNavMeshAgent.speed = mySelf.MoveSpeed;
     }

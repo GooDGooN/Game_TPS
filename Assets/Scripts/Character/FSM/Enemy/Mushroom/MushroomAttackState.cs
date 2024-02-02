@@ -11,7 +11,7 @@ public class MushroomAttackState : CharacterBaseFSM
     public override void StateEnter()
     {
         mySelf = characterInfo as MushroomControl;
-        player = GlobalVarStorage.Instance.PlayerScript;
+        player = GlobalVarStorage.PlayerScript;
     }
 
     public override void StateExit()

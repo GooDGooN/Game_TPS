@@ -1,5 +1,7 @@
 using CharacterNamespace;
+using Unity.Physics;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlayerMidAirState : CharacterBaseFSM
 {
@@ -11,6 +13,7 @@ public class PlayerMidAirState : CharacterBaseFSM
         player = characterInfo as PlayerControl;
 
         player.MyAnimator.SetBool("MidAir", true);
+        player.MoveDirDampSmooth = 0.2f;
     }
 
     public override void StateExit()
@@ -18,12 +21,13 @@ public class PlayerMidAirState : CharacterBaseFSM
         player.MyAnimator.SetBool("MidAir", false);
         player.CheckJump = false;
         player.MyRigidbody.velocity = new Vector3(player.MyRigidbody.velocity.x, 0.0f, player.MyRigidbody.velocity.z);
+        player.MoveDirDampSmooth = 0.1f;
     }
 
     public override void StateFixedUpdate()
     {
-        Physics.Raycast(player.MyRigidbody.position, Vector3.down, out var playerRay, float.PositiveInfinity, GlobalVarStorage.Instance.SolidLayer);
-        if (playerRay.distance >= player.CapsuleColliderHeight + 0.1f)
+        Physics.BoxCast(player.MyRigidbody.position, player.BottomCastBox, Vector3.down, out var playerRay, Quaternion.identity, float.PositiveInfinity, GlobalVarStorage.SolidLayer);
+        if (playerRay.distance >= player.CapsuleColliderHeight + 0.05f)
         {
             player.MyRigidbody.AddForce(Vector3.down * 3.0f);
         }

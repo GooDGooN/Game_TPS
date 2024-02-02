@@ -15,7 +15,7 @@ public class PlayerDashState : CharacterBaseFSM
         player.MyAnimator.SetBool("Dash", true);
         player.MyAnimator.SetBool("Reload", false);
         player.MyAnimator.Play("UpperIdle", 1, 0.0f);
-        player.MoveSpeed = 350.0f;
+        player.MoveSpeed = player.DefaultMoveSpeed * 1.5f;
     }
     public override void StateExit()
     {
@@ -26,8 +26,8 @@ public class PlayerDashState : CharacterBaseFSM
     public override void StateFixedUpdate()
     {
         player.TempMoveDirection = player.PlayerBody.transform.forward;
-        Physics.Raycast(player.MyRigidbody.position, Vector3.down, out var playerRay, float.PositiveInfinity, GlobalVarStorage.Instance.SolidLayer);
-        if (playerRay.distance > player.CapsuleColliderHeight + 0.2f)
+        Physics.Raycast(player.MyRigidbody.position, Vector3.down, out var playerRay, float.PositiveInfinity, GlobalVarStorage.SolidLayer);
+        if (playerRay.distance > player.CapsuleColliderHeight + 0.05f)
         {
             characterStateController.ChangeState(CharacterState.MidAir);
         }

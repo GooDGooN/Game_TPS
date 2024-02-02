@@ -6,10 +6,12 @@ using UnityEngine;
 public class PlayerFireUpperState : CharacterBaseFSM
 {
     private PlayerControl player;
+    private PlayerRifleControl playerRifle;
     public PlayerFireUpperState(CharacterStateController stateController, PlayerControl player) : base(stateController, player) { }
     public override void StateEnter()
     {
         player = characterInfo as PlayerControl;
+        playerRifle = player.PlayerRifle;
         player.MyAnimator.SetBool("Fire", true);
     }
 
@@ -24,7 +26,7 @@ public class PlayerFireUpperState : CharacterBaseFSM
         {
             characterStateController.ChangeState(CharacterUpperState.Reloading);
         }
-        if (!player.FirePressing)
+        if (!player.FirePressing || player.MyState == CharacterState.Dash)
         {
             characterStateController.ChangeState(CharacterUpperState.Normal);
         }
@@ -38,6 +40,7 @@ public class PlayerFireUpperState : CharacterBaseFSM
             player.MyAnimator.Play("UpperFire", 1);
             player.HitScanBullet.SetActive(true);
             player.HitScanBullet.GetComponent<HitScanBullet>().ActiveBullet(player.BulletHitPoint);
+            playerRifle.BulletFire(player.BulletHitPoint);
         }
 
         if(player.MyAnimator.GetCurrentAnimatorStateInfo(1).normalizedTime > 1.0f)

@@ -2,6 +2,7 @@ using CharacterNamespace;
 using System;
 using Unity.Physics;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
 using static UnityEngine.GraphicsBuffer;
 
@@ -14,7 +15,7 @@ public class PlayerMoveState : CharacterBaseFSM
     {
         player = characterInfo as PlayerControl;
 
-        player.MoveSpeed = 200.0f;
+        player.MoveSpeed = player.DefaultMoveSpeed;
     }
 
     public override void StateExit()
@@ -42,8 +43,9 @@ public class PlayerMoveState : CharacterBaseFSM
     }
     public override void StateFixedUpdate()
     {
-        Physics.Raycast(player.MyRigidbody.position, Vector3.down, out var playerRay, float.PositiveInfinity, GlobalVarStorage.Instance.SolidLayer);
-        if (playerRay.distance > player.CapsuleColliderHeight + 0.2f)
+        //Physics.Raycast(player.MyRigidbody.position, Vector3.down, out var playerRay, float.PositiveInfinity, GlobalVarStorage.SolidLayer);
+        Physics.BoxCast(player.MyRigidbody.position, player.BottomCastBox, Vector3.down, out var playerRay,Quaternion.identity, float.PositiveInfinity, GlobalVarStorage.SolidLayer);
+        if (playerRay.distance > player.CapsuleColliderHeight + 0.05f)
         {
             characterStateController.ChangeState(CharacterState.MidAir);
         }
@@ -51,31 +53,6 @@ public class PlayerMoveState : CharacterBaseFSM
         {
             player.MyRigidbody.AddForce(Vector3.up * player.JumpPower);
             characterStateController.ChangeState(CharacterState.MidAir);
-        }
-
-        player.TempMoveDirection = Vector3.zero;
-        player.BlendPos = Vector2.zero;
-        if (player.RightPressing ^ player.LeftPressing)
-        {
-            var temp = player.PlayerBody.transform.right;
-            player.BlendPos += Vector2.right;
-            if (player.LeftPressing)
-            {
-                player.BlendPos += Vector2.left * 2;
-                temp = -temp;
-            }
-            player.TempMoveDirection += temp;
-        }
-        if (player.ForwardPressing ^ player.BackPressing)
-        {
-            var temp = player.PlayerBody.transform.forward;
-            player.BlendPos += Vector2.up;
-            if (player.BackPressing)
-            {
-                player.BlendPos += Vector2.down * 2;
-                temp = -temp;
-            }
-            player.TempMoveDirection += temp;
         }
     }
 }

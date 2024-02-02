@@ -11,7 +11,7 @@ public class MushroomMoveState : CharacterBaseFSM
     public override void StateEnter()
     {
         mySelf = characterInfo as MushroomControl;
-        player = GlobalVarStorage.Instance.PlayerScript;
+        player = GlobalVarStorage.PlayerScript;
         mySelf.MyAnimator.SetBool("IsMove", true);
     }
     public override void StateExit()

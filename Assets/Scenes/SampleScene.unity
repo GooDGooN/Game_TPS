@@ -607,8 +607,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55c1c02192b0bbf4ba9c848b35d852b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerScript: {fileID: 1211887301}
-  playerObj: {fileID: 1211887299}
 --- !u!4 &420320347
 Transform:
   m_ObjectHideFlags: 0
@@ -817,6 +815,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4139787594701147390, guid: 83628a2e699576147adabb30587f44d4, type: 3}
   m_PrefabInstance: {fileID: 1400756542}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &601625127
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 601625128}
+  m_Layer: 0
+  m_Name: BulletPool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &601625128
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 601625127}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &678211476
 GameObject:
   m_ObjectHideFlags: 0
@@ -1026,6 +1055,10 @@ PrefabInstance:
       propertyPath: m_Size.x
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5330160611648966321, guid: e7329584c239c954b9ce97efa34828e4, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 90b37c3e2b2230c41a7c94d1c2631f6c, type: 2}
     - target: {fileID: 7283903567649140905, guid: e7329584c239c954b9ce97efa34828e4, type: 3}
       propertyPath: m_Name
       value: TestWallAndFloor
@@ -1389,6 +1422,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1013722706}
+  - component: {fileID: 1013722707}
   m_Layer: 3
   m_Name: Rifle (1)
   m_TagString: Untagged
@@ -1412,6 +1446,69 @@ Transform:
   - {fileID: 1098415159}
   m_Father: {fileID: 578947102}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: -90}
+--- !u!114 &1013722707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1013722705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 530e6e93f333dd0438190f2fd8158262, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaxImumMagazineCapacity: 0
+  rifleMuzzle: {fileID: 1781721979}
+  bulletTrailPrefab: {fileID: 1875139792850553919, guid: 71e7398bd928eea42b6483e93844a840, type: 3}
+  fireEffectPrefab: {fileID: 1336949550903370, guid: 4543ab5e3d405ec40a8d4e9aa5165030, type: 3}
+  bulletPool: {fileID: 601625127}
+  bulletEffectManager: {fileID: 1054344014}
+--- !u!1 &1054344012
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1054344013}
+  - component: {fileID: 1054344014}
+  m_Layer: 3
+  m_Name: BulletEffectManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1054344013
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1054344012}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1054344014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1054344012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e698e7dc521fd141bd6ec41a97375de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletSolidImpactPrefab: {fileID: 100002, guid: 7d307788b6735d14d8d360f6f1e31d2e, type: 3}
 --- !u!1 &1078596480 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4890105603544404922, guid: 83628a2e699576147adabb30587f44d4, type: 3}
@@ -1576,14 +1673,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc8b89b3fd8908f449c96563ba7e0333, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerRifle: {fileID: 1013722707}
   hitScanBullet: {fileID: 8153658233959349444, guid: 2af0e1292a90c9e4ca8ae5bcf5408c7f, type: 3}
-  rifleObj: {fileID: 1013722705}
+  FireDelay: 0
   playerHead: {fileID: 2053454550}
   playerSpine: {fileID: 1078596480}
   playerBody: {fileID: 1217380846}
   playerCameraControlScr: {fileID: 1651782036}
-  dummyCameraObj: {fileID: 963194225}
-  cameraObj: {fileID: 439457718}
+  dummyCameraObj: {fileID: 439457718}
+  cameraObj: {fileID: 963194225}
 --- !u!54 &1211887303
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4024,6 +4122,8 @@ SceneRoots:
   - {fileID: 705507995}
   - {fileID: 702990963}
   - {fileID: 1211887300}
+  - {fileID: 1054344013}
+  - {fileID: 601625128}
   - {fileID: 1311984472}
   - {fileID: 1740107634}
   - {fileID: 963194228}

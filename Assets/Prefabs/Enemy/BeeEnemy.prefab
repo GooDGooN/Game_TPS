@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 1963445667218015779}
   - component: {fileID: 573507415228989360}
   - component: {fileID: 5180564786707638456}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BeeEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -173,7 +173,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 042646f261b9c97439e4c036677b389f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myType: 0
+  myType: 1
   attackBallPrefab: {fileID: 7522353499868390610, guid: b7954d94b4e15c041b9e850c18c56092, type: 3}
   firePoint: {fileID: 2062333060472529700}
 --- !u!1001 &8519221933990717844

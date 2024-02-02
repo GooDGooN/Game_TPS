@@ -13,14 +13,16 @@ public class CameraSet : MonoBehaviour
     private float cameraDampValue = 0.05f;
     private void FixedUpdate()
     {
+
         if (Vector3.Distance(transform.position, dummy.position) < 0.01f)
         {
             transform.position = dummy.position;
         }
         else
         {
+            
             transform.position = Vector3.SmoothDamp(transform.position, dummy.position, ref dampPosVelocity, cameraDampValue);
-            transform.localPosition += GlobalVarStorage.Instance.PlayerScript.MyState == CharacterState.Dash ? Vector3.forward * 0.05f : Vector3.zero;
+            transform.localPosition += GlobalVarStorage.PlayerScript.MyState == CharacterState.Dash ? Vector3.forward * 0.05f : Vector3.zero;
             targetRot.x = Mathf.SmoothDampAngle(transform.eulerAngles.x, dummy.eulerAngles.x, ref dampRotVelocity.x, cameraDampValue);
             targetRot.y = Mathf.SmoothDampAngle(transform.eulerAngles.y, dummy.eulerAngles.y, ref dampRotVelocity.y, cameraDampValue);
             targetRot.z = Mathf.SmoothDampAngle(transform.eulerAngles.z, dummy.eulerAngles.z, ref dampRotVelocity.z, cameraDampValue);

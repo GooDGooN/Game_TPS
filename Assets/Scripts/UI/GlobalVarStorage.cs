@@ -5,17 +5,18 @@ using UnityEngine;
 
 public class GlobalVarStorage : Singleton<GlobalVarStorage>
 {
-    public PlayerControl PlayerScript { get => playerScript; }
-    [SerializeField] private PlayerControl playerScript;
-    public GameObject PlayerObj { get => playerObj; }
-    [SerializeField] private GameObject playerObj;
+    public static PlayerControl PlayerScript { get => playerScript; }
+    private static PlayerControl playerScript;
 
-    public LayerMask SolidLayer { get => solidLayer; }
-    protected LayerMask solidLayer;
-    public LayerMask PlayerLayer { get => playerLayer; }
-    protected LayerMask playerLayer;
-    public LayerMask EnemyLayer { get => enemyLayer; }
-    protected LayerMask enemyLayer;
+    public static GameObject PlayerObject { get => playerObject; }
+    private static GameObject playerObject;
+
+    public static LayerMask SolidLayer { get => solidLayer; }
+    private static LayerMask solidLayer;
+    public static LayerMask PlayerLayer { get => playerLayer; }
+    private static LayerMask playerLayer;
+    public static LayerMask EnemyLayer { get => enemyLayer; }
+    private static LayerMask enemyLayer;
 
     protected override void Awake()
     {
@@ -23,6 +24,7 @@ public class GlobalVarStorage : Singleton<GlobalVarStorage>
         solidLayer = LayerMask.GetMask("Solid");
         playerLayer = LayerMask.GetMask("Player");
         enemyLayer = LayerMask.GetMask("Enemy");
-
+        playerScript = FindObjectOfType<PlayerControl>();
+        playerObject = playerScript.gameObject;
     }
 }

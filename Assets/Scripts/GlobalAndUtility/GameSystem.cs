@@ -11,7 +11,7 @@ public class GameSystem : Singleton<GameSystem>
     private float playerRotDampSmoothTimeValue = 0.025f;
     public float PlayerRotDampSmoothTimeValue { get => playerRotDampSmoothTimeValue; }
 
-    public bool GetKey(KeyInputs key)
+    public static bool GetKey(KeyInputs key)
     {
         switch(key)
         {
@@ -28,7 +28,7 @@ public class GameSystem : Singleton<GameSystem>
         }
     }
 
-    public bool GetKeyPressed(KeyInputs key)
+    public static bool GetKeyPressed(KeyInputs key)
     {
         switch (key)
         {

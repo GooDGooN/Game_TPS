@@ -18,17 +18,18 @@ public class SlimeRabbitControl : EnemyProperty
     private void OnEnable()
     {
         myType = EnemyType.SlimeRabbit;
+        myCapsuleCollider.isTrigger = false;
         PropertySet();
         if (isSplit)
         {
             health /= 2;
             atkSpeed *= 2;
         }
-        if(GlobalVarStorage.Instance.PlayerObj != null)
+        if(GlobalVarStorage.PlayerObject != null)
         {
             myAnimator.SetBool("IsMove", true);
         }
-        attackRangeCollider.includeLayers = GlobalVarStorage.Instance.PlayerLayer;
+        attackRangeCollider.includeLayers = GlobalVarStorage.PlayerLayer;
         stateController = new CharacterStateController(this);
         stateController.ChangeState(CharacterState.Move);
 
