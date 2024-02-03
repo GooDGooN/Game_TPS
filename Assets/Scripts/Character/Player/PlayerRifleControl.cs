@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Entities.UniversalDelegates;
 using UnityEngine;
 
 public class PlayerRifleControl : MonoBehaviour
@@ -58,20 +59,29 @@ public class PlayerRifleControl : MonoBehaviour
             if (!trail.activeSelf)
             {
                 var direction = (targetPoint - muzzleTransform.position).normalized;
-                var hitAmount = Physics.RaycastNonAlloc(muzzleTransform.position, direction, castHits, maxHitDist);
-                castHits = castHits.Take(hitAmount).OrderBy(i => i.distance).ToArray();
-                for(int i = 0; i < hitAmount; i++)
+                var rayHits =  Physics.RaycastAll(muzzleTransform.position, direction, float.PositiveInfinity);
+                
+                RaycastHit seletedHit = new RaycastHit();
+                if (rayHits.Length > 0)
                 {
-                    if (!castHits[i].collider.isTrigger)
+                    seletedHit = rayHits[0];
+                    foreach (var hit in rayHits)
                     {
-                        trail.GetComponent<RifleBulletTrail>().SetHitPoint(castHits[i].point, castHits[i].normal);
-                        break;
+                        if (seletedHit.distance > hit.distance && !hit.collider.isTrigger)
+                        {
+                            seletedHit = hit;
+                        }
                     }
-                    if (i == hitAmount - 1)
-                    {
-                        var pos = muzzleTransform.forward * maxHitDist + muzzleTransform.position;
-                        trail.GetComponent<RifleBulletTrail>().SetHitPoint(pos, Vector3.zero, false);
-                    }
+                }
+
+                if(seletedHit.collider != null)
+                {
+                    trail.GetComponent<RifleBulletTrail>().SetHitPoint(seletedHit.point, seletedHit.normal);
+                }
+                else
+                {
+                    var pos = muzzleTransform.forward * maxHitDist + muzzleTransform.position;
+                    trail.GetComponent<RifleBulletTrail>().SetHitPoint(pos, Vector3.zero, false);
                 }
                 trail.transform.position = muzzleTransform.position;
                 trail.SetActive(true);

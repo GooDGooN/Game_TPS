@@ -7,7 +7,7 @@ using UnityEngine;
 public class RifleBulletTrail : MonoBehaviour
 {
     private float maxDistance = 100.0f;
-    private float speed = 5.0f; // 150.0f
+    private float speed = 150.0f;
     private bool isImpact;
     private Vector3 startPosition;
     private Vector3 hitPosition;

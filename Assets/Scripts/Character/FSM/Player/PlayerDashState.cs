@@ -40,6 +40,17 @@ public class PlayerDashState : CharacterBaseFSM
 
     public override void StateUpdate()
     {
+        if(player.IsStaminaRecharge)
+        {
+            if(player.ForwardPressing)
+            {
+                characterStateController.ChangeState(CharacterState.Move);
+            }
+            else
+            {
+                characterStateController.ChangeState(CharacterState.Idle);
+            }
+        }
         if (player.ForwardPressing && !player.DashPressing)
         {
             characterStateController.ChangeState(CharacterState.Move);
@@ -48,6 +59,7 @@ public class PlayerDashState : CharacterBaseFSM
         {
             characterStateController.ChangeState(CharacterState.Idle);
         }
+
         if (player.JumpPressed)
         {
             player.CheckJump = true;

@@ -22,8 +22,6 @@ namespace CharacterNamespace
         public Vector3 BulletHitPoint { get => bulletHitPoint; }
         private Vector3 bulletHitPoint;
 
-        private RaycastHit[] bulletRaycastHits = new RaycastHit[15];
-
         public float FireDelay = 0.0f;
 
         public float FireRate { get => fireRate; }
@@ -111,6 +109,17 @@ namespace CharacterNamespace
 
         #endregion
 
+        #region STATUS_FIELD
+        public bool IsStaminaRecharge { get => isStaminaRecharge; }
+        private bool isStaminaRecharge = false;
+        public float MaxStamina { get => maxStamina; }
+        private float maxStamina;
+        public float Stamina { get => stamina; }
+        private float stamina;
+
+        public float StaminaMultiply = 1.0f;
+        #endregion
+
         private void Start()
         {
             stateController = new CharacterStateController(this);
@@ -118,7 +127,8 @@ namespace CharacterNamespace
             stateController.ChangeState(CharacterState.Idle);
             stateController.ChangeState(CharacterUpperState.Normal);
             defaultMoveSpeed = moveSpeed = 200.0f;
-            health = 100;
+            maxHealth = health = 100;
+            maxStamina = stamina = 1.0f;
         }
 
         private void FixedUpdate()
@@ -186,6 +196,8 @@ namespace CharacterNamespace
 
         private void GeneralUpdate()
         {
+
+            #region CHECKKEYPRESS
             rightPressing = GameSystem.GetKey(KeyInputs.MoveRight);
             leftPressing = GameSystem.GetKey(KeyInputs.MoveLeft);
             forwardPressing = GameSystem.GetKey(KeyInputs.MoveFoward);
@@ -195,7 +207,9 @@ namespace CharacterNamespace
             zoomInPressing = GameSystem.GetKey(KeyInputs.ZoomIn);
             reloadPressed = GameSystem.GetKeyPressed(KeyInputs.Reload);
             jumpPressed = GameSystem.GetKeyPressed(KeyInputs.Jump);
+            #endregion
 
+            #region SMOOTHDAMP
             if (tempMoveDirection != Vector3.zero)
             {
                 tempMoveDirection.Normalize();
@@ -216,8 +230,31 @@ namespace CharacterNamespace
             }
             myAnimator.SetFloat("MotionX", animBlendPosX);
             myAnimator.SetFloat("MotionY", animBlendPosY);
+            #endregion
 
             FireDelay = FireDelay > 0.0f ? FireDelay - Time.deltaTime : 0.0f;
+
+            if (Input.GetKey(KeyCode.LeftBracket))
+            {
+                health -= 1;
+            }
+            if (Input.GetKey(KeyCode.RightBracket))
+            {
+                health += 1;
+            }
+            health = Mathf.Clamp(health, 0, maxHealth);
+            var staminaChangeValue = myState != CharacterState.MidAir ? Time.deltaTime * 0.25f : 0.0f;
+            stamina += myState == CharacterState.Dash ? -staminaChangeValue : staminaChangeValue * StaminaMultiply;
+            if (stamina <= 0.0f)
+            {
+                isStaminaRecharge = true;
+            }
+            if (stamina >= 1.0f)
+            {
+                isStaminaRecharge = false;
+            }
+            stamina = Mathf.Clamp(stamina, 0.0f, maxStamina);
+
             //Debug.Log(stateController.LastState);
             // Debug.Log(MyState);
             //Debug.Log(MyUpperState);
@@ -266,18 +303,21 @@ namespace CharacterNamespace
 
         private void BulletHitPointUpdate()
         {
-            var hitAmount = Physics.RaycastNonAlloc(cameraObj.transform.position, cameraObj.transform.forward, bulletRaycastHits, float.PositiveInfinity);
-            Debug.Log(hitAmount);
-            bulletRaycastHits = bulletRaycastHits.Take(hitAmount).OrderBy(i => i.distance).ToArray();
-            for (int i = 0; i < hitAmount; i++) 
+            var rayHits = Physics.RaycastAll(cameraObj.transform.position, cameraObj.transform.forward, float.PositiveInfinity);
+            RaycastHit seletedHit = new RaycastHit();
+            if (rayHits.Length > 0)
             {
-                if (!bulletRaycastHits[i].collider.isTrigger)
+                seletedHit = rayHits[0];
+                foreach (var hit in rayHits)
                 {
-                    var camLongestPoint = cameraObj.transform.position + (cameraObj.transform.forward * 100.0f);
-                    bulletHitPoint = bulletRaycastHits[i].point == Vector3.zero ? camLongestPoint : bulletRaycastHits[i].point;
-                    break;
+                    if (seletedHit.distance > hit.distance && !hit.collider.isTrigger)
+                    {
+                        seletedHit = hit;
+                    }
                 }
             }
+            var camLongestPoint = cameraObj.transform.position + (cameraObj.transform.forward * 100.0f);
+            bulletHitPoint = seletedHit.collider != null ? seletedHit.point : camLongestPoint;
         }
 
         private void OnDrawGizmos()

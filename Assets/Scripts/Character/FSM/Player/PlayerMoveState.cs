@@ -36,7 +36,7 @@ public class PlayerMoveState : CharacterBaseFSM
             player.CheckJump = true;
         }
 
-        if (player.DashPressing && player.ForwardPressing)
+        if (player.DashPressing && player.ForwardPressing && !player.IsStaminaRecharge)
         {
             characterStateController.ChangeState(CharacterState.Dash);
         }

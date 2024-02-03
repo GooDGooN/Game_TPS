@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CharacterProperty : MonoBehaviour
 {
+    public int MaxHealth { get => maxHealth; }
+    protected int maxHealth;
     public int Health { get => health; }
     protected int health;
     public float MoveSpeed { get => moveSpeed; set => moveSpeed = value; }
