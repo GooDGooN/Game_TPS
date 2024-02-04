@@ -22,7 +22,7 @@ public class PlayerFireUpperState : CharacterBaseFSM
 
     public override void StateFixedUpdate()
     {
-        if (player.ReloadPressed || (player.FirePressing && playerRifle.CurrentMagazineCapacity <= 0))
+        if (player.ReloadPressed || (player.FirePressing && playerRifle.CurrentMagazineCapacity <= 0 && playerRifle.CurrentMagazineCapacity != playerRifle.MaxImumMagazineCapacity))
         {
             characterStateController.ChangeState(CharacterUpperState.Reloading);
         }

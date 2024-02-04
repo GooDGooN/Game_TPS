@@ -6,10 +6,12 @@ using UnityEngine;
 public class PlayerNormalUpperState : CharacterBaseFSM
 {
     private PlayerControl player;
+    private PlayerRifleControl playerRifle;
     public PlayerNormalUpperState(CharacterStateController stateController, PlayerControl player) : base(stateController, player) { }
     public override void StateEnter()
     {
         player = characterInfo as PlayerControl;
+        playerRifle = player.PlayerRifle;
     }
 
     public override void StateExit()
@@ -24,7 +26,7 @@ public class PlayerNormalUpperState : CharacterBaseFSM
     {
         if (player.ReloadPressed)
         {
-            if (player.MyState != CharacterState.Dash)
+            if (player.MyState != CharacterState.Dash && playerRifle.CurrentMagazineCapacity != playerRifle.MaxImumMagazineCapacity)
             {
                 characterStateController.ChangeState(CharacterUpperState.Reloading);
             }

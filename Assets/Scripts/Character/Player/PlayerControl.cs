@@ -131,6 +131,9 @@ namespace CharacterNamespace
         private float stamina;
 
         public float StaminaMultiply = 1.0f;
+
+        public bool ReloadComplete { get => reloadComplete; set => reloadComplete = value; }
+        private bool reloadComplete = false;
         #endregion
 
         private void Start()
@@ -312,12 +315,12 @@ namespace CharacterNamespace
             if(!isFreeViewClick)
             {
                 sightHitPoint = cameraLookForward * 10.0f + camTransform.position;
+                spineRotationSave = Quaternion.LookRotation(sightHitPoint - playerSpine.transform.position, playerSpine.transform.up).eulerAngles;
             }
-            spineRotationSave = Quaternion.LookRotation(sightHitPoint - playerSpine.transform.position, playerSpine.transform.up).eulerAngles;
             var spineAxis = Vector3.Cross(playerSpine.transform.up, playerBody.transform.forward);
             if (myState != CharacterState.Dash)
             {
-                playerSpine.transform.eulerAngles = Vector3.up * (spineRotationSave.y + 47.5f);
+                playerSpine.transform.eulerAngles = Vector3.up * (spineRotationSave.y + 52.5f);
                 playerSpine.transform.Rotate(spineAxis, spineRotationSave.x, Space.World);
             }
         }
@@ -331,24 +334,26 @@ namespace CharacterNamespace
                     bulletHitPointDelta = transform.position;
                 }
                 bulletHitPoint += transform.position - bulletHitPointDelta;
+                Debug.Log(bulletHitPoint);
+                bulletHitPointDelta = transform.position;
             }
             else
             {
-                var rayHits = Physics.RaycastAll(cameraObj.transform.position, cameraObj.transform.forward, float.PositiveInfinity);
-                RaycastHit seletedHit = new RaycastHit();
+                var rayHits = Physics.RaycastAll(cameraObj.transform.position, cameraObj.transform.forward * 2.0f, float.PositiveInfinity);
+                RaycastHit selectedHit = new RaycastHit();
                 if (rayHits.Length > 0)
                 {
-                    seletedHit = rayHits[0];
+                    selectedHit = rayHits[0];
                     foreach (var hit in rayHits)
                     {
-                        if (seletedHit.distance > hit.distance && !hit.collider.isTrigger)
+                        if (selectedHit.distance > hit.distance && !hit.collider.isTrigger)
                         {
-                            seletedHit = hit;
+                            selectedHit = hit;
                         }
                     }
                 }
                 var camLongestPoint = cameraObj.transform.position + (cameraObj.transform.forward * 100.0f);
-                bulletHitPoint = seletedHit.collider != null ? seletedHit.point : camLongestPoint;
+                bulletHitPoint = selectedHit.collider != null ? selectedHit.point : camLongestPoint;
             }
         }
 

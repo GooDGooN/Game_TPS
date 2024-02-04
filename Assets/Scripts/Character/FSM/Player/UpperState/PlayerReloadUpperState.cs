@@ -17,7 +17,6 @@ public class PlayerReloadUpperState : CharacterBaseFSM
 
     public override void StateExit()
     {
-        playerRifle.ReloadMagazine();
     }
 
     public override void StateFixedUpdate()
@@ -26,6 +25,11 @@ public class PlayerReloadUpperState : CharacterBaseFSM
 
     public override void StateUpdate()
     {
+        if(player.ReloadComplete)
+        {
+            player.PlayerRifle.ReloadMagazine();
+            player.ReloadComplete = false;
+        }
         if(!player.MyAnimator.GetBool("Reload"))
         {
             characterStateController.ChangeState(CharacterUpperState.Normal);

@@ -7,7 +7,7 @@ public class CharacterProperty : MonoBehaviour
     public int MaxHealth { get => maxHealth; }
     protected int maxHealth;
     public int Health { get => health; }
-    protected int health;
+    public int health;
     public float MoveSpeed { get => moveSpeed; set => moveSpeed = value; }
     protected float moveSpeed;
     public int AtkDamage { get => atkDamage; }

@@ -1,19 +1,22 @@
+using CharacterNamespace;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerHandGrip : MonoBehaviour
+public class PlayerAnimatorControl : MonoBehaviour
 {
-    private Animator myAnimator;
     [SerializeField] private Transform rightHandGrip;
     [SerializeField] private Transform leftHandGrip;
     [SerializeField] private Transform leftHandDashGrip;
+    private PlayerControl parent;
+    private Animator myAnimator;
     private Transform targetLeftHandTranfrom;
     private float ikRightHandWeight = 1.0f;
     private float ikLeftHandWeight = 1.0f;
     private void Awake()
     {
         myAnimator = GetComponent<Animator>();
+        parent = GetComponentInParent<PlayerControl>();
     }
 
     private void Update()
@@ -59,5 +62,10 @@ public class PlayerHandGrip : MonoBehaviour
     public void PlayerReloadEnd()
     {
         myAnimator.SetBool("Reload", false);
+    }
+
+    public void PlayerMagazineChanged()
+    {
+        parent.ReloadComplete = true;
     }
 }

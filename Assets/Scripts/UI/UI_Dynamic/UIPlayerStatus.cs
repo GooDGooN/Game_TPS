@@ -6,9 +6,12 @@ using UnityEngine.UI;
 
 public class UIPlayerStatus : MonoBehaviour
 {
-    private Color healthColor = new Color(50.0f, 200.0f, 100.0f) / 255.0f;
-    private Color staminaColor = new Color(255.0f, 150.0f, 0.0f) / 255.0f;
-    private Color lowStatusColor = new Color(255.0f, 0.0f, 70.0f) / 255.0f;
+    private const float divideValue = 255.0f;
+    private Color healthColor = new Color(50.0f / divideValue, 200.0f / divideValue, 100.0f / divideValue);
+    private Color staminaColor = new Color(255.0f / divideValue, 150.0f / divideValue, 0.0f / divideValue);
+    private Color lowStatusColor = new Color(255.0f / divideValue, 0.0f, 70.0f / divideValue);
+
+    private Color magazineColor = new Color(50.0f / divideValue, 200.0f / divideValue, 255.0f / divideValue);
 
     [SerializeField] private Image healthBar;
     [SerializeField] private Image staminaBar;
@@ -16,9 +19,10 @@ public class UIPlayerStatus : MonoBehaviour
     [SerializeField] private TMP_Text healthText;
     [SerializeField] private TMP_Text magazineText;
 
+    [SerializeField] private Image magazineIcon;
+
     private void LateUpdate()
     {
-        healthColor.a = staminaColor.a = lowStatusColor.a = 1.0f;
         var playerScript = GlobalVarStorage.PlayerScript;
         healthBar.color = Color.Lerp(lowStatusColor, healthColor, ((float)playerScript.Health / playerScript.MaxHealth));
         
@@ -29,6 +33,7 @@ public class UIPlayerStatus : MonoBehaviour
         staminaBar.fillAmount = playerScript.Stamina / playerScript.MaxStamina;
 
         magazineText.text = playerScript.PlayerRifle.CurrentMagazineCapacity.ToString();
+        magazineText.color = magazineIcon.color = (playerScript.PlayerRifle.CurrentMagazineCapacity <= 0) ? lowStatusColor : magazineColor;
     }
 }
 

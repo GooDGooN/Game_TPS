@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class GameSystem : Singleton<GameSystem>
 {
-    private float mouseSensitive = 3.0f;
+    private float mouseSensitive = 6.0f;
     public float MouseSensitive { get => mouseSensitive; }
     private float playerRotDampSmoothTimeValue = 0.025f;
     public float PlayerRotDampSmoothTimeValue { get => playerRotDampSmoothTimeValue; }

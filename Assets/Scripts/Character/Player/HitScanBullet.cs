@@ -8,23 +8,25 @@ public class HitScanBullet : MonoBehaviour
     {
         transform.position = position;
     }
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
-        if((GlobalVarStorage.EnemyLayer & 1 << other.gameObject.layer) != 0)
+        Debug.Log("TriggerActive");
+        if(!other.isTrigger)
         {
-            if (other.gameObject.TryGetComponent<CharacterProperty>(out var result) && !other.isTrigger)
+            if ((GlobalVarStorage.EnemyLayer & (1 << other.gameObject.layer)) != 0)
             {
-                result.GetDamage(1);
-                if (result.Health > 0)
+                if (other.gameObject.TryGetComponent<CharacterProperty>(out var result))
                 {
-                    result.MyAnimator.Play("Damage");
+                    result.GetDamage(1);
+                    if (result.Health > 0)
+                    {
+                        result.MyAnimator.Play("Damage");
+                    }
                 }
             }
+            Debug.Log("Delete");
+            transform.position = Vector3.zero;
+            gameObject.SetActive(false);
         }
-    }
-    private void Update()
-    {
-        transform.position = Vector3.zero;
-        gameObject.SetActive(false);
     }
 }
