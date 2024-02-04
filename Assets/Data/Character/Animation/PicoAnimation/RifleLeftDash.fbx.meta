@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 7dab8f6090febad4dacd79e47e1849f3
+guid: 0f65533841bf9704a8556b930f36d3be
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -33,13 +33,13 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: PicoRifleDash
+      name: PicoRifleLeftDash
       takeName: mixamo.com
       internalID: -203655887218126122
       firstFrame: 0
       lastFrame: 40
       wrapMode: 0
-      orientationOffsetY: 0
+      orientationOffsetY: 90
       level: 0
       cycleOffset: 0
       loop: 0

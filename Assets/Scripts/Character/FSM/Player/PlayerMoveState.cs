@@ -31,21 +31,24 @@ public class PlayerMoveState : CharacterBaseFSM
             characterStateController.ChangeState(CharacterState.Idle);
         }
 
-        if (player.JumpPressed)
+        if (!player.IsStaminaRecharge)
         {
-            player.CheckJump = true;
-        }
+            if (player.JumpPressed)
+            {
+                player.CheckJump = true;
+            }
 
-        if (player.DashPressing && player.ForwardPressing && !player.IsStaminaRecharge)
-        {
-            characterStateController.ChangeState(CharacterState.Dash);
+            if (player.DashPressing)
+            {
+                characterStateController.ChangeState(CharacterState.Dash);
+            }
         }
     }
     public override void StateFixedUpdate()
     {
         //Physics.Raycast(player.MyRigidbody.position, Vector3.down, out var playerRay, float.PositiveInfinity, GlobalVarStorage.SolidLayer);
         Physics.BoxCast(player.MyRigidbody.position, player.BottomCastBox, Vector3.down, out var playerRay,Quaternion.identity, float.PositiveInfinity, GlobalVarStorage.SolidLayer);
-        if (playerRay.distance > player.CapsuleColliderHeight + 0.05f)
+        if (playerRay.distance > player.CapsuleColliderHeight + player.ColliderDelta)
         {
             characterStateController.ChangeState(CharacterState.MidAir);
         }

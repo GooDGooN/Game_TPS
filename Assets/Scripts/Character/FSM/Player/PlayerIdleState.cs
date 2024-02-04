@@ -23,7 +23,7 @@ public class PlayerIdleState : CharacterBaseFSM
         {
             characterStateController.ChangeState(CharacterState.Move);
         }
-        if (player.JumpPressed)
+        if (player.JumpPressed && !player.IsStaminaRecharge)
         {
             player.CheckJump = true;
         }
@@ -32,7 +32,7 @@ public class PlayerIdleState : CharacterBaseFSM
     public override void StateFixedUpdate() 
     {
         Physics.BoxCast(player.MyRigidbody.position, player.BottomCastBox, Vector3.down, out var playerRay, Quaternion.identity, float.PositiveInfinity, GlobalVarStorage.SolidLayer);
-        if (playerRay.distance > player.CapsuleColliderHeight + 0.05f)
+        if (playerRay.distance > player.CapsuleColliderHeight + player.ColliderDelta)
         {
             characterStateController.ChangeState(CharacterState.MidAir);
         }

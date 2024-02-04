@@ -22,7 +22,10 @@ namespace CharacterNamespace
         public Vector3 BulletHitPoint { get => bulletHitPoint; }
         private Vector3 bulletHitPoint;
 
+        private Vector3 bulletHitPointDelta;
+
         public float FireDelay = 0.0f;
+
 
         public float FireRate { get => fireRate; }
         private float fireRate = 0.4f;
@@ -68,6 +71,9 @@ namespace CharacterNamespace
         public float DefaultMoveSpeed { get => defaultMoveSpeed; }
         private float defaultMoveSpeed;
 
+        public float ColliderDelta { get => colliderDelta; }
+        private float colliderDelta = 0.05f;
+
         #endregion
 
         #region STATE_FIELD
@@ -98,6 +104,13 @@ namespace CharacterNamespace
         public bool ReloadPressed { get => reloadPressed; }
         private bool reloadPressed = false;
 
+        public bool IsMovePressed { get => isMovePressed; }
+        private bool isMovePressed = false;
+
+        public bool IsFreeViewClick { get => isFreeViewClick; }
+        private bool isFreeViewClick = false;
+        public bool IsFreeViewClicked { get => isFreeViewClicked; }
+        private bool isFreeViewClicked = false;
 
         #endregion
 
@@ -162,32 +175,29 @@ namespace CharacterNamespace
                     myRigidbody.MovePosition(pos);
                 }
             }
-            if (MyState != CharacterState.Dash)
+            TempMoveDirection = Vector3.zero;
+            BlendPos = Vector2.zero;
+            if (RightPressing ^ LeftPressing)
             {
-                TempMoveDirection = Vector3.zero;
-                BlendPos = Vector2.zero;
-                if (RightPressing ^ LeftPressing)
+                var temp = PlayerBody.transform.right;
+                BlendPos += Vector2.right;
+                if (LeftPressing)
                 {
-                    var temp = PlayerBody.transform.right;
-                    BlendPos += Vector2.right;
-                    if (LeftPressing)
-                    {
-                        BlendPos += Vector2.left * 2;
-                        temp = -temp;
-                    }
-                    TempMoveDirection += temp;
+                    BlendPos += Vector2.left * 2;
+                    temp = -temp;
                 }
-                if (ForwardPressing ^ BackPressing)
+                TempMoveDirection += temp;
+            }
+            if (ForwardPressing ^ BackPressing)
+            {
+                var temp = PlayerBody.transform.forward;
+                BlendPos += Vector2.up;
+                if (BackPressing)
                 {
-                    var temp = PlayerBody.transform.forward;
-                    BlendPos += Vector2.up;
-                    if (BackPressing)
-                    {
-                        BlendPos += Vector2.down * 2;
-                        temp = -temp;
-                    }
-                    TempMoveDirection += temp;
+                    BlendPos += Vector2.down * 2;
+                    temp = -temp;
                 }
+                TempMoveDirection += temp;
             }
 
             var dir = moveDirection * moveSpeed * Time.deltaTime;
@@ -196,7 +206,6 @@ namespace CharacterNamespace
 
         private void GeneralUpdate()
         {
-
             #region CHECKKEYPRESS
             rightPressing = GameSystem.GetKey(KeyInputs.MoveRight);
             leftPressing = GameSystem.GetKey(KeyInputs.MoveLeft);
@@ -207,6 +216,10 @@ namespace CharacterNamespace
             zoomInPressing = GameSystem.GetKey(KeyInputs.ZoomIn);
             reloadPressed = GameSystem.GetKeyPressed(KeyInputs.Reload);
             jumpPressed = GameSystem.GetKeyPressed(KeyInputs.Jump);
+            isMovePressed = rightPressing || leftPressing || forwardPressing || backPressing;
+            isFreeViewClick = GameSystem.GetKey(KeyInputs.FreeView);
+            isFreeViewClicked = GameSystem.GetKeyPressed(KeyInputs.FreeView);
+
             #endregion
 
             #region SMOOTHDAMP
@@ -234,17 +247,8 @@ namespace CharacterNamespace
 
             FireDelay = FireDelay > 0.0f ? FireDelay - Time.deltaTime : 0.0f;
 
-            if (Input.GetKey(KeyCode.LeftBracket))
-            {
-                health -= 1;
-            }
-            if (Input.GetKey(KeyCode.RightBracket))
-            {
-                health += 1;
-            }
-            health = Mathf.Clamp(health, 0, maxHealth);
+            #region STAMINA
             var staminaChangeValue = myState != CharacterState.MidAir ? Time.deltaTime * 0.25f : 0.0f;
-            stamina += myState == CharacterState.Dash ? -staminaChangeValue : staminaChangeValue * StaminaMultiply;
             if (stamina <= 0.0f)
             {
                 isStaminaRecharge = true;
@@ -253,7 +257,13 @@ namespace CharacterNamespace
             {
                 isStaminaRecharge = false;
             }
+            stamina += myState == CharacterState.Dash ? -staminaChangeValue : staminaChangeValue * StaminaMultiply;
+            if (jumpPressed && !IsStaminaRecharge && myState != CharacterState.MidAir)
+            {
+                stamina -= 1.0f / 5.0f;
+            }
             stamina = Mathf.Clamp(stamina, 0.0f, maxStamina);
+            #endregion
 
             //Debug.Log(stateController.LastState);
             // Debug.Log(MyState);
@@ -277,6 +287,17 @@ namespace CharacterNamespace
                 SceneManager.LoadScene(0);
             }
 
+            #region HEALTHTEST
+            if (Input.GetKey(KeyCode.LeftBracket))
+            {
+                health -= 1;
+            }
+            if (Input.GetKey(KeyCode.RightBracket))
+            {
+                health += 1;
+            }
+            health = Mathf.Clamp(health, 0, maxHealth);
+            #endregion
         }
 
         private void CharacterAngleUpdate()
@@ -288,7 +309,7 @@ namespace CharacterNamespace
             {
                 playerSpine.transform.eulerAngles = Vector3.zero;
             }
-            if(!Input.GetMouseButton(2))
+            if(!isFreeViewClick)
             {
                 sightHitPoint = cameraLookForward * 10.0f + camTransform.position;
             }
@@ -303,21 +324,32 @@ namespace CharacterNamespace
 
         private void BulletHitPointUpdate()
         {
-            var rayHits = Physics.RaycastAll(cameraObj.transform.position, cameraObj.transform.forward, float.PositiveInfinity);
-            RaycastHit seletedHit = new RaycastHit();
-            if (rayHits.Length > 0)
+            if (isFreeViewClick)
             {
-                seletedHit = rayHits[0];
-                foreach (var hit in rayHits)
+                if (isFreeViewClicked)
                 {
-                    if (seletedHit.distance > hit.distance && !hit.collider.isTrigger)
+                    bulletHitPointDelta = transform.position;
+                }
+                bulletHitPoint += transform.position - bulletHitPointDelta;
+            }
+            else
+            {
+                var rayHits = Physics.RaycastAll(cameraObj.transform.position, cameraObj.transform.forward, float.PositiveInfinity);
+                RaycastHit seletedHit = new RaycastHit();
+                if (rayHits.Length > 0)
+                {
+                    seletedHit = rayHits[0];
+                    foreach (var hit in rayHits)
                     {
-                        seletedHit = hit;
+                        if (seletedHit.distance > hit.distance && !hit.collider.isTrigger)
+                        {
+                            seletedHit = hit;
+                        }
                     }
                 }
+                var camLongestPoint = cameraObj.transform.position + (cameraObj.transform.forward * 100.0f);
+                bulletHitPoint = seletedHit.collider != null ? seletedHit.point : camLongestPoint;
             }
-            var camLongestPoint = cameraObj.transform.position + (cameraObj.transform.forward * 100.0f);
-            bulletHitPoint = seletedHit.collider != null ? seletedHit.point : camLongestPoint;
         }
 
         private void OnDrawGizmos()

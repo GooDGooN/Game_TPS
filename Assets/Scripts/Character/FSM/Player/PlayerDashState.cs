@@ -26,8 +26,8 @@ public class PlayerDashState : CharacterBaseFSM
     public override void StateFixedUpdate()
     {
         player.TempMoveDirection = player.PlayerBody.transform.forward;
-        Physics.Raycast(player.MyRigidbody.position, Vector3.down, out var playerRay, float.PositiveInfinity, GlobalVarStorage.SolidLayer);
-        if (playerRay.distance > player.CapsuleColliderHeight + 0.05f)
+        Physics.BoxCast(player.MyRigidbody.position, player.BottomCastBox, Vector3.down, out var playerRay, Quaternion.identity, float.PositiveInfinity, GlobalVarStorage.SolidLayer);
+        if (playerRay.distance > player.CapsuleColliderHeight + player.ColliderDelta)
         {
             characterStateController.ChangeState(CharacterState.MidAir);
         }
@@ -42,7 +42,7 @@ public class PlayerDashState : CharacterBaseFSM
     {
         if(player.IsStaminaRecharge)
         {
-            if(player.ForwardPressing)
+            if(player.IsMovePressed)
             {
                 characterStateController.ChangeState(CharacterState.Move);
             }
@@ -51,16 +51,16 @@ public class PlayerDashState : CharacterBaseFSM
                 characterStateController.ChangeState(CharacterState.Idle);
             }
         }
-        if (player.ForwardPressing && !player.DashPressing)
+        if (player.IsMovePressed && !player.DashPressing)
         {
             characterStateController.ChangeState(CharacterState.Move);
         }
-        else if(!player.ForwardPressing)
+        else if(!player.IsMovePressed)
         {
             characterStateController.ChangeState(CharacterState.Idle);
         }
 
-        if (player.JumpPressed)
+        if (player.JumpPressed && !player.IsStaminaRecharge)
         {
             player.CheckJump = true;
         }
