@@ -4,27 +4,28 @@ using UnityEngine;
 
 public class HitScanBullet : MonoBehaviour
 {
-    public void ActiveBullet(Vector3 position)
+    private int myDamage;
+    public void ActiveBullet(Vector3 position, int damage)
     {
         transform.position = position;
+        myDamage = damage;
     }
     private void OnTriggerStay(Collider other)
     {
-        Debug.Log("TriggerActive");
         if(!other.isTrigger)
         {
             if ((GlobalVarStorage.EnemyLayer & (1 << other.gameObject.layer)) != 0)
             {
                 if (other.gameObject.TryGetComponent<CharacterProperty>(out var result))
                 {
-                    result.GetDamage(1);
+                    result.GetDamage(myDamage);
+                    UIDamageTextPool.Instance.ShowDamage(result.transform.position + Vector3.up * 1.5f, myDamage);
                     if (result.Health > 0)
                     {
                         result.MyAnimator.Play("Damage");
                     }
                 }
             }
-            Debug.Log("Delete");
             transform.position = Vector3.zero;
             gameObject.SetActive(false);
         }

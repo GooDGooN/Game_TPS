@@ -56,9 +56,9 @@ public class RifleBulletTrail : MonoBehaviour
         isImpact = impact;
     }
 
-    private void OnDrawGizmos()
+    /*private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawSphere(hitPosition, 0.1f);
-    }
+    }*/
 }

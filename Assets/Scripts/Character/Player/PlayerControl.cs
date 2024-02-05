@@ -142,6 +142,9 @@ namespace CharacterNamespace
             hitScanBullet = Instantiate(hitScanBullet, transform);
             stateController.ChangeState(CharacterState.Idle);
             stateController.ChangeState(CharacterUpperState.Normal);
+
+            //testset
+            atkDamage = 1;
             defaultMoveSpeed = moveSpeed = 200.0f;
             maxHealth = health = 100;
             maxStamina = stamina = 1.0f;
@@ -334,7 +337,6 @@ namespace CharacterNamespace
                     bulletHitPointDelta = transform.position;
                 }
                 bulletHitPoint += transform.position - bulletHitPointDelta;
-                Debug.Log(bulletHitPoint);
                 bulletHitPointDelta = transform.position;
             }
             else
