@@ -7,6 +7,7 @@ public class UIDamageTextPool : Singleton<UIDamageTextPool>
 {
     private GameObject[] damageTexts = new GameObject[50];
     [SerializeField] private GameObject damageTextPrefab;
+    [SerializeField] private Canvas dynamicCanvas;
     private void Start()
     {
         for(int i = 0; i < damageTexts.Length; i++)
@@ -16,14 +17,17 @@ public class UIDamageTextPool : Singleton<UIDamageTextPool>
         }
     }
 
-    public void ShowDamage(Vector3 position, int damage)
+    public void ShowDamage(Vector3 position, float yDeltaPos, int damage)
     {
         foreach(GameObject obj in damageTexts)
         {
             if(!obj.activeSelf) 
             {
+                var randomxDeltaPos = Random.Range(-1.0f, 1.0f);
+                var deltaPos = (Vector3.up * yDeltaPos) + (Vector3.right * randomxDeltaPos);
                 obj.GetComponent<TMP_Text>().text = damage.ToString();
                 obj.transform.position = position;
+                obj.GetComponent<UIDamageText>().targetPosition = position + deltaPos;
                 obj.SetActive(true);
                 break;
             }

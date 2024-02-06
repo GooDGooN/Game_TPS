@@ -38,9 +38,9 @@ public class PlayerFireUpperState : CharacterBaseFSM
         {
             player.FireDelay = player.FireRate;
             player.MyAnimator.Play("UpperFire", 1);
-            player.HitScanBullet.SetActive(true);
-            player.HitScanBullet.GetComponent<HitScanBullet>().ActiveBullet(player.BulletHitPoint, player.AtkDamage);
-            playerRifle.BulletFire(player.BulletHitPoint);
+            /*player.PlayerRifle.HitScanBullet.SetActive(true);
+            player.PlayerRifle.HitScanBullet.GetComponent<HitScanBullet>().ActiveBullet(player.BulletHitPoint, player.AtkDamage);*/
+            playerRifle.BulletFire(player.BulletHitPoint, player.AtkDamage);
         }
 
         if(player.MyAnimator.GetCurrentAnimatorStateInfo(1).normalizedTime > 1.0f)

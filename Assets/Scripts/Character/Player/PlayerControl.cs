@@ -16,9 +16,6 @@ namespace CharacterNamespace
         public PlayerRifleControl PlayerRifle { get => playerRifle; }
         [SerializeField] private PlayerRifleControl playerRifle;
 
-        public GameObject HitScanBullet { get => hitScanBullet; }
-        [SerializeField] private GameObject hitScanBullet;
-
         public Vector3 BulletHitPoint { get => bulletHitPoint; }
         private Vector3 bulletHitPoint;
 
@@ -139,7 +136,6 @@ namespace CharacterNamespace
         private void Start()
         {
             stateController = new CharacterStateController(this);
-            hitScanBullet = Instantiate(hitScanBullet, transform);
             stateController.ChangeState(CharacterState.Idle);
             stateController.ChangeState(CharacterUpperState.Normal);
 
@@ -341,7 +337,7 @@ namespace CharacterNamespace
             }
             else
             {
-                var rayHits = Physics.RaycastAll(cameraObj.transform.position, cameraObj.transform.forward * 2.0f, float.PositiveInfinity);
+                var rayHits = Physics.RaycastAll(cameraObj.transform.position + cameraObj.transform.forward, cameraObj.transform.forward, float.PositiveInfinity);
                 RaycastHit selectedHit = new RaycastHit();
                 if (rayHits.Length > 0)
                 {

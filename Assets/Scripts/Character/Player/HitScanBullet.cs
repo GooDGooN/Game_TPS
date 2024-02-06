@@ -5,29 +5,45 @@ using UnityEngine;
 public class HitScanBullet : MonoBehaviour
 {
     private int myDamage;
+
+    private List<Collider> testCollider = new List<Collider>();
     public void ActiveBullet(Vector3 position, int damage)
     {
         transform.position = position;
         myDamage = damage;
     }
+    private void OnEnable()
+    {
+        testCollider.Clear();
+        Debug.Log("Alive");
+    }
+
     private void OnTriggerStay(Collider other)
     {
-        if(!other.isTrigger)
+        testCollider.Add(other);
+        Debug.Log("Contact");
+        //Debug.Log($"contact : {other.gameObject}");
+        if (!other.isTrigger && gameObject.activeSelf)
         {
             if ((GlobalVarStorage.EnemyLayer & (1 << other.gameObject.layer)) != 0)
             {
-                if (other.gameObject.TryGetComponent<CharacterProperty>(out var result))
+                if (other.gameObject.TryGetComponent<CharacterProperty>(out var resultObj))
                 {
-                    result.GetDamage(myDamage);
-                    UIDamageTextPool.Instance.ShowDamage(result.transform.position + Vector3.up * 1.5f, myDamage);
-                    if (result.Health > 0)
+                    resultObj.GetDamage(myDamage);
+                    UIDamageTextPool.Instance.ShowDamage(resultObj.transform.position, resultObj.CapsuleColliderHeight * 3.0f, myDamage);
+                    if (resultObj.Health > 0)
                     {
-                        result.MyAnimator.Play("Damage");
+                        resultObj.MyAnimator.Play("Damage");
                     }
                 }
             }
-            transform.position = Vector3.zero;
-            gameObject.SetActive(false);
         }
+        Debug.Log(testCollider.Count);
+    }
+
+    private void Update()
+    {
+        transform.localPosition = Vector3.zero;
+        gameObject.SetActive(false);
     }
 }

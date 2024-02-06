@@ -19,6 +19,7 @@ public class PlayerRifleControl : MonoBehaviour
 
     #region BULLET
     private const int effectMaxAmount = 15;
+
     private GameObject[] bulletTrails = new GameObject[effectMaxAmount];
     [SerializeField] private GameObject bulletTrailPrefab;
 
@@ -41,7 +42,7 @@ public class PlayerRifleControl : MonoBehaviour
         }
     }
 
-    public void BulletFire(Vector3 targetPoint)
+    public void BulletFire(Vector3 targetPoint, int damageValue)
     {
         if(currentMagazineCapacity > 0)
         {
@@ -57,6 +58,7 @@ public class PlayerRifleControl : MonoBehaviour
             }
 
             // This will active and set the hitpoint of bullet
+            Vector3 hitPoint = Vector3.zero;
             foreach (var trail in bulletTrails)
             {
                 if (!trail.activeSelf)
@@ -64,27 +66,47 @@ public class PlayerRifleControl : MonoBehaviour
                     var direction = (targetPoint - muzzleTransform.position).normalized;
                     var rayHits = Physics.RaycastAll(muzzleTransform.position, direction, float.PositiveInfinity);
 
-                    RaycastHit seletedHit = new RaycastHit();
+                    RaycastHit selectedHit = new RaycastHit();
                     if (rayHits.Length > 0)
                     {
-                        seletedHit = rayHits[0];
+                        selectedHit = rayHits[0];
                         foreach (var hit in rayHits)
                         {
-                            if (seletedHit.distance > hit.distance && !hit.collider.isTrigger)
+                            if (selectedHit.distance > hit.distance && !hit.collider.isTrigger)
                             {
-                                seletedHit = hit;
+                                selectedHit = hit;
                             }
                         }
                     }
 
-                    if (seletedHit.collider != null)
+                    if (selectedHit.collider != null)
                     {
-                        trail.GetComponent<RifleBulletTrail>().SetHitPoint(seletedHit.point, seletedHit.normal);
+                        hitPoint = selectedHit.point;
+                        trail.GetComponent<RifleBulletTrail>().SetHitPoint(hitPoint, selectedHit.normal);
+
+                        var selectedHitObj = selectedHit.collider.gameObject;
+                        
+                        // Enemy get damage
+                        if ((GlobalVarStorage.EnemyLayer & (1 << selectedHitObj.layer)) != 0)
+                        {
+                            if (selectedHitObj.TryGetComponent<CharacterProperty>(out var resultObj))
+                            {
+                                resultObj.GetDamage(damageValue);
+                                UIDamageTextPool.Instance.ShowDamage(resultObj.transform.position, resultObj.CapsuleColliderHeight * 2.5f, damageValue);
+                                if (resultObj.Health > 0)
+                                {
+                                    resultObj.MyAnimator.Play("Damage");
+                                }
+                            }
+                        }
+
+                        //HitScanBullet.GetComponent<HitScanBullet>().ActiveBullet(hitPoint, damageValue);
+                        //HitScanBullet.SetActive(true);
                     }
                     else
                     {
-                        var pos = muzzleTransform.forward * maxHitDist + muzzleTransform.position;
-                        trail.GetComponent<RifleBulletTrail>().SetHitPoint(pos, Vector3.zero, false);
+                        hitPoint = muzzleTransform.forward * maxHitDist + muzzleTransform.position;
+                        trail.GetComponent<RifleBulletTrail>().SetHitPoint(hitPoint, Vector3.zero, false);
                     }
                     trail.transform.position = muzzleTransform.position;
                     trail.SetActive(true);

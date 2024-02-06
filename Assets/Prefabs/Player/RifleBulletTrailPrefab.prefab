@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 6430784587726235090}
   - component: {fileID: 264689856446889046}
   m_Layer: 0
-  m_Name: RifleBulletTrail
+  m_Name: RifleBulletTrailPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
