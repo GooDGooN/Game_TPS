@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public abstract class CharacterBaseFSM
+public class CharacterBaseFSM
 {
     protected CharacterStateController characterStateController;
     protected CharacterProperty characterInfo;
@@ -14,9 +14,8 @@ public abstract class CharacterBaseFSM
         this.characterStateController = characterStateController;
         this.characterInfo = characterInfo;
     }
-
-    public abstract void StateEnter();
-    public abstract void StateExit();
-    public abstract void StateUpdate();
-    public abstract void StateFixedUpdate();
+    public virtual void StateEnter() { }
+    public virtual void StateExit() { }
+    public virtual void StateUpdate() { }
+    public virtual void StateFixedUpdate() { }
 }

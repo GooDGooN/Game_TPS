@@ -3,15 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BeeAttackState : CharacterBaseFSM
+public class BeeAttackState : EnemyBaseFSM
 {
     private BeeControl mySelf;
-    private PlayerControl player;
+
     public BeeAttackState(CharacterStateController stateController, CharacterProperty enemy) : base(stateController, enemy) { }
     public override void StateEnter()
     {
         mySelf = characterInfo as BeeControl;
-        player = GlobalVarStorage.PlayerScript;
         mySelf.MyNavMeshAgent.speed = 0.0f;
         mySelf.MyNavMeshAgent.updateRotation = false;
     }

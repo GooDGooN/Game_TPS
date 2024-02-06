@@ -54,7 +54,7 @@ public class BeeAttackBall : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        var layer = GlobalVarStorage.PlayerLayer | GlobalVarStorage.SolidLayer;
+        var layer = Constants.PlayerLayer | Constants.SolidLayer;
         Debug.Log(other.gameObject.layer);
         if ((layer & (1 << other.gameObject.layer)) != 0)
         {

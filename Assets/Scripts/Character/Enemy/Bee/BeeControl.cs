@@ -1,3 +1,4 @@
+using CharacterNamespace;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,11 +22,11 @@ public class BeeControl : EnemyProperty
         transform.position += Vector3.up * height;
         myType = EnemyType.Bee;
         PropertySet();
-        if (GlobalVarStorage.PlayerObject != null)
+        if (PlayerControl.Instance != null)
         {
             myAnimator.SetBool("IsMove", true);
         }
-        attackRangeCollider.includeLayers = GlobalVarStorage.PlayerLayer;
+        attackRangeCollider.includeLayers = Constants.PlayerLayer;
         stateController = new CharacterStateController(this);
         stateController.ChangeState(CharacterState.Move);
 
@@ -61,7 +62,7 @@ public class BeeControl : EnemyProperty
         if(attackBall != null)
         {
             attackBall.transform.parent = null;
-            attackBall.transform.LookAt(GlobalVarStorage.PlayerObject.transform.position);
+            attackBall.transform.LookAt(PlayerControl.Instance.transform.position);
             attackBall.GetComponent<BeeAttackBall>().Fire();
         }
     }

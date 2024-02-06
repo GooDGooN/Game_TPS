@@ -1,3 +1,4 @@
+using CharacterNamespace;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Entities.UniversalDelegates;
@@ -25,11 +26,11 @@ public class SlimeRabbitControl : EnemyProperty
             health /= 2;
             atkSpeed *= 2;
         }
-        if(GlobalVarStorage.PlayerObject != null)
+        if(PlayerControl.Instance != null)
         {
             myAnimator.SetBool("IsMove", true);
         }
-        attackRangeCollider.includeLayers = GlobalVarStorage.PlayerLayer;
+        attackRangeCollider.includeLayers = Constants.PlayerLayer;
         stateController = new CharacterStateController(this);
         stateController.ChangeState(CharacterState.Move);
 

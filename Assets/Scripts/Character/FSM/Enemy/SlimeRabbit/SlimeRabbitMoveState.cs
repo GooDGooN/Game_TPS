@@ -3,15 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SlimeRabbitMoveState : CharacterBaseFSM
+public class SlimeRabbitMoveState : EnemyBaseFSM
 {
-    private SlimeRabbitControl mySelf;   
-    private PlayerControl player;
+    private SlimeRabbitControl mySelf;
     public SlimeRabbitMoveState(CharacterStateController stateController, CharacterProperty enemy) : base(stateController, enemy) { }
     public override void StateEnter()
     {
         mySelf = characterInfo as SlimeRabbitControl;
-        player = GlobalVarStorage.PlayerScript;
         mySelf.MyAnimator.SetBool("IsMove", true);
     }
 

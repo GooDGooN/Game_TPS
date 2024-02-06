@@ -87,7 +87,7 @@ public class PlayerRifleControl : MonoBehaviour
                         var selectedHitObj = selectedHit.collider.gameObject;
                         
                         // Enemy get damage
-                        if ((GlobalVarStorage.EnemyLayer & (1 << selectedHitObj.layer)) != 0)
+                        if ((Constants.EnemyLayer & (1 << selectedHitObj.layer)) != 0)
                         {
                             if (selectedHitObj.TryGetComponent<CharacterProperty>(out var resultObj))
                             {

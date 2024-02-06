@@ -60,7 +60,7 @@ public class EnemyProperty : CharacterProperty
     protected virtual void FixedUpdate()
     {
         stateController.CurrentState.StateFixedUpdate();
-        Physics.BoxCast(transform.position + new Vector3(0.0f, capsuleColliderHeight, 0.0f), new Vector3(0.4f, 0.01f, 0.4f), Vector3.down, out var info, Quaternion.identity, float.PositiveInfinity, GlobalVarStorage.SolidLayer);
+        Physics.BoxCast(transform.position + new Vector3(0.0f, capsuleColliderHeight, 0.0f), new Vector3(0.4f, 0.01f, 0.4f), Vector3.down, out var info, Quaternion.identity, float.PositiveInfinity, Constants.SolidLayer);
         if (info.distance != 0.0f && info.distance >= capsuleColliderHeight + 0.1f)
         {
             isMidAir = true;
@@ -76,7 +76,7 @@ public class EnemyProperty : CharacterProperty
 
     protected virtual void OnTriggerStay(Collider other)
     {
-        if ((1 << other.gameObject.layer & GlobalVarStorage.PlayerLayer) != 0)
+        if ((1 << other.gameObject.layer & Constants.PlayerLayer) != 0)
         {
             myAnimator.SetBool("IsAttack", true);
         }
@@ -84,7 +84,7 @@ public class EnemyProperty : CharacterProperty
 
     protected virtual void OnTriggerExit(Collider other)
     {
-        if ((1 << other.gameObject.layer & GlobalVarStorage.PlayerLayer) != 0)
+        if ((1 << other.gameObject.layer & Constants.PlayerLayer) != 0)
         {
             myAnimator.SetBool("IsAttack", false);
         }

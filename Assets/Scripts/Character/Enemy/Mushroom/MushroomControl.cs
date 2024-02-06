@@ -1,3 +1,4 @@
+using CharacterNamespace;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,11 +12,11 @@ public class MushroomControl : EnemyProperty
     {
         myType = EnemyType.Mushroom;
         PropertySet();
-        if (GlobalVarStorage.PlayerObject != null)
+        if (PlayerControl.Instance != null)
         {
             myAnimator.SetBool("IsMove", true);
         }
-        attackRangeCollider.includeLayers = GlobalVarStorage.PlayerLayer;
+        attackRangeCollider.includeLayers = Constants.PlayerLayer;
         stateController = new CharacterStateController(this);
         stateController.ChangeState(CharacterState.Move);
 

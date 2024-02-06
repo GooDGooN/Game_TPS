@@ -3,15 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SlimeRabbitAttackState : CharacterBaseFSM
+public class SlimeRabbitAttackState : EnemyBaseFSM
 {
     private SlimeRabbitControl mySelf;
-    private PlayerControl player;
     public SlimeRabbitAttackState(CharacterStateController stateController, CharacterProperty enemy) : base(stateController, enemy) { }
     public override void StateEnter()
     {
         mySelf = characterInfo as SlimeRabbitControl;
-        player = GlobalVarStorage.PlayerScript;
     }
 
     public override void StateExit()

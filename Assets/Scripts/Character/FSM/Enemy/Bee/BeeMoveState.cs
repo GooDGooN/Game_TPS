@@ -3,16 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BeeMoveState : CharacterBaseFSM
+public class BeeMoveState : EnemyBaseFSM
 {
     private BeeControl mySelf;
-    private PlayerControl player;
     public BeeMoveState(CharacterStateController stateController, CharacterProperty enemy) : base(stateController, enemy) { }
 
     public override void StateEnter()
     {
         mySelf = characterInfo as BeeControl;
-        player = GlobalVarStorage.PlayerScript;
         mySelf.MyAnimator.SetBool("IsMove", true);
         mySelf.MyNavMeshAgent.speed = mySelf.MoveSpeed;
     }

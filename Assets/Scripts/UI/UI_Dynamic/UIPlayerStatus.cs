@@ -1,3 +1,4 @@
+using CharacterNamespace;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -23,17 +24,17 @@ public class UIPlayerStatus : MonoBehaviour
 
     private void LateUpdate()
     {
-        var playerScript = GlobalVarStorage.PlayerScript;
-        healthBar.color = Color.Lerp(lowStatusColor, healthColor, ((float)playerScript.Health / playerScript.MaxHealth));
+        var player = PlayerControl.Instance;
+        healthBar.color = Color.Lerp(lowStatusColor, healthColor, ((float)player.Health / player.MaxHealth));
         
-        healthBar.fillAmount = (float)playerScript.Health / playerScript.MaxHealth;
-        healthText.text = $"{playerScript.Health}/{playerScript.MaxHealth}";
+        healthBar.fillAmount = (float)player.Health / player.MaxHealth;
+        healthText.text = $"{player.Health}/{player.MaxHealth}";
 
-        staminaBar.color = playerScript.IsStaminaRecharge ? lowStatusColor : staminaColor;
-        staminaBar.fillAmount = playerScript.Stamina / playerScript.MaxStamina;
+        staminaBar.color = player.IsStaminaRecharge ? lowStatusColor : staminaColor;
+        staminaBar.fillAmount = player.Stamina / player.MaxStamina;
 
-        magazineText.text = playerScript.PlayerRifle.CurrentMagazineCapacity.ToString();
-        magazineText.color = magazineIcon.color = (playerScript.PlayerRifle.CurrentMagazineCapacity <= 0) ? lowStatusColor : magazineColor;
+        magazineText.text = player.PlayerRifle.CurrentMagazineCapacity.ToString();
+        magazineText.color = magazineIcon.color = (player.PlayerRifle.CurrentMagazineCapacity <= 0) ? lowStatusColor : magazineColor;
     }
 }
 

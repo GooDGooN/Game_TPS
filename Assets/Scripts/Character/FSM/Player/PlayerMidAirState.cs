@@ -26,7 +26,7 @@ public class PlayerMidAirState : CharacterBaseFSM
 
     public override void StateFixedUpdate()
     {
-        Physics.BoxCast(player.MyRigidbody.position, player.BottomCastBox, Vector3.down, out var playerRay, Quaternion.identity, float.PositiveInfinity, GlobalVarStorage.SolidLayer);
+        Physics.BoxCast(player.MyRigidbody.position, player.BottomCastBox, Vector3.down, out var playerRay, Quaternion.identity, float.PositiveInfinity, Constants.SolidLayer);
         if (playerRay.distance >= player.CapsuleColliderHeight + 0.05f)
         {
             player.MyRigidbody.AddForce(Vector3.down * 3.0f);

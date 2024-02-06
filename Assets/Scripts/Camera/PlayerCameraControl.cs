@@ -80,7 +80,7 @@ namespace CharacterNamespace
             #region CAMERA ZOOMINOUT
             /*camDeltadistValue += Input.mouseScrollDelta.y * 20.0f * Time.deltaTime;
             camDeltadistValue = Mathf.Clamp(camDeltadistValue, 0.0f, 2.0f);*/
-            var player = GlobalVarStorage.PlayerScript;
+            var player = PlayerControl.Instance;
             if (player.MyState != CharacterState.Dash && player.MyUpperState != CharacterUpperState.Reloading)
             {
                 CamDeltadistValue = player.ZoomInPressing ? 1.5f : 0.0f;
@@ -95,7 +95,7 @@ namespace CharacterNamespace
                 camDistance = -rayhit.distance < camZoomRange.x ? -rayhit.distance + camDeltadistValue : camZoomRange.x;
             }
             cameraObj.transform.localPosition = new Vector3(0.60f, 0.15f, camDistance);
-            cameraObj.transform.localPosition -= GlobalVarStorage.PlayerScript.MyState == CharacterState.Dash ? Vector3.forward * 1.5f : Vector3.zero;
+            cameraObj.transform.localPosition -= player.MyState == CharacterState.Dash ? Vector3.forward * 1.5f : Vector3.zero;
             #endregion
         }
 

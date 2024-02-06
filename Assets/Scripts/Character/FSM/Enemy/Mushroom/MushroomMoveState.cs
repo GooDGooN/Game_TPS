@@ -3,15 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MushroomMoveState : CharacterBaseFSM
+public class MushroomMoveState : EnemyBaseFSM
 {
     private MushroomControl mySelf;
-    private PlayerControl player;
     public MushroomMoveState(CharacterStateController stateController, CharacterProperty enemy) : base(stateController, enemy) { }
     public override void StateEnter()
     {
         mySelf = characterInfo as MushroomControl;
-        player = GlobalVarStorage.PlayerScript;
         mySelf.MyAnimator.SetBool("IsMove", true);
     }
     public override void StateExit()

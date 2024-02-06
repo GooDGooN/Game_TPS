@@ -1,8 +1,3 @@
-using System;
-using System.Collections;
-using System.Linq;
-using Unity.Entities.UniversalDelegates;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
@@ -11,8 +6,9 @@ namespace CharacterNamespace
 {
     public class PlayerControl : CharacterProperty
     {
-        #region RIFLE
+        public static PlayerControl Instance { get; private set; }
 
+        #region RIFLE
         public PlayerRifleControl PlayerRifle { get => playerRifle; }
         [SerializeField] private PlayerRifleControl playerRifle;
 
@@ -133,6 +129,23 @@ namespace CharacterNamespace
         private bool reloadComplete = false;
         #endregion
 
+        protected override void Awake()
+        {
+            base.Awake();
+            Instance = this;
+            var insts = FindObjectsOfType<PlayerControl>();
+            if (insts.Length > 1)
+            {
+                foreach (var inst in insts)
+                {
+                    if (inst != Instance)
+                    {
+                        Destroy(inst);
+                    }
+                }
+            }
+        }
+
         private void Start()
         {
             stateController = new CharacterStateController(this);
@@ -169,7 +182,7 @@ namespace CharacterNamespace
         {
             if(myState != CharacterState.MidAir)
             {
-                Physics.SphereCast(myRigidbody.position, capsuleColliderRadius, Vector3.down, out var playerSphere, float.PositiveInfinity, GlobalVarStorage.SolidLayer);
+                Physics.SphereCast(myRigidbody.position, capsuleColliderRadius, Vector3.down, out var playerSphere, float.PositiveInfinity, Constants.SolidLayer);
                 myRigidbody.velocity = new Vector3(myRigidbody.velocity.x, 0.0f, myRigidbody.velocity.z);
                 if (playerSphere.normal.y >= 0.8f)
                 {

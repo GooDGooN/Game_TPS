@@ -47,7 +47,7 @@ public class PlayerMoveState : CharacterBaseFSM
     public override void StateFixedUpdate()
     {
         //Physics.Raycast(player.MyRigidbody.position, Vector3.down, out var playerRay, float.PositiveInfinity, GlobalVarStorage.SolidLayer);
-        Physics.BoxCast(player.MyRigidbody.position, player.BottomCastBox, Vector3.down, out var playerRay,Quaternion.identity, float.PositiveInfinity, GlobalVarStorage.SolidLayer);
+        Physics.BoxCast(player.MyRigidbody.position, player.BottomCastBox, Vector3.down, out var playerRay,Quaternion.identity, float.PositiveInfinity, Constants.SolidLayer);
         if (playerRay.distance > player.CapsuleColliderHeight + player.ColliderDelta)
         {
             characterStateController.ChangeState(CharacterState.MidAir);

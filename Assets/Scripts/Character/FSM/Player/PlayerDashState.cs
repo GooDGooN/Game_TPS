@@ -26,7 +26,7 @@ public class PlayerDashState : CharacterBaseFSM
     public override void StateFixedUpdate()
     {
         player.TempMoveDirection = player.PlayerBody.transform.forward;
-        Physics.BoxCast(player.MyRigidbody.position, player.BottomCastBox, Vector3.down, out var playerRay, Quaternion.identity, float.PositiveInfinity, GlobalVarStorage.SolidLayer);
+        Physics.BoxCast(player.MyRigidbody.position, player.BottomCastBox, Vector3.down, out var playerRay, Quaternion.identity, float.PositiveInfinity, Constants.SolidLayer);
         if (playerRay.distance > player.CapsuleColliderHeight + player.ColliderDelta)
         {
             characterStateController.ChangeState(CharacterState.MidAir);

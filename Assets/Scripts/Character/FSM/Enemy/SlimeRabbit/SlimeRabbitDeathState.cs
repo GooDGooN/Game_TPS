@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SlimeRabbitDeathState : CharacterBaseFSM
+public class SlimeRabbitDeathState : EnemyBaseFSM
 {
     private SlimeRabbitControl mySelf;
     public SlimeRabbitDeathState(CharacterStateController stateController, CharacterProperty enemy) : base(stateController, enemy) { }

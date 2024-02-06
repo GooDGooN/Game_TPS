@@ -25,7 +25,7 @@ public class HitScanBullet : MonoBehaviour
         //Debug.Log($"contact : {other.gameObject}");
         if (!other.isTrigger && gameObject.activeSelf)
         {
-            if ((GlobalVarStorage.EnemyLayer & (1 << other.gameObject.layer)) != 0)
+            if ((Constants.EnemyLayer & (1 << other.gameObject.layer)) != 0)
             {
                 if (other.gameObject.TryGetComponent<CharacterProperty>(out var resultObj))
                 {

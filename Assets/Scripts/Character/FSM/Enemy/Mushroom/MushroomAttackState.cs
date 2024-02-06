@@ -3,15 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MushroomAttackState : CharacterBaseFSM
+public class MushroomAttackState : EnemyBaseFSM
 {
     private MushroomControl mySelf;
-    private PlayerControl player;
     public MushroomAttackState(CharacterStateController stateController, CharacterProperty enemy) : base(stateController, enemy) { }
     public override void StateEnter()
     {
         mySelf = characterInfo as MushroomControl;
-        player = GlobalVarStorage.PlayerScript;
     }
 
     public override void StateExit()
