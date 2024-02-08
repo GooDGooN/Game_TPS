@@ -22,6 +22,7 @@ public class GameSystem : Singleton<GameSystem>
             case KeyInputs.Jump: return Input.GetKey(KeyCode.Space);
             case KeyInputs.Dash: return Input.GetKey(KeyCode.LeftShift);
             case KeyInputs.Reload: return Input.GetKey(KeyCode.R);
+            case KeyInputs.Interact: return Input.GetKey(KeyCode.F);
             case KeyInputs.Fire: return Input.GetMouseButton(0);
             case KeyInputs.ZoomIn: return Input.GetMouseButton(1);
             case KeyInputs.FreeView: return Input.GetMouseButton(2);
@@ -40,6 +41,7 @@ public class GameSystem : Singleton<GameSystem>
             case KeyInputs.Jump: return Input.GetKeyDown(KeyCode.Space);
             case KeyInputs.Dash: return Input.GetKeyDown(KeyCode.LeftShift);
             case KeyInputs.Reload: return Input.GetKeyDown(KeyCode.R);
+            case KeyInputs.Interact: return Input.GetKeyDown(KeyCode.F);
             case KeyInputs.Fire: return Input.GetMouseButtonDown(0);
             case KeyInputs.ZoomIn: return Input.GetMouseButtonDown(1);
             case KeyInputs.FreeView: return Input.GetMouseButtonDown(2);

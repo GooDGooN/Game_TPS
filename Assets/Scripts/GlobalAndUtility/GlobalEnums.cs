@@ -10,6 +10,7 @@ public enum KeyInputs
     Fire,
     ZoomIn,
     Reload,
+    Interact,
 }
 
 public enum CharacterState

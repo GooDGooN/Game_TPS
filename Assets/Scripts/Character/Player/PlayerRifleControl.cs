@@ -1,8 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using Unity.Entities.UniversalDelegates;
 using UnityEngine;
 
 public class PlayerRifleControl : MonoBehaviour
@@ -14,7 +9,7 @@ public class PlayerRifleControl : MonoBehaviour
     [SerializeField] private GameObject rifleMuzzle;
 
     #region RAYCAST
-    private float maxHitDist = 50.0f;
+    private float maxHitDist = 30.0f;
     #endregion
 
     #region BULLET
@@ -91,6 +86,8 @@ public class PlayerRifleControl : MonoBehaviour
                         {
                             if (selectedHitObj.TryGetComponent<CharacterProperty>(out var resultObj))
                             {
+                                var distanceMultiply = Mathf.InverseLerp(maxHitDist, maxHitDist * 0.3f, selectedHit.distance);
+                                damageValue = Mathf.CeilToInt(damageValue * distanceMultiply);
                                 resultObj.GetDamage(damageValue);
                                 UIDamageTextPool.Instance.ShowDamage(resultObj.transform.position, resultObj.CapsuleColliderHeight * 2.5f, damageValue);
                                 if (resultObj.Health > 0)

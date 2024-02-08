@@ -22,21 +22,24 @@ public class BeeAttackState : EnemyBaseFSM
 
     public override void StateFixedUpdate()
     {
-        var targetnormal = (player.transform.position - mySelf.transform.position).normalized;
-        var dot = Vector3.Dot(mySelf.transform.forward, targetnormal);
-        if (1.0f - dot > float.Epsilon)
+        if(mySelf.health > 0)
         {
-            var rot = Quaternion.LookRotation(player.transform.position - mySelf.transform.position).eulerAngles;
-            var result = rot - mySelf.transform.eulerAngles;
+            var targetnormal = (player.transform.position - mySelf.transform.position).normalized;
+            var dot = Vector3.Dot(mySelf.transform.forward, targetnormal);
+            if (1.0f - dot > float.Epsilon)
+            {
+                var rot = Quaternion.LookRotation(player.transform.position - mySelf.transform.position).eulerAngles;
+                var result = rot - mySelf.transform.eulerAngles;
 
-            result.x = Mathf.Abs(result.x) > 180.0f ? -(result.x % 180.0f) : result.x;
-            result.y = Mathf.Abs(result.y) > 180.0f ? -(result.y % 180.0f) : result.y;
-            result.z = Mathf.Abs(result.z) > 180.0f ? -(result.z % 180.0f) : result.z;
-            mySelf.transform.eulerAngles += result.normalized * 500.0f * Time.deltaTime;
-        }
-        else
-        {
-            mySelf.transform.eulerAngles = Quaternion.LookRotation(player.transform.position - mySelf.transform.position).eulerAngles;
+                result.x = Mathf.Abs(result.x) > 180.0f ? -(result.x % 180.0f) : result.x;
+                result.y = Mathf.Abs(result.y) > 180.0f ? -(result.y % 180.0f) : result.y;
+                result.z = Mathf.Abs(result.z) > 180.0f ? -(result.z % 180.0f) : result.z;
+                mySelf.transform.eulerAngles += result.normalized * 500.0f * Time.deltaTime;
+            }
+            else
+            {
+                mySelf.transform.eulerAngles = Quaternion.LookRotation(player.transform.position - mySelf.transform.position).eulerAngles;
+            }
         }
     }
 

@@ -12,7 +12,6 @@ public class EnemyProperty : CharacterProperty
 
     protected IEnumerator DeathBurrowDelay()
     {
-        moveSpeed = 0.0f;
         yield return new WaitForSeconds(3.0f);
         var time = 3.0f;
         while (true)
@@ -95,21 +94,21 @@ public class EnemyProperty : CharacterProperty
         switch(myType)
         {
             case EnemyType.SlimeRabbit:
-                health = 3;
+                health = 10;
                 moveSpeed = 4.0f;
-                atkDamage = 0;
+                atkDamage = 4;
                 atkSpeed = 0;
                 break;
             case EnemyType.Mushroom:
-                health = 5;
+                health = 15;
                 moveSpeed = 3.0f;
-                atkDamage = 0;
+                atkDamage = 7;
                 atkSpeed = 0;
                 break;
             case EnemyType.Bee:
-                health = 4;
+                health = 8;
                 moveSpeed = 2.0f;
-                atkDamage = 0;
+                atkDamage = 5;
                 atkSpeed = 0;
                 break;
 

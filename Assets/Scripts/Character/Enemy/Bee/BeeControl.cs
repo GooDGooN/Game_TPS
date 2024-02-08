@@ -18,7 +18,8 @@ public class BeeControl : EnemyProperty
 
     private void OnEnable()
     {
-        MyNavMeshAgent.updateRotation = false;
+        myCapsuleCollider.enabled = true;
+        myNavMeshAgent.updateRotation = true;
         transform.position += Vector3.up * height;
         myType = EnemyType.Bee;
         PropertySet();
@@ -30,8 +31,8 @@ public class BeeControl : EnemyProperty
         stateController = new CharacterStateController(this);
         stateController.ChangeState(CharacterState.Move);
 
-        MyNavMeshAgent.speed = moveSpeed;
-        MyNavMeshAgent.acceleration = 50.0f;
+        myNavMeshAgent.speed = moveSpeed;
+        myNavMeshAgent.acceleration = 50.0f;
     }
 
     protected override void FixedUpdate()
@@ -45,6 +46,8 @@ public class BeeControl : EnemyProperty
         stateController.CurrentState.StateUpdate();
         if (health <= 0)
         {
+            myCapsuleCollider.enabled = false;
+            myNavMeshAgent.updateRotation = false;
             MyAnimator.SetTrigger("Death");
             StartCoroutine(DeathBurrowDelay());
         }

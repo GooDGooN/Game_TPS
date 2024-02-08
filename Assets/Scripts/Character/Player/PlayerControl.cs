@@ -153,7 +153,7 @@ namespace CharacterNamespace
             stateController.ChangeState(CharacterUpperState.Normal);
 
             //testset
-            atkDamage = 1;
+            atkDamage = 3;
             defaultMoveSpeed = moveSpeed = 200.0f;
             maxHealth = health = 100;
             maxStamina = stamina = 1.0f;
@@ -178,13 +178,14 @@ namespace CharacterNamespace
         {
             GeneralLateUpdate();
         }
+
         private void GeneralFixedUpdate()
         {
             if(myState != CharacterState.MidAir)
             {
                 Physics.SphereCast(myRigidbody.position, capsuleColliderRadius, Vector3.down, out var playerSphere, float.PositiveInfinity, Constants.SolidLayer);
                 myRigidbody.velocity = new Vector3(myRigidbody.velocity.x, 0.0f, myRigidbody.velocity.z);
-                if (playerSphere.normal.y >= 0.8f)
+                if (playerSphere.normal.y >= 0.6f)
                 {
                     var pos = new Vector3(myRigidbody.position.x, playerSphere.point.y + capsuleColliderHeight, myRigidbody.position.z);
                     myRigidbody.MovePosition(pos);
@@ -368,7 +369,7 @@ namespace CharacterNamespace
             }
         }
 
-        private void OnDrawGizmos()
+/*        private void OnDrawGizmos()
         {
             Gizmos.color = Color.red;
             Gizmos.DrawWireCube(bulletHitPoint, Vector3.one * 0.5f);
@@ -377,6 +378,6 @@ namespace CharacterNamespace
             Gizmos.DrawLine(playerSpine.transform.position, (playerBody.transform.forward * 100.0f) + playerSpine.transform.position);
             var spine = myAnimator.GetBoneTransform(HumanBodyBones.Spine);
             Gizmos.DrawLine(spine.position, spine.forward * 100.0f);
-        }
+        }*/
     }
 }

@@ -58,7 +58,6 @@ public class UIDamageText : MonoBehaviour
 
         clampPosition.x = Mathf.Clamp(clampPosition.x, -screenHalfWH.x, screenHalfWH.x);
         clampPosition.y = Mathf.Clamp(clampPosition.y, -screenHalfWH.y, screenHalfWH.y);
-        Debug.Log(clampPosition);
         GetComponent<RectTransform>().anchoredPosition = clampPosition;
 
 

@@ -26,6 +26,10 @@ public class BeeMoveState : EnemyBaseFSM
         {
             mySelf.MyNavMeshAgent.SetDestination(player.transform.position - (Vector3.up * player.CapsuleColliderHeight));
         }
+        else
+        {
+            mySelf.MyNavMeshAgent.speed = 0.0f;
+        }
     }
 
     public override void StateUpdate()

@@ -47,7 +47,6 @@ public class BeeAttackBall : MonoBehaviour
 
         if(Vector3.Distance(startPoint, transform.position) > 10.0f)
         {
-            Debug.Log("out");
             Destroy(gameObject);
         }
     }
@@ -55,7 +54,6 @@ public class BeeAttackBall : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         var layer = Constants.PlayerLayer | Constants.SolidLayer;
-        Debug.Log(other.gameObject.layer);
         if ((layer & (1 << other.gameObject.layer)) != 0)
         {
             if (other.gameObject.TryGetComponent<CharacterProperty>(out var result))
