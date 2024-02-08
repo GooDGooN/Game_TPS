@@ -94,8 +94,8 @@ namespace CharacterNamespace
             {
                 camDistance = -rayhit.distance < camZoomRange.x ? -rayhit.distance + camDeltadistValue : camZoomRange.x;
             }
-            cameraObj.transform.localPosition = new Vector3(0.60f, 0.15f, camDistance);
             cameraObj.transform.localPosition -= player.MyState == CharacterState.Dash ? Vector3.forward * 1.5f : Vector3.zero;
+            cameraObj.transform.localPosition = new Vector3(0.60f, 0.15f, camDistance);
             #endregion
         }
 

@@ -14,7 +14,7 @@ public class PlayerRifleControl : MonoBehaviour
     [SerializeField] private GameObject rifleMuzzle;
 
     #region RAYCAST
-    private float maxHitDist = 100.0f;
+    private float maxHitDist = 50.0f;
     #endregion
 
     #region BULLET
@@ -79,7 +79,7 @@ public class PlayerRifleControl : MonoBehaviour
                         }
                     }
 
-                    if (selectedHit.collider != null)
+                    if (selectedHit.collider != null && selectedHit.distance < maxHitDist)
                     {
                         hitPoint = selectedHit.point;
                         trail.GetComponent<RifleBulletTrail>().SetHitPoint(hitPoint, selectedHit.normal);
@@ -99,14 +99,10 @@ public class PlayerRifleControl : MonoBehaviour
                                 }
                             }
                         }
-
-                        //HitScanBullet.GetComponent<HitScanBullet>().ActiveBullet(hitPoint, damageValue);
-                        //HitScanBullet.SetActive(true);
                     }
                     else
                     {
-                        hitPoint = muzzleTransform.forward * maxHitDist + muzzleTransform.position;
-                        trail.GetComponent<RifleBulletTrail>().SetHitPoint(hitPoint, Vector3.zero, false);
+                        trail.GetComponent<RifleBulletTrail>().SetHitPoint(targetPoint, Vector3.zero, false);
                     }
                     trail.transform.position = muzzleTransform.position;
                     trail.SetActive(true);
