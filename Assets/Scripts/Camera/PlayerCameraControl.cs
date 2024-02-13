@@ -1,4 +1,5 @@
 
+using System.Linq.Expressions;
 using UnityEngine;
 namespace CharacterNamespace
 {
@@ -6,9 +7,10 @@ namespace CharacterNamespace
     {
         [SerializeField] private GameObject springArmXObj;
         [SerializeField] private GameObject springArmYObj;
-        [SerializeField] private GameObject cameraObj;
+        [SerializeField] private GameObject dummyCameraObj;
         [SerializeField] private GameObject playerHeadObj;
-        [SerializeField] private LayerMask solidMask; 
+        [SerializeField] private LayerMask solidMask;
+        private GameObject conversationObj;
 
         private GameSystem gs;
 
@@ -23,6 +25,9 @@ namespace CharacterNamespace
         private Vector3 rotationYSave = Vector3.zero;
         public Vector3 RotationYSave { get => rotationYSave; }
 
+
+        private bool isFocus = false;
+
         private void Start()
         {
             gs = GameSystem.Instance;
@@ -30,7 +35,7 @@ namespace CharacterNamespace
 
         private void FixedUpdate() 
         {
-            if (!Input.GetKey(KeyCode.LeftAlt) && Application.isFocused)
+            if (!Input.GetKey(KeyCode.LeftAlt) && Application.isFocused && !isFocus)
             {
                 springArmXObj.transform.Rotate(-Input.GetAxis("Mouse Y") * gs.MouseSensitive, 0.0f, 0.0f);
                 springArmYObj.transform.Rotate(new Vector3(0.0f, Input.GetAxis("Mouse X") * gs.MouseSensitive, 0.0f));
@@ -39,7 +44,22 @@ namespace CharacterNamespace
 
         private void Update()
         {
-            CameraViewControl();
+            conversationObj = UIConversationControl.Instance.CurrentConversationTarget;
+            isFocus = conversationObj != null ? true : false;
+            if (isFocus) 
+            {
+                var playerTransform = PlayerControl.Instance.transform;
+                var targetPos = new Vector3(playerTransform.position.x, conversationObj.transform.position.y, playerTransform.position.z);
+                var lookNormal = (conversationObj.transform.position - targetPos).normalized;
+                dummyCameraObj.transform.position = (conversationObj.transform.position - lookNormal * 2.5f) + Vector3.up;
+                dummyCameraObj.transform.LookAt(conversationObj.transform.position);
+            }
+            else
+            {
+                dummyCameraObj.transform.localRotation = Quaternion.identity;
+                dummyCameraObj.transform.localPosition = Vector3.zero;
+                CameraViewControl();
+            }
         }
 
         private void CameraViewControl()
@@ -47,6 +67,7 @@ namespace CharacterNamespace
             var saXTransform = springArmXObj.transform;
             var saYTransform = springArmYObj.transform;
             transform.position = playerHeadObj.transform.position;
+
             #region CAMERA ROTATION
             if (!Input.GetKey(KeyCode.LeftAlt) && Application.isFocused)
             {
@@ -78,8 +99,7 @@ namespace CharacterNamespace
             }
             #endregion
             #region CAMERA ZOOMINOUT
-            /*camDeltadistValue += Input.mouseScrollDelta.y * 20.0f * Time.deltaTime;
-            camDeltadistValue = Mathf.Clamp(camDeltadistValue, 0.0f, 2.0f);*/
+
             var player = PlayerControl.Instance;
             if (player.MyState != CharacterState.Dash && player.MyUpperState != CharacterUpperState.Reloading)
             {
@@ -90,12 +110,12 @@ namespace CharacterNamespace
                 CamDeltadistValue = 0.0f;
             }
             camDistance = camZoomRange.y + camDeltadistValue;
-            if (Physics.Raycast(transform.position, -cameraObj.transform.forward, out RaycastHit rayhit, -camDistance, solidMask))
+            if (Physics.Raycast(transform.position, -dummyCameraObj.transform.forward, out RaycastHit rayhit, -camDistance, solidMask))
             {
                 camDistance = -rayhit.distance < camZoomRange.x ? -rayhit.distance + camDeltadistValue : camZoomRange.x;
             }
-            cameraObj.transform.localPosition -= player.MyState == CharacterState.Dash ? Vector3.forward * 1.5f : Vector3.zero;
-            cameraObj.transform.localPosition = new Vector3(0.60f, 0.15f, camDistance);
+            dummyCameraObj.transform.localPosition -= player.MyState == CharacterState.Dash ? Vector3.forward * 1.5f : Vector3.zero;
+            dummyCameraObj.transform.localPosition = new Vector3(0.60f, 0.15f, camDistance);
             #endregion
         }
 

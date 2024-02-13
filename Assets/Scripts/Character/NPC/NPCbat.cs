@@ -3,24 +3,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NPCbat : NPCBase
+public class NPCBat : NPCBase
 {
-    private string[] myConversation = new string[10];
+    private List<string> myConversation = new List<string>();
     private bool isLeave = false;
     private int conversationNum = 0;
+
     protected override void Start()
     {
         base.Start();
-        int i = 0;
-        myConversation[i++] = "Greeting!";
-        myConversation[i++] = "Welcome to the TPS Survive";
-        myConversation[i++] = "You can move with pressing keyboard WASD keys";
-        myConversation[i++] = "While you moving, you can Dash with press keyboard Shift key";
-        myConversation[i++] = "Press the left mouse button for fire bullet, And you Can reload the magazine with Keyboard R key";
-        myConversation[i++] = "You can zoom in pressing Right mouse button";
-        myConversation[i++] = "For Free View, Press mouse middle button";
-        myConversation[i++] = "If you find the Upgrade kits, Press keyboard F key to get upgrade";
-        myConversation[i++] = "That's all, Happy Hunting!";
+        myConversation.Add("Greeting!");
+        myConversation.Add("Welcome to the TPS Survive");
+        myConversation.Add("You can move with pressing keyboard WASD keys");
+        myConversation.Add("While you moving, you can Dash with press keyboard Shift key");
+        myConversation.Add("Press the left mouse button for fire bullet, And you Can reload the magazine with Keyboard R key");
+        myConversation.Add("You can zoom in pressing Right mouse button");
+        myConversation.Add("For Free View, Press mouse middle button");
+        myConversation.Add("If you find the Upgrade kits, Press keyboard F key to get upgrade");
+        myConversation.Add("That's all, Happy Hunting!");
     }
     private void Update()
     {
@@ -42,7 +42,7 @@ public class NPCbat : NPCBase
             {
                 transform.eulerAngles = Quaternion.LookRotation(player.transform.position - transform.position).eulerAngles;
             }
-            if(!conversationControl.InConversation)
+            if(!conversationControl.InConversation && !isLeave)
             {
                 if(!conversationControl.NearNPCs.Contains(gameObject))
                 {
@@ -51,6 +51,7 @@ public class NPCbat : NPCBase
                 if (GameSystem.GetKeyPressed(KeyInputs.Interact))
                 {
                     conversationControl.InConversation = true;
+                    conversationControl.CurrentConversationTarget = gameObject;
                     conversationControl.SetText(myConversation[conversationNum++]);
                 }
             }
@@ -59,11 +60,12 @@ public class NPCbat : NPCBase
                 if (GameSystem.GetKeyPressed(KeyInputs.Interact) && !isLeave)
                 {
                     conversationNum++;
-                    if (myConversation.Length - 1 <= conversationNum)
+                    if (myConversation.Count <= conversationNum)
                     {
                         conversationNum = 0;
                         conversationControl.NearNPCs.Remove(gameObject);
                         conversationControl.InConversation = false;
+                        conversationControl.CurrentConversationTarget = null;
                         isLeave = true;
                         StartCoroutine(Leaving());
                     }

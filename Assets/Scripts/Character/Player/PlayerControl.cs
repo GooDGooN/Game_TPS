@@ -105,6 +105,7 @@ namespace CharacterNamespace
         public bool IsFreeViewClicked { get => isFreeViewClicked; }
         private bool isFreeViewClicked = false;
 
+
         #endregion
 
         #region CAMERA_FIELD
@@ -127,6 +128,9 @@ namespace CharacterNamespace
 
         public bool ReloadComplete { get => reloadComplete; set => reloadComplete = value; }
         private bool reloadComplete = false;
+
+        public bool IsFocus { get => isFocus; }
+        private bool isFocus = false;
         #endregion
 
         protected override void Awake()
@@ -223,18 +227,19 @@ namespace CharacterNamespace
         private void GeneralUpdate()
         {
             #region CHECKKEYPRESS
-            rightPressing = GameSystem.GetKey(KeyInputs.MoveRight);
-            leftPressing = GameSystem.GetKey(KeyInputs.MoveLeft);
-            forwardPressing = GameSystem.GetKey(KeyInputs.MoveFoward);
-            backPressing = GameSystem.GetKey(KeyInputs.MoveBack);
-            dashPressing = GameSystem.GetKey(KeyInputs.Dash);
-            firePressing = GameSystem.GetKey(KeyInputs.Fire);
-            zoomInPressing = GameSystem.GetKey(KeyInputs.ZoomIn);
-            reloadPressed = GameSystem.GetKeyPressed(KeyInputs.Reload);
-            jumpPressed = GameSystem.GetKeyPressed(KeyInputs.Jump);
+            isFocus = UIConversationControl.Instance.InConversation;
+            rightPressing = isFocus ? false : GameSystem.GetKey(KeyInputs.MoveRight);
+            leftPressing = isFocus ? false : GameSystem.GetKey(KeyInputs.MoveLeft);
+            forwardPressing = isFocus ? false : GameSystem.GetKey(KeyInputs.MoveFoward);
+            backPressing = isFocus ? false : GameSystem.GetKey(KeyInputs.MoveBack);
+            dashPressing = isFocus ? false : GameSystem.GetKey(KeyInputs.Dash);
+            firePressing = isFocus ? false : GameSystem.GetKey(KeyInputs.Fire);
+            zoomInPressing = isFocus ? false : GameSystem.GetKey(KeyInputs.ZoomIn);
+            reloadPressed = isFocus ? false : GameSystem.GetKeyPressed(KeyInputs.Reload);
+            jumpPressed = isFocus ? false : GameSystem.GetKeyPressed(KeyInputs.Jump);
             isMovePressed = rightPressing || leftPressing || forwardPressing || backPressing;
-            isFreeViewClick = GameSystem.GetKey(KeyInputs.FreeView);
-            isFreeViewClicked = GameSystem.GetKeyPressed(KeyInputs.FreeView);
+            isFreeViewClick = isFocus ? false : GameSystem.GetKey(KeyInputs.FreeView);
+            isFreeViewClicked = isFocus ? false : GameSystem.GetKeyPressed(KeyInputs.FreeView);
 
             #endregion
 
@@ -281,9 +286,6 @@ namespace CharacterNamespace
             stamina = Mathf.Clamp(stamina, 0.0f, maxStamina);
             #endregion
 
-            //Debug.Log(stateController.LastState);
-            // Debug.Log(MyState);
-            //Debug.Log(MyUpperState);
         }
 
         private void GeneralLateUpdate()
@@ -325,7 +327,7 @@ namespace CharacterNamespace
             {
                 playerSpine.transform.eulerAngles = Vector3.zero;
             }
-            if(!isFreeViewClick)
+            if(!isFreeViewClick && !isFocus)
             {
                 sightHitPoint = cameraLookForward * 10.0f + camTransform.position;
                 spineRotationSave = Quaternion.LookRotation(sightHitPoint - playerSpine.transform.position, playerSpine.transform.up).eulerAngles;

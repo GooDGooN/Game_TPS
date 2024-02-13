@@ -73,6 +73,8 @@ public class PlayerRifleControl : MonoBehaviour
                             }
                         }
                     }
+                    
+                    trail.transform.position = muzzleTransform.position + (muzzleTransform.forward * 0.5f);
 
                     if (selectedHit.collider != null && selectedHit.distance < maxHitDist)
                     {
@@ -101,7 +103,6 @@ public class PlayerRifleControl : MonoBehaviour
                     {
                         trail.GetComponent<RifleBulletTrail>().SetHitPoint(targetPoint, Vector3.zero, false);
                     }
-                    trail.transform.position = muzzleTransform.position;
                     trail.SetActive(true);
                     break;
                 }
