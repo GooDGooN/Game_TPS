@@ -2,20 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyObjectPool : Singleton<EnemyObjectPool>
+public class EnemyObjectPool : MonoBehaviour
 {
-    private const int objAmout = 30;
-
     [SerializeField] private GameObject slimeRabbitObj;
-    private GameObject[] slimeRabbitPool = new GameObject[objAmout];
+    private GameObject[] slimeRabbitPool = new GameObject[Constants.EnemyObjAmout];
     [SerializeField] private GameObject mushroomObj;
-    private GameObject[] mushroomPool = new GameObject[objAmout];
+    private GameObject[] mushroomPool = new GameObject[Constants.EnemyObjAmout];
     [SerializeField] private GameObject beeObj;
-    private GameObject[] beePool = new GameObject[objAmout];
+    private GameObject[] beePool = new GameObject[Constants.EnemyObjAmout];
+
 
     private void Start()
     {
-        for(int i = 0; i < objAmout; i++)
+        for(int i = 0; i < Constants.EnemyObjAmout; i++)
         {
             slimeRabbitPool[i] = Instantiate(slimeRabbitObj, transform);
             slimeRabbitPool[i].SetActive(false);
@@ -26,15 +25,7 @@ public class EnemyObjectPool : Singleton<EnemyObjectPool>
         }
     }
 
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.P))
-        {
-            beeSpawnTest(new Vector3(0.0f, 2.0f, 0.0f));
-        }
-    }
-
-    public void SlimeRabbitSpawnTest(Vector3 pos, bool isSplit = false)
+    public void SpawnSlimeRabbit(Vector3 pos, bool isSplit = false)
     {
         foreach (var obj in slimeRabbitPool)
         {
@@ -47,7 +38,7 @@ public class EnemyObjectPool : Singleton<EnemyObjectPool>
             }
         }
     }
-    public void MushroomSpawnTest(Vector3 pos)
+    public void SpawnMushroom(Vector3 pos)
     {
         foreach (var obj in mushroomPool)
         {
@@ -59,7 +50,7 @@ public class EnemyObjectPool : Singleton<EnemyObjectPool>
             }
         }
     }
-    public void beeSpawnTest(Vector3 pos)
+    public void SpawnBee(Vector3 pos)
     {
         foreach (var obj in beePool)
         {

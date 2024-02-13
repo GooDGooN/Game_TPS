@@ -68,7 +68,7 @@ public class SlimeRabbitControl : EnemyProperty
             {
                 for(int i = -1; i < 2; i += 2)
                 {
-                    EnemyObjectPool.Instance.SlimeRabbitSpawnTest(transform.position, true);
+                    EnemySpawner.Instance.SpawnSplitSlimeRabbit(transform.position);
                 }
                 gameObject.SetActive(false);
             }
