@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class EnemyObjectPool : MonoBehaviour
@@ -10,7 +11,6 @@ public class EnemyObjectPool : MonoBehaviour
     private GameObject[] mushroomPool = new GameObject[Constants.EnemyObjAmout];
     [SerializeField] private GameObject beeObj;
     private GameObject[] beePool = new GameObject[Constants.EnemyObjAmout];
-
 
     private void Start()
     {
@@ -25,39 +25,27 @@ public class EnemyObjectPool : MonoBehaviour
         }
     }
 
-    public void SpawnSlimeRabbit(Vector3 pos, bool isSplit = false)
+    public void SpawnEnemyByType(EnemyType enemyType, Vector3 pos, bool isSkillActive = false)
     {
-        foreach (var obj in slimeRabbitPool)
+        GameObject[] pool = null;
+        switch (enemyType)
         {
-            if(!obj.activeSelf)
-            {
-                obj.GetComponent<SlimeRabbitControl>().IsSplit = isSplit;
-                obj.SetActive(true);
-                obj.transform.position = pos;
-                break;
-            }
+            case EnemyType.SlimeRabbit: pool = slimeRabbitPool; break;
+            case EnemyType.Mushroom: pool = mushroomPool; break;
+            case EnemyType.Bee: pool = beePool; break;
         }
-    }
-    public void SpawnMushroom(Vector3 pos)
-    {
-        foreach (var obj in mushroomPool)
+
+        foreach (var obj in pool)
         {
             if (!obj.activeSelf)
             {
+                if (enemyType == EnemyType.SlimeRabbit)
+                {
+                    obj.GetComponent<SlimeRabbitControl>().IsSplit = isSkillActive;
+                }
                 obj.SetActive(true);
                 obj.transform.position = pos;
-                break;
-            }
-        }
-    }
-    public void SpawnBee(Vector3 pos)
-    {
-        foreach (var obj in beePool)
-        {
-            if (!obj.activeSelf)
-            {
-                obj.SetActive(true);
-                obj.transform.position = pos;
+                UIMinimap.Instance.ActivateEnemyIcon(obj);
                 break;
             }
         }

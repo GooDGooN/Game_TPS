@@ -41,6 +41,4 @@ public enum EnemyType
     SlimeRabbit,
     Bee,
     Mushroom,
-    Bat,
-    Mummy,
 }

@@ -1,6 +1,7 @@
 using CharacterNamespace;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class EnemySpawner : Singleton<EnemySpawner>
@@ -9,7 +10,7 @@ public class EnemySpawner : Singleton<EnemySpawner>
     private float currentSpawnRate = 5.0f;
     private EnemyObjectPool enemyPool;
 
-    private void Awake()
+    protected override void Awake()
     {
         base.Awake();
         enemyPool = GetComponentInChildren<EnemyObjectPool>();
@@ -26,10 +27,10 @@ public class EnemySpawner : Singleton<EnemySpawner>
     {
         yield return new WaitForSeconds(3.0f);
         int randomEnemySelectNum = 0;
-        Debug.Log("test");
         Transform playerTransform = PlayerControl.Instance.transform;
         while(PlayerControl.Instance != null)
         {
+            
             randomEnemySelectNum = Random.Range(0, Constants.EnemyTypeAmount);
 
             float minimumRange = 7.5f;
@@ -41,18 +42,13 @@ public class EnemySpawner : Singleton<EnemySpawner>
             randomPos.z += randomPos.z > 0 ? minimumRange : -minimumRange;
             randomPos += playerTransform.position;
 
-            switch (randomEnemySelectNum) 
-            {
-                case 0: enemyPool.SpawnSlimeRabbit(randomPos); break;
-                case 1: enemyPool.SpawnMushroom(randomPos); break;
-                case 2: enemyPool.SpawnBee(randomPos); break;
-            }
+            enemyPool.SpawnEnemyByType((EnemyType)randomEnemySelectNum, randomPos);
             yield return new WaitForSeconds(currentSpawnRate);
         }
     }
 
     public void SpawnSplitSlimeRabbit(Vector3 position)
     {
-        enemyPool.SpawnSlimeRabbit(position, true);
+        enemyPool.SpawnEnemyByType(EnemyType.SlimeRabbit, position, true);
     }
 }
