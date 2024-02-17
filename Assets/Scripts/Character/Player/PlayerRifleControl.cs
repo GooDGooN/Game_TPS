@@ -91,11 +91,6 @@ public class PlayerRifleControl : MonoBehaviour
                                 var distanceMultiply = Mathf.InverseLerp(maxHitDist, maxHitDist * 0.3f, selectedHit.distance);
                                 damageValue = Mathf.CeilToInt(damageValue * distanceMultiply);
                                 resultObj.GetDamage(damageValue);
-                                UIDamageTextPool.Instance.ShowDamage(resultObj.transform.position, resultObj.CapsuleColliderHeight * 2.5f, damageValue);
-                                if (resultObj.Health > 0)
-                                {
-                                    resultObj.MyAnimator.Play("Damage");
-                                }
                             }
                         }
                     }

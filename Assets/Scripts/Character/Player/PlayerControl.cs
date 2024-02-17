@@ -152,7 +152,6 @@ namespace CharacterNamespace
 
         private void Start()
         {
-            stateController = new CharacterStateController(this);
             stateController.ChangeState(CharacterState.Idle);
             stateController.ChangeState(CharacterUpperState.Normal);
 

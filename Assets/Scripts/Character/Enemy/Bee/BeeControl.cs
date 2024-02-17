@@ -14,31 +14,11 @@ public class BeeControl : EnemyProperty
 
     [SerializeField] private GameObject firePoint;
 
-    private float height = 0.0f; // 2.0f
-
-    private void OnEnable()
+    protected override void OnEnable()
     {
-        myCapsuleCollider.enabled = true;
-        myNavMeshAgent.updateRotation = true;
-        transform.position += Vector3.up * height;
+        base.OnEnable();
+        flyHeight = 1.5f;
         myType = EnemyType.Bee;
-        PropertySet();
-        if (PlayerControl.Instance != null)
-        {
-            myAnimator.SetBool("IsMove", true);
-        }
-        attackRangeCollider.includeLayers = Constants.PlayerLayer;
-        stateController = new CharacterStateController(this);
-        stateController.ChangeState(CharacterState.Move);
-
-        myNavMeshAgent.speed = moveSpeed;
-        myNavMeshAgent.acceleration = 50.0f;
-    }
-
-    protected override void FixedUpdate()
-    {
-        transform.position -= Vector3.up * height;
-        base.FixedUpdate();
     }
 
     private void Update()
@@ -46,12 +26,23 @@ public class BeeControl : EnemyProperty
         stateController.CurrentState.StateUpdate();
         if (health <= 0)
         {
+            flyHeight = flyHeight > 0.0f ? flyHeight - Time.deltaTime * 3.0f : 0.0f;
             myCapsuleCollider.enabled = false;
             myNavMeshAgent.updateRotation = false;
-            MyAnimator.SetTrigger("Death");
-            StartCoroutine(DeathBurrowDelay());
+            if (!MyAnimator.GetCurrentAnimatorStateInfo(0).IsName("Death"))
+            {
+                if(attackBall != null)
+                {
+                    if(attackBall.transform.parent != null)
+                    {
+                        Destroy(attackBall);
+                    }
+                }
+                MyAnimator.SetTrigger("Death");
+                StartCoroutine(DeathBurrowDelay());
+            }
         }
-        transform.position += Vector3.up * height;
+        transform.localPosition += Vector3.up * flyHeight;
     }
 
     public void CreateAttackBall()

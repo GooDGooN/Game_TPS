@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class EnemyObjectPool : MonoBehaviour
@@ -43,8 +40,8 @@ public class EnemyObjectPool : MonoBehaviour
                 {
                     obj.GetComponent<SlimeRabbitControl>().IsSplit = isSkillActive;
                 }
-                obj.SetActive(true);
                 obj.transform.position = pos;
+                obj.SetActive(true);
                 UIMinimap.Instance.ActivateEnemyIcon(obj);
                 break;
             }

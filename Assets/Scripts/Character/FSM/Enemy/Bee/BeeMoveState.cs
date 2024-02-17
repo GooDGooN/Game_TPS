@@ -13,7 +13,7 @@ public class BeeMoveState : EnemyBaseFSM
         mySelf = characterInfo as BeeControl;
         mySelf.MyAnimator.SetBool("IsMove", true);
         mySelf.MyNavMeshAgent.speed = mySelf.MoveSpeed;
-    }
+    }   
 
     public override void StateExit()
     {
@@ -24,12 +24,15 @@ public class BeeMoveState : EnemyBaseFSM
     {
         if (mySelf.Health > 0 || mySelf.IsMidAir)
         {
-            mySelf.MyNavMeshAgent.SetDestination(player.transform.position - (Vector3.up * player.CapsuleColliderHeight));
+            if (mySelf.MyNavMeshAgent.isActiveAndEnabled)
+            {
+                mySelf.MyNavMeshAgent.SetDestination(player.transform.position - (Vector3.up * player.CapsuleColliderHeight));
+            }
         }
-        else
+        /*else
         {
             mySelf.MyNavMeshAgent.speed = 0.0f;
-        }
+        }*/
     }
 
     public override void StateUpdate()

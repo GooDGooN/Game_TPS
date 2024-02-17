@@ -8,20 +8,10 @@ public class MushroomControl : EnemyProperty
     public bool Attack { get => attack; set => attack = value; }
     private bool attack = false;
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
         myType = EnemyType.Mushroom;
-        PropertySet();
-        if (PlayerControl.Instance != null)
-        {
-            myAnimator.SetBool("IsMove", true);
-        }
-        attackRangeCollider.includeLayers = Constants.PlayerLayer;
-        stateController = new CharacterStateController(this);
-        stateController.ChangeState(CharacterState.Move);
-
-        MyNavMeshAgent.speed = moveSpeed;
-        MyNavMeshAgent.acceleration = 50.0f;
     }
 
 
@@ -31,8 +21,11 @@ public class MushroomControl : EnemyProperty
         stateController.CurrentState.StateUpdate();
         if (health <= 0)
         {
-            MyAnimator.SetTrigger("Death");
-            StartCoroutine(DeathBurrowDelay());
+            if (!MyAnimator.GetCurrentAnimatorStateInfo(0).IsName("Death"))
+            {
+                MyAnimator.SetTrigger("Death");
+                StartCoroutine(DeathBurrowDelay());
+            }
         }
     }
 }

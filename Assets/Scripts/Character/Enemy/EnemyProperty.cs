@@ -10,21 +10,14 @@ public class EnemyProperty : CharacterProperty
     public bool IsMidAir { get => isMidAir; }
     protected bool isMidAir = false;
 
-    protected IEnumerator DeathBurrowDelay()
-    {
-        yield return new WaitForSeconds(3.0f);
-        var time = 3.0f;
-        while (true)
-        {
-            transform.position += Vector3.down * Time.deltaTime;
-            time -= Time.deltaTime;
-            yield return null;
-            if (time <= 0)
-            {
-                gameObject.SetActive(false);
-            }
-        }
-    }
+    public float FlyHeight { get => flyHeight; }
+    protected float flyHeight = 0.0f;
+
+    public bool IsBurrow { get => isBurrow; }
+    protected bool isBurrow = false;
+
+    #region COMPONENTS
+
     public SphereCollider AttackRangeCollider { get => attackRangeCollider; }
     protected SphereCollider attackRangeCollider
     {
@@ -52,24 +45,42 @@ public class EnemyProperty : CharacterProperty
             return nav;
         }
     }
+    #endregion 
 
     public EnemyType MyType { get => myType; }
     [SerializeField] protected EnemyType myType;
 
+    protected virtual void OnEnable()
+    {
+        PropertySet();
+        OnEnableSet();
+    }
+
     protected virtual void FixedUpdate()
     {
         stateController.CurrentState.StateFixedUpdate();
-        Physics.BoxCast(transform.position + new Vector3(0.0f, capsuleColliderHeight, 0.0f), new Vector3(0.4f, 0.01f, 0.4f), Vector3.down, out var info, Quaternion.identity, float.PositiveInfinity, Constants.SolidLayer);
-        if (info.distance != 0.0f && info.distance >= capsuleColliderHeight + 0.1f)
+        if(!IsBurrow)
         {
-            isMidAir = true;
-            myAnimator.SetBool("IsMidAir", isMidAir);
-            myAnimator.Play("MidAir");
+            Physics.BoxCast(transform.position + new Vector3(0.0f, capsuleColliderHeight, 0.0f), new Vector3(0.4f, 0.01f, 0.4f), Vector3.down, out var groundHit, Quaternion.identity, float.PositiveInfinity, Constants.SolidLayer);
+            if (groundHit.distance != 0.0f && groundHit.distance >= capsuleColliderHeight + 0.1f + flyHeight)
+            {
+                isMidAir = true;
+                if (health > 0)
+                {
+                    myAnimator.SetBool("IsMidAir", isMidAir);
+                    myAnimator.Play("MidAir");
+                }
+            }
+            else
+            {
+                isMidAir = false;
+                myAnimator.SetBool("IsMidAir", isMidAir);
+            }
         }
-        else
+
+        if ((health <= 0 && !isMidAir))
         {
-            isMidAir = false;
-            myAnimator.SetBool("IsMidAir", isMidAir);
+            myNavMeshAgent.speed = 0.0f;
         }
     }
 
@@ -87,6 +98,54 @@ public class EnemyProperty : CharacterProperty
         {
             myAnimator.SetBool("IsAttack", false);
         }
+    }
+
+    public override void GetDamage(int damage)
+    {
+        base.GetDamage(damage);
+        UIDamageTextPool.Instance.ShowDamage(transform.position, CapsuleColliderHeight * 2.5f, damage);
+        if (myState != CharacterState.Attack && health > 0)
+        {
+            myAnimator.Play("Damage");
+        }
+    }
+
+    protected IEnumerator DeathBurrowDelay()
+    {
+        myCapsuleCollider.enabled = false;
+        yield return new WaitForSeconds(3.0f);
+        var time = 3.0f;
+
+        while (true)
+        {
+            isBurrow = true;
+            myNavMeshAgent.speed = 0.0f;
+            myNavMeshAgent.enabled = false;
+            transform.position += Vector3.down * Time.deltaTime * 0.2f;
+            time -= Time.deltaTime;
+            yield return null;
+            if (time <= 0)
+            {
+                gameObject.SetActive(false);
+            }
+        }
+    }
+
+    protected void OnEnableSet()
+    {
+        isBurrow = false;
+        myNavMeshAgent.enabled = true;
+        myCapsuleCollider.enabled = true;
+        myNavMeshAgent.updateRotation = true;
+        if (PlayerControl.Instance != null)
+        {
+            myAnimator.SetBool("IsMove", true);
+        }
+        attackRangeCollider.includeLayers = Constants.PlayerLayer;
+        stateController.ChangeState(CharacterState.Move);
+
+        myNavMeshAgent.speed = moveSpeed;
+        myNavMeshAgent.acceleration = 50.0f;
     }
 
     protected void PropertySet()

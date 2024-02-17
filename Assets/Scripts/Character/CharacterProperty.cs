@@ -7,7 +7,7 @@ public class CharacterProperty : MonoBehaviour
     public int MaxHealth { get => maxHealth; }
     protected int maxHealth;
     public int Health { get => health; }
-    public int health;
+    protected int health;
     public float MoveSpeed { get => moveSpeed; set => moveSpeed = value; }
     protected float moveSpeed;
     public int AtkDamage { get => atkDamage; }
@@ -23,7 +23,7 @@ public class CharacterProperty : MonoBehaviour
 
     #region FSM
     public CharacterState MyState { get => myState; set => myState = value; }
-    protected CharacterState myState = CharacterState.Idle;
+    [SerializeField] protected CharacterState myState = CharacterState.Idle;
 
     public CharacterUpperState MyUpperState { get => myUpperState; set => myUpperState = value; }
     protected CharacterUpperState myUpperState = CharacterUpperState.Normal;
@@ -34,6 +34,7 @@ public class CharacterProperty : MonoBehaviour
 
     protected virtual void Awake()
     {
+        stateController = new CharacterStateController(this);
         capsuleColliderHeight = myCapsuleCollider.height * 0.5f;
         capsuleColliderRadius = myCapsuleCollider.radius;
     }
@@ -81,8 +82,8 @@ public class CharacterProperty : MonoBehaviour
     }
 
 
-    public void GetDamage(int value) => health -= value;
+    public virtual void GetDamage(int value) => health -= value;
 
-    public void GetHeal(int value) => health += value;
+    public virtual void GetHeal(int value) => health += value;
 
 }

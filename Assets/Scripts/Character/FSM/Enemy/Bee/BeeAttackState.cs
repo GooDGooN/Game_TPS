@@ -22,7 +22,7 @@ public class BeeAttackState : EnemyBaseFSM
 
     public override void StateFixedUpdate()
     {
-        if(mySelf.health > 0)
+        if(mySelf.Health > 0)
         {
             var targetnormal = (player.transform.position - mySelf.transform.position).normalized;
             var dot = Vector3.Dot(mySelf.transform.forward, targetnormal);

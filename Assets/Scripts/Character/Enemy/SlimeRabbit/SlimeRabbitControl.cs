@@ -1,11 +1,5 @@
 using CharacterNamespace;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Entities.UniversalDelegates;
-using Unity.Transforms;
 using UnityEngine;
-using UnityEngine.AI;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class SlimeRabbitControl : EnemyProperty
 {
@@ -16,27 +10,15 @@ public class SlimeRabbitControl : EnemyProperty
     public bool IsSplit { get => isSplit; set => isSplit = value; }
     private bool isSplit = false;
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
         myType = EnemyType.SlimeRabbit;
-        myCapsuleCollider.isTrigger = false;
-        PropertySet();
         if (isSplit)
         {
             health /= 2;
             atkSpeed *= 2;
         }
-        if(PlayerControl.Instance != null)
-        {
-            myAnimator.SetBool("IsMove", true);
-        }
-        attackRangeCollider.includeLayers = Constants.PlayerLayer;
-        stateController = new CharacterStateController(this);
-        stateController.ChangeState(CharacterState.Move);
-
-        MyNavMeshAgent.speed = moveSpeed;
-        MyNavMeshAgent.acceleration = 50.0f;
-
         if(isSplit)
         {
             transform.localScale = Vector3.one * 0.75f;
@@ -58,11 +40,13 @@ public class SlimeRabbitControl : EnemyProperty
         stateController.CurrentState.StateUpdate();
         if (health <= 0)
         {
-            myCapsuleCollider.isTrigger = true;
             if (IsSplit)
             {
-                MyAnimator.SetTrigger("Death");
-                StartCoroutine(DeathBurrowDelay());
+                if (!MyAnimator.GetCurrentAnimatorStateInfo(0).IsName("Death"))
+                {
+                    MyAnimator.SetTrigger("Death");
+                    StartCoroutine(DeathBurrowDelay());
+                }
             }
             else
             {

@@ -22,7 +22,10 @@ public class SlimeRabbitMoveState : EnemyBaseFSM
     {
         if (mySelf.Jumping || mySelf.IsMidAir)
         {
-            mySelf.MyNavMeshAgent.SetDestination(player.transform.position - (Vector3.up * player.CapsuleColliderHeight));
+            if (mySelf.MyNavMeshAgent.isActiveAndEnabled)
+            {
+                mySelf.MyNavMeshAgent.SetDestination(player.transform.position - (Vector3.up * player.CapsuleColliderHeight));
+            }
         }
     }
 

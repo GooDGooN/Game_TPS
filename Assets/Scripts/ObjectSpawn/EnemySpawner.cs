@@ -1,7 +1,5 @@
 using CharacterNamespace;
 using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class EnemySpawner : Singleton<EnemySpawner>
@@ -33,11 +31,13 @@ public class EnemySpawner : Singleton<EnemySpawner>
             
             randomEnemySelectNum = Random.Range(0, Constants.EnemyTypeAmount);
 
-            float minimumRange = 7.5f;
-            float maximumRange = 12.5f;
+            float minimumRange = 10.0f;
+            float maximumRange = 20.0f;
             float range = maximumRange - minimumRange;
 
-            Vector3 randomPos = new Vector3(Random.Range(-range, range), playerTransform.position.y + 1.0f, Random.Range(-range, range));
+            Vector3 randomPos = new Vector3(Random.Range(-range, range), playerTransform.position.y + 10.0f, Random.Range(-range, range));
+            Physics.Raycast(randomPos, Vector3.down, out var groundHit, float.PositiveInfinity, Constants.SolidLayer);
+            randomPos = groundHit.point + Vector3.up * 0.5f;
             randomPos.x += randomPos.x > 0 ? minimumRange : -minimumRange;
             randomPos.z += randomPos.z > 0 ? minimumRange : -minimumRange;
             randomPos += playerTransform.position;

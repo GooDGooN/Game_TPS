@@ -19,7 +19,7 @@ public class UIEnemyMinimapIcon : MonoBehaviour
 
     private void Update()
     {
-        if (myTarget.activeSelf)
+        if (myTarget.GetComponent<EnemyProperty>().Health > 0)
         {
             myRectTranform.anchoredPosition = minimapCamera.WorldToViewportPoint(myTarget.transform.position) * 300.0f;
             //myRectTranform.anchoredPosition -= Vector2.one * 75.0f;
