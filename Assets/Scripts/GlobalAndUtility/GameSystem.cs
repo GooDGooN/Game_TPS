@@ -48,5 +48,5 @@ public class GameSystem : Singleton<GameSystem>
             default: return false;
         }
     }
-
 }
+

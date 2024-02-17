@@ -42,3 +42,15 @@ public enum EnemyType
     Bee,
     Mushroom,
 }
+
+public enum ItemType
+{
+    Damage,
+    FireRate,
+    Health,
+    Heal,
+    Magazine,
+    Reload,
+    Stamina,
+    MoveSpeed,
+}

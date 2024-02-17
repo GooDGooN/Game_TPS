@@ -19,7 +19,6 @@ public class NPCBat : NPCBase
         myConversation.Add("Press the left mouse button for fire bullet, And you Can reload the magazine with Keyboard R key");
         myConversation.Add("You can zoom in pressing Right mouse button");
         myConversation.Add("For Free View, Press mouse middle button");
-        myConversation.Add("If you find the Upgrade kits, Press keyboard F key to get upgrade");
         myConversation.Add("That's all, Happy Hunting!");
     }
     private void Update()
