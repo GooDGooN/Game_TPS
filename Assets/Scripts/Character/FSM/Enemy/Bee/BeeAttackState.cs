@@ -13,11 +13,13 @@ public class BeeAttackState : EnemyBaseFSM
         mySelf = characterInfo as BeeControl;
         mySelf.MyNavMeshAgent.speed = 0.0f;
         mySelf.MyNavMeshAgent.updateRotation = false;
+        mySelf.MyAttackSign.SetActive(true);
     }
 
     public override void StateExit()
     {
         mySelf.MyNavMeshAgent.updateRotation = true;
+        mySelf.MyAttackSign.SetActive(false);
     }
 
     public override void StateFixedUpdate()

@@ -17,11 +17,10 @@ namespace CharacterNamespace
 
         private Vector3 bulletHitPointDelta;
 
-        public float FireDelay = 0.0f;
+        public float AttackDelay = 0.0f;
 
-
-        public float FireRate { get => fireRate; }
-        private float fireRate = 0.4f;
+        /*public float FireRate { get => fireRate; }
+        private float fireRate = 0.4f;*/
         #endregion
 
         #region SPINE_FIELD
@@ -124,13 +123,19 @@ namespace CharacterNamespace
         public float Stamina { get => stamina; }
         private float stamina;
 
-        public float StaminaMultiply = 1.0f;
+        public float StaminaRechargeMultiplier = 1.0f;
 
         public bool ReloadComplete { get => reloadComplete; set => reloadComplete = value; }
         private bool reloadComplete = false;
 
+        public float ReloadMotionSpeedMultiplier { get => reloadMotionSpeedMultiplier; }
+        private float reloadMotionSpeedMultiplier = 1.0f;
+
         public bool IsFocus { get => isFocus; }
         private bool isFocus = false;
+
+        public float MoveSpeedMutiplier { get => moveSpeedMutiplier; }
+        private float moveSpeedMutiplier = 1.0f;
         #endregion
 
         protected override void Awake()
@@ -157,9 +162,10 @@ namespace CharacterNamespace
 
             //testset
             atkDamage = 3;
-            defaultMoveSpeed = moveSpeed = 200.0f;
+            defaultMoveSpeed = moveSpeed = 200.0f * moveSpeedMutiplier;
             maxHealth = health = 100;
             maxStamina = stamina = 1.0f;
+            atkSpeed = 0.4f;
         }
 
         private void FixedUpdate()
@@ -184,7 +190,7 @@ namespace CharacterNamespace
 
         private void GeneralFixedUpdate()
         {
-            if(myState != CharacterState.MidAir)
+            if (myState != CharacterState.MidAir)
             {
                 Physics.SphereCast(myRigidbody.position, capsuleColliderRadius, Vector3.down, out var playerSphere, float.PositiveInfinity, Constants.SolidLayer);
                 myRigidbody.velocity = new Vector3(myRigidbody.velocity.x, 0.0f, myRigidbody.velocity.z);
@@ -265,7 +271,7 @@ namespace CharacterNamespace
             myAnimator.SetFloat("MotionY", animBlendPosY);
             #endregion
 
-            FireDelay = FireDelay > 0.0f ? FireDelay - Time.deltaTime : 0.0f;
+            AttackDelay = AttackDelay > 0.0f ? AttackDelay - Time.deltaTime : 0.0f;
 
             #region STAMINA
             var staminaChangeValue = myState != CharacterState.MidAir ? Time.deltaTime * 0.25f : 0.0f;
@@ -277,14 +283,13 @@ namespace CharacterNamespace
             {
                 isStaminaRecharge = false;
             }
-            stamina += myState == CharacterState.Dash ? -staminaChangeValue : staminaChangeValue * StaminaMultiply;
+            stamina += myState == CharacterState.Dash ? -staminaChangeValue : staminaChangeValue * StaminaRechargeMultiplier;
             if (jumpPressed && !IsStaminaRecharge && myState != CharacterState.MidAir)
             {
                 stamina -= 1.0f / 5.0f;
             }
             stamina = Mathf.Clamp(stamina, 0.0f, maxStamina);
             #endregion
-
         }
 
         private void GeneralLateUpdate()
@@ -370,15 +375,45 @@ namespace CharacterNamespace
             }
         }
 
-/*        private void OnDrawGizmos()
+        public override void GetBuff(ItemType type)
         {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireCube(bulletHitPoint, Vector3.one * 0.5f);
-            Gizmos.DrawSphere(sightHitPoint, 0.25f);
-            Gizmos.color = Color.blue;
-            Gizmos.DrawLine(playerSpine.transform.position, (playerBody.transform.forward * 100.0f) + playerSpine.transform.position);
-            var spine = myAnimator.GetBoneTransform(HumanBodyBones.Spine);
-            Gizmos.DrawLine(spine.position, spine.forward * 100.0f);
-        }*/
+            switch (type)
+            {
+                case ItemType.Damage:
+                    atkDamage += Random.Range(3, 7);
+                    break;
+                case ItemType.AttackSpeed:
+                    atkSpeed -= 0.03f;
+                    Mathf.Clamp(atkSpeed, 0.1f, 0.4f);
+                    break;
+                case ItemType.Health:
+                    var value = Random.Range(10, 20);
+                    maxHealth += value;
+                    health += value;
+                    break;
+                case ItemType.Heal:
+                    health += Mathf.CeilToInt(health * 0.15f);
+                    Mathf.Clamp(health, 0, maxHealth);
+                    break;
+                case ItemType.Magazine:
+                    playerRifle.MaxImumMagazineCapacity += 3;
+                    Mathf.Clamp(playerRifle.MaxImumMagazineCapacity, 20, 50);
+                    break;
+                case ItemType.Reload:
+                    reloadMotionSpeedMultiplier += 0.1f;
+                    myAnimator.SetFloat("ReloadMotionSpeedMultiplier", reloadMotionSpeedMultiplier);
+                    Mathf.Clamp(reloadMotionSpeedMultiplier, 1.0f, 2.0f);
+                    break;
+                case ItemType.Stamina:
+                    StaminaRechargeMultiplier += 0.1f;
+                    Mathf.Clamp(StaminaRechargeMultiplier, 1.0f, 2.0f);
+                    break;
+                case ItemType.MoveSpeed:
+                    moveSpeedMutiplier += 0.1f;
+                    defaultMoveSpeed = moveSpeed = 200.0f * moveSpeedMutiplier;
+                    Mathf.Clamp(moveSpeedMutiplier, 1.0f, 2.0f);
+                    break;
+            }
+        }
     }
 }

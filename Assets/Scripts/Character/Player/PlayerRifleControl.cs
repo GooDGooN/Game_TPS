@@ -2,10 +2,8 @@ using UnityEngine;
 
 public class PlayerRifleControl : MonoBehaviour
 {
-    public int MaxImumMagazineCapacity { get => maxImumMagazineCapacity; }
-    private int maxImumMagazineCapacity;
-    public int CurrentMagazineCapacity { get => currentMagazineCapacity; }
-    private int currentMagazineCapacity;
+    public int MaxImumMagazineCapacity;
+    public int CurrentMagazineCapacity;
     [SerializeField] private GameObject rifleMuzzle;
 
     #region RAYCAST
@@ -28,7 +26,7 @@ public class PlayerRifleControl : MonoBehaviour
 
     private void Start()
     {
-        maxImumMagazineCapacity = currentMagazineCapacity = 20;
+        MaxImumMagazineCapacity = CurrentMagazineCapacity = 20;
         for (int i = 0; i < effectMaxAmount; i++)
         {
             gunFireEffects[i] = Instantiate(fireEffectPrefab, rifleMuzzle.transform);
@@ -39,7 +37,7 @@ public class PlayerRifleControl : MonoBehaviour
 
     public void BulletFire(Vector3 targetPoint, int damageValue)
     {
-        if(currentMagazineCapacity > 0)
+        if(CurrentMagazineCapacity > 0)
         {
             var muzzleTransform = rifleMuzzle.transform;
             foreach (var effect in gunFireEffects)
@@ -102,10 +100,10 @@ public class PlayerRifleControl : MonoBehaviour
                     break;
                 }
             }
-            currentMagazineCapacity--;
+            CurrentMagazineCapacity--;
         }
     }
 
-    public void ReloadMagazine() => currentMagazineCapacity = maxImumMagazineCapacity;
+    public void ReloadMagazine() => CurrentMagazineCapacity = MaxImumMagazineCapacity;
 
 }

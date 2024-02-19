@@ -10,10 +10,12 @@ public class SlimeRabbitAttackState : EnemyBaseFSM
     public override void StateEnter()
     {
         mySelf = characterInfo as SlimeRabbitControl;
+        mySelf.MyAttackSign.SetActive(true);
     }
 
     public override void StateExit()
     {
+        mySelf.MyAttackSign.SetActive(false);
     }
 
     public override void StateFixedUpdate()

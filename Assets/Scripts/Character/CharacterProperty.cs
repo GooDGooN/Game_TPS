@@ -84,6 +84,8 @@ public class CharacterProperty : MonoBehaviour
 
     public virtual void GetDamage(int value) => health -= value;
 
-    public virtual void GetHeal(int value) => health += value;
+    public virtual void GetBuff(ItemType type)
+    {
+    }
 
 }

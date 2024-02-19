@@ -94,7 +94,7 @@ public class NPCBat : NPCBase
             }
         }
         transform.DOKill();
-        EnemySpawner.Instance.gameObject.SetActive(true);
+        GameManager.Instance.IsGameStart = true;
         Destroy(gameObject);
     }
 }

@@ -46,7 +46,7 @@ public enum EnemyType
 public enum ItemType
 {
     Damage,
-    FireRate,
+    AttackSpeed,
     Health,
     Heal,
     Magazine,

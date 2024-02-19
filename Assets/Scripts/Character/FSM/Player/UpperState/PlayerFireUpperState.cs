@@ -34,9 +34,9 @@ public class PlayerFireUpperState : CharacterBaseFSM
 
     public override void StateUpdate()
     {
-        if (player.FireDelay <= 0.0f)
+        if (player.AttackDelay <= 0.0f)
         {
-            player.FireDelay = player.FireRate;
+            player.AttackDelay = player.AtkSpeed;
             player.MyAnimator.Play("UpperFire", 1);
             playerRifle.BulletFire(player.BulletHitPoint, player.AtkDamage);
         }

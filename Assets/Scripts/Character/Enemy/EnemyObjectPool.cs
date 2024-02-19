@@ -8,7 +8,6 @@ public class EnemyObjectPool : MonoBehaviour
     private GameObject[] mushroomPool = new GameObject[Constants.EnemyObjAmout];
     [SerializeField] private GameObject beeObj;
     private GameObject[] beePool = new GameObject[Constants.EnemyObjAmout];
-
     private void Start()
     {
         for(int i = 0; i < Constants.EnemyObjAmout; i++)

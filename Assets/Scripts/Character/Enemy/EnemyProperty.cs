@@ -50,8 +50,27 @@ public class EnemyProperty : CharacterProperty
     public EnemyType MyType { get => myType; }
     [SerializeField] protected EnemyType myType;
 
+    public GameObject HealthBarPrefab;
+    protected GameObject myHealthBar;
+
+    public GameObject MyAttackSignPrefab;
+    public GameObject MyAttackSign;
+
     protected virtual void OnEnable()
     {
+        if(myHealthBar == null)
+        {
+            myHealthBar = Instantiate(HealthBarPrefab, EnemyStatusUI.Instance.HealthBarStorage.transform);
+            myHealthBar.GetComponent<EnemyHealthBar>().MyTarget = this;
+        }
+
+        if(MyAttackSign == null)
+        {
+            MyAttackSign = Instantiate(MyAttackSignPrefab, EnemyStatusUI.Instance.AttackSignStorage.transform);
+            MyAttackSign.GetComponent<EnemyAttackSign>().MyTarget = this;
+            MyAttackSign.SetActive(false);
+        }
+
         PropertySet();
         OnEnableSet();
     }
@@ -104,6 +123,10 @@ public class EnemyProperty : CharacterProperty
     {
         base.GetDamage(damage);
         UIDamageTextPool.Instance.ShowDamage(transform.position, CapsuleColliderHeight * 2.5f, damage);
+        if(health < 0)
+        {
+            health = 0;
+        }
         if (myState != CharacterState.Attack && health > 0)
         {
             myAnimator.Play("Damage");
@@ -137,6 +160,8 @@ public class EnemyProperty : CharacterProperty
         myNavMeshAgent.enabled = true;
         myCapsuleCollider.enabled = true;
         myNavMeshAgent.updateRotation = true;
+        myHealthBar.SetActive(true);
+
         if (PlayerControl.Instance != null)
         {
             myAnimator.SetBool("IsMove", true);
@@ -150,27 +175,30 @@ public class EnemyProperty : CharacterProperty
 
     protected void PropertySet()
     {
-        switch(myType)
+        var multiplier = GameManager.Instance.EnemyStatMultiplier;
+        var gameLevel = GameManager.Instance.NowGameLevel;
+        switch (myType)
         {
             case EnemyType.SlimeRabbit:
-                health = 10;
-                moveSpeed = 4.0f;
-                atkDamage = 4;
-                atkSpeed = 0;
+                health = 10 + Mathf.FloorToInt(gameLevel * 0.25f * 10);
+                atkDamage = 4 + Mathf.FloorToInt(gameLevel * 0.25f * 4);
+                moveSpeed = 4.0f * multiplier;
+                atkSpeed = 1.0f * multiplier;
                 break;
             case EnemyType.Mushroom:
-                health = 15;
-                moveSpeed = 3.0f;
-                atkDamage = 7;
-                atkSpeed = 0;
+                health = 15 + Mathf.FloorToInt(gameLevel * 0.25f * 15);
+                atkDamage = 7 + Mathf.FloorToInt(gameLevel * 0.25f * 7);
+                moveSpeed = 3.0f * multiplier;
+                atkSpeed = 1.0f * multiplier;
                 break;
             case EnemyType.Bee:
-                health = 8;
-                moveSpeed = 2.0f;
-                atkDamage = 5;
-                atkSpeed = 0;
+                health = 8 + Mathf.FloorToInt(gameLevel * 0.25f * 8);
+                atkDamage = 5 + Mathf.FloorToInt(gameLevel * 0.25f * 5);
+                moveSpeed = 2.0f * multiplier;
+                atkSpeed = 1.0f * multiplier;
                 break;
-
         }
+        maxHealth = health;
+        myAnimator.SetFloat("AttackSpeedMultiplier", atkSpeed);
     }
 }

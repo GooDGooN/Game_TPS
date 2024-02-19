@@ -10,10 +10,12 @@ public class MushroomAttackState : EnemyBaseFSM
     public override void StateEnter()
     {
         mySelf = characterInfo as MushroomControl;
+        mySelf.MyAttackSign.SetActive(true);
     }
 
     public override void StateExit()
     {
+        mySelf.MyAttackSign.SetActive(false);
     }
 
     public override void StateFixedUpdate()
@@ -28,8 +30,7 @@ public class MushroomAttackState : EnemyBaseFSM
             if(Vector3.Distance(player.transform.position, mySelf.transform.position) < mySelf.AttackRangeCollider.radius)
             {
                 player.GetDamage(mySelf.AtkDamage);
-                mySelf.Attack = false;
-                Debug.Log("player damaged");
+                mySelf.Attack = false;  
             }
         }
 

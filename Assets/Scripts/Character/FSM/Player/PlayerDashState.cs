@@ -15,7 +15,6 @@ public class PlayerDashState : CharacterBaseFSM
         player.MyAnimator.SetBool("Dash", true);
         player.MyAnimator.SetBool("Reload", false);
         player.MyAnimator.Play("UpperIdle", 1, 0.0f);
-        player.MoveSpeed = player.DefaultMoveSpeed * 1.5f;
     }
     public override void StateExit()
     {
@@ -40,7 +39,8 @@ public class PlayerDashState : CharacterBaseFSM
 
     public override void StateUpdate()
     {
-        if(player.IsStaminaRecharge)
+        player.MoveSpeed = player.DefaultMoveSpeed * 1.5f;
+        if (player.IsStaminaRecharge)
         {
             if(player.IsMovePressed)
             {
