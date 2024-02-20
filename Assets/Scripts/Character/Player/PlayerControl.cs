@@ -232,7 +232,7 @@ namespace CharacterNamespace
         private void GeneralUpdate()
         {
             #region CHECKKEYPRESS
-            isFocus = UIConversationControl.Instance.InConversation;
+            isFocus = UIDialogControl.Instance.InConversation;
             rightPressing = isFocus ? false : GameSystem.GetKey(KeyInputs.MoveRight);
             leftPressing = isFocus ? false : GameSystem.GetKey(KeyInputs.MoveLeft);
             forwardPressing = isFocus ? false : GameSystem.GetKey(KeyInputs.MoveFoward);
@@ -290,6 +290,17 @@ namespace CharacterNamespace
             }
             stamina = Mathf.Clamp(stamina, 0.0f, maxStamina);
             #endregion
+
+            #region HEALTH
+            health = Mathf.Clamp(health, 0, maxHealth);
+            if(health <= 0)
+            {
+                PlayerPrefs.SetInt("HighestKillCount", GameManager.KillCount);
+                PlayerPrefs.SetFloat("LongestSurviveTime", GameManager.SurviveTime);
+                SceneManager.LoadScene(0);
+            }
+            #endregion
+
         }
 
         private void GeneralLateUpdate()
@@ -308,18 +319,6 @@ namespace CharacterNamespace
             {
                 SceneManager.LoadScene(0);
             }
-
-            #region HEALTHTEST
-            if (Input.GetKey(KeyCode.LeftBracket))
-            {
-                health -= 1;
-            }
-            if (Input.GetKey(KeyCode.RightBracket))
-            {
-                health += 1;
-            }
-            health = Mathf.Clamp(health, 0, maxHealth);
-            #endregion
         }
 
         private void CharacterAngleUpdate()
@@ -380,11 +379,11 @@ namespace CharacterNamespace
             switch (type)
             {
                 case ItemType.Damage:
-                    atkDamage += Random.Range(3, 7);
+                    atkDamage += Random.Range(4, 7);
                     break;
                 case ItemType.AttackSpeed:
                     atkSpeed -= 0.03f;
-                    Mathf.Clamp(atkSpeed, 0.1f, 0.4f);
+                    atkSpeed = Mathf.Clamp(atkSpeed, 0.1f, 0.4f);
                     break;
                 case ItemType.Health:
                     var value = Random.Range(10, 20);
@@ -393,25 +392,25 @@ namespace CharacterNamespace
                     break;
                 case ItemType.Heal:
                     health += Mathf.CeilToInt(health * 0.15f);
-                    Mathf.Clamp(health, 0, maxHealth);
+                    health = Mathf.Clamp(health, 0, maxHealth);
                     break;
                 case ItemType.Magazine:
                     playerRifle.MaxImumMagazineCapacity += 3;
-                    Mathf.Clamp(playerRifle.MaxImumMagazineCapacity, 20, 50);
+                    playerRifle.MaxImumMagazineCapacity = Mathf.Clamp(playerRifle.MaxImumMagazineCapacity, 20, 50);
                     break;
                 case ItemType.Reload:
                     reloadMotionSpeedMultiplier += 0.1f;
                     myAnimator.SetFloat("ReloadMotionSpeedMultiplier", reloadMotionSpeedMultiplier);
-                    Mathf.Clamp(reloadMotionSpeedMultiplier, 1.0f, 2.0f);
+                    reloadMotionSpeedMultiplier = Mathf.Clamp(reloadMotionSpeedMultiplier, 1.0f, 2.0f);
                     break;
                 case ItemType.Stamina:
                     StaminaRechargeMultiplier += 0.1f;
-                    Mathf.Clamp(StaminaRechargeMultiplier, 1.0f, 2.0f);
+                    StaminaRechargeMultiplier = Mathf.Clamp(StaminaRechargeMultiplier, 1.0f, 2.0f);
                     break;
                 case ItemType.MoveSpeed:
                     moveSpeedMutiplier += 0.1f;
                     defaultMoveSpeed = moveSpeed = 200.0f * moveSpeedMutiplier;
-                    Mathf.Clamp(moveSpeedMutiplier, 1.0f, 2.0f);
+                    moveSpeedMutiplier = Mathf.Clamp(moveSpeedMutiplier, 1.0f, 2.0f);
                     break;
             }
         }

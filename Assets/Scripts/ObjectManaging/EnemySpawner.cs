@@ -17,7 +17,7 @@ public class EnemySpawner : Singleton<EnemySpawner>
 
     private void Update()
     {
-        if (GameManager.Instance.IsGameStart && startCoroutine == null)
+        if (GameManager.IsGameStart && startCoroutine == null)
         {
             startCoroutine = StartCoroutine(Spawning());
         }
@@ -32,9 +32,12 @@ public class EnemySpawner : Singleton<EnemySpawner>
             var randomEnemySelectNum = Random.Range(0, Constants.EnemyTypeAmount);
             var randomPos =  GameManager.Instance.GetRandomSpawnPosition();
 
-            enemyPool.SpawnEnemyByType((EnemyType)randomEnemySelectNum, randomPos);
+            if(enemyPool.CountActiveEnemy() < 30)
+            {
+                enemyPool.SpawnEnemyByType((EnemyType)randomEnemySelectNum, randomPos);
+            }
 
-            currentSpawnRate = 5.0f - GameManager.Instance.NowGameLevel * 0.2f;
+            currentSpawnRate = 5.0f - GameManager.NowGameLevel * 0.2f;
             currentSpawnRate = Mathf.Clamp(currentSpawnRate,  minimumSpawnRate, currentSpawnRate);
 
             yield return new WaitForSeconds(currentSpawnRate);

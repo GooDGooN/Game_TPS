@@ -136,6 +136,7 @@ public class EnemyProperty : CharacterProperty
     protected IEnumerator DeathBurrowDelay()
     {
         myCapsuleCollider.enabled = false;
+        GameManager.KillCount++;
         yield return new WaitForSeconds(3.0f);
         var time = 3.0f;
 
@@ -175,8 +176,8 @@ public class EnemyProperty : CharacterProperty
 
     protected void PropertySet()
     {
-        var multiplier = GameManager.Instance.EnemyStatMultiplier;
-        var gameLevel = GameManager.Instance.NowGameLevel;
+        var multiplier = GameManager.EnemyStatMultiplier;
+        var gameLevel = GameManager.NowGameLevel;
         switch (myType)
         {
             case EnemyType.SlimeRabbit:

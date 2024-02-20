@@ -44,15 +44,25 @@ namespace CharacterNamespace
 
         private void Update()
         {
-            conversationObj = UIConversationControl.Instance.CurrentConversationTarget;
-            isFocus = conversationObj != null ? true : false;
+            var conversationTarget = UIDialogControl.Instance.CurrentConversationTarget;
+            if (conversationTarget != null)
+            {
+                conversationObj = UIDialogControl.Instance.CurrentConversationTarget.gameObject;
+            }
+            else
+            {
+                conversationObj = null;
+            }
+            isFocus = conversationObj != null;
             if (isFocus) 
             {
                 var playerTransform = PlayerControl.Instance.transform;
                 var targetPos = new Vector3(playerTransform.position.x, conversationObj.transform.position.y, playerTransform.position.z);
                 var lookNormal = (conversationObj.transform.position - targetPos).normalized;
-                dummyCameraObj.transform.position = (conversationObj.transform.position - lookNormal * 2.5f) + Vector3.up;
-                dummyCameraObj.transform.LookAt(conversationObj.transform.position);
+                var targetCapsuleHeight = conversationTarget.MyCapsuleCollider.height;
+
+                dummyCameraObj.transform.position = (conversationObj.transform.position - (lookNormal * 3.5f)) +  Vector3.up * (targetCapsuleHeight * 0.75f); // + Vector3.up * (targetCapsuleHeight + (heightDelta / 0.5f));
+                dummyCameraObj.transform.LookAt(conversationObj.transform.position + Vector3.up * (targetCapsuleHeight * 0.75f));
             }
             else
             {

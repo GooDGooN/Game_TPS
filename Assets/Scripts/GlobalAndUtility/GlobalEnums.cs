@@ -11,6 +11,7 @@ public enum KeyInputs
     ZoomIn,
     Reload,
     Interact,
+    Escape,
 }
 
 public enum CharacterState

@@ -66,18 +66,31 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: afdbd19cc5a73e045bbbc5cf12dc48a0, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2495178861786700317}
+      addedObject: {fileID: -3405224977175893901}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: afdbd19cc5a73e045bbbc5cf12dc48a0, type: 3}
       insertIndex: -1
-      addedObject: {fileID: -3405224977175893901}
+      addedObject: {fileID: 6198926189054157826}
   m_SourcePrefab: {fileID: 100100000, guid: afdbd19cc5a73e045bbbc5cf12dc48a0, type: 3}
 --- !u!1 &7696033137478514699 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: afdbd19cc5a73e045bbbc5cf12dc48a0, type: 3}
   m_PrefabInstance: {fileID: 7353433217607107930}
   m_PrefabAsset: {fileID: 0}
---- !u!65 &2495178861786700317
-BoxCollider:
+--- !u!114 &-3405224977175893901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7696033137478514699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1c48fccb02a2df439c330d2826afe9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MyType: 2
+--- !u!135 &6198926189054157826
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -95,18 +108,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 0.29999998}
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &-3405224977175893901
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7696033137478514699}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1c48fccb02a2df439c330d2826afe9c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MyType: 2

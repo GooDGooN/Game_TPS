@@ -26,6 +26,7 @@ public class GameSystem : Singleton<GameSystem>
             case KeyInputs.Fire: return Input.GetMouseButton(0);
             case KeyInputs.ZoomIn: return Input.GetMouseButton(1);
             case KeyInputs.FreeView: return Input.GetMouseButton(2);
+            case KeyInputs.Escape: return Input.GetKey(KeyCode.Escape);
             default : return false;
         }
     }
@@ -45,6 +46,7 @@ public class GameSystem : Singleton<GameSystem>
             case KeyInputs.Fire: return Input.GetMouseButtonDown(0);
             case KeyInputs.ZoomIn: return Input.GetMouseButtonDown(1);
             case KeyInputs.FreeView: return Input.GetMouseButtonDown(2);
+            case KeyInputs.Escape: return Input.GetKeyDown(KeyCode.Escape);
             default: return false;
         }
     }

@@ -28,6 +28,10 @@ public class EnemyHealthBar : MonoBehaviour
                 healthBar.color = Color.white;
                 GetComponent<Image>().color = Color.white;
             }
+            if(MyTarget.Health <= 0)
+            {
+                gameObject.SetActive(false);
+            }
         }
         else
         {

@@ -66,18 +66,31 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5ae714f13b816554cb1700257e3f2309, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3289053799160083955}
+      addedObject: {fileID: 3770847543867907265}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5ae714f13b816554cb1700257e3f2309, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3770847543867907265}
+      addedObject: {fileID: 8489772854726564213}
   m_SourcePrefab: {fileID: 100100000, guid: 5ae714f13b816554cb1700257e3f2309, type: 3}
 --- !u!1 &458726323784604469 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 5ae714f13b816554cb1700257e3f2309, type: 3}
   m_PrefabInstance: {fileID: 764715804045370980}
   m_PrefabAsset: {fileID: 0}
---- !u!65 &3289053799160083955
-BoxCollider:
+--- !u!114 &3770847543867907265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 458726323784604469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1c48fccb02a2df439c330d2826afe9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MyType: 3
+--- !u!135 &8489772854726564213
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -95,18 +108,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 0.29999998}
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3770847543867907265
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 458726323784604469}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1c48fccb02a2df439c330d2826afe9c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MyType: 3

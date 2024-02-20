@@ -50,7 +50,7 @@ public class PlayerAnimatorControl : MonoBehaviour
             if (myAnimator.GetBool("Reload"))
             {
                 ikRightHandWeight = 1.0f;
-                ikLeftHandWeight = 0.0f;
+                ikLeftHandWeight = ikLeftHandWeight > 0.0f ? ikLeftHandWeight - Time.deltaTime : 0.0f;
             }
             else
             {

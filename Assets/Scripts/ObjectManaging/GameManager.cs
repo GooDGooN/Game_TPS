@@ -5,14 +5,14 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
-    public bool IsGameStart;
-    public float SurviveTime = 0.0f;
-    public int KillCount = 0;
-    public float HighestSurviveTime = 0.0f;
-    public int HighestKillCount = 0;
-    public float EnemyStatMultiplier = 1.0f;
-    public int NowGameLevel = 0;
-    private float levelupCountDown = 0.0f;
+    public static bool IsGameStart = false;
+    public static float SurviveTime = 0.0f;
+    public static int KillCount = 0;
+    public static float LongestSurviveTime = 0.0f;
+    public static int HighestKillCount = 0;
+    public static float EnemyStatMultiplier = 1.0f;
+    public static int NowGameLevel = 0;
+    private static float levelupCountDown = 0.0f;
 
     protected override void Awake()
     {
@@ -25,16 +25,17 @@ public class GameManager : Singleton<GameManager>
         if(IsGameStart)
         {
             GameLevelSet();
+            SurviveTime += Time.deltaTime;
         }
     }
 
     public void GetRecords()
     {
-        HighestSurviveTime = PlayerPrefs.GetInt("HighestSurviveTime");
+        LongestSurviveTime = PlayerPrefs.GetFloat("LongestSurviveTime");
         HighestKillCount = PlayerPrefs.GetInt("HighestKillCount");
-        if (HighestSurviveTime == 0)
+        if (LongestSurviveTime == 0)
         {
-            PlayerPrefs.SetInt("HighestSurviveTime", 0);
+            PlayerPrefs.SetInt("LongestSurviveTime", 0);
         }
         if (HighestKillCount == 0)
         {
@@ -80,7 +81,7 @@ public class GameManager : Singleton<GameManager>
         {
             levelupCountDown = 0.0f;
             NowGameLevel++;
-            EnemyStatMultiplier = EnemyStatMultiplier >= 2.0f ? 2.0f : EnemyStatMultiplier + 0.1f;
+            EnemyStatMultiplier = EnemyStatMultiplier >= 2.5f ? 2.5f : EnemyStatMultiplier + 0.1f;
         }
     }
 }

@@ -1,0 +1,93 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!319 &31900000
+AvatarMask:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: NPCRobot Avatar Mask
+  m_Mask: 01000000010000000000000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+  m_Elements:
+  - m_Path: 
+    m_Weight: 1
+  - m_Path: facial
+    m_Weight: 1
+  - m_Path: models
+    m_Weight: 1
+  - m_Path: models/body
+    m_Weight: 1
+  - m_Path: models/ear
+    m_Weight: 1
+  - m_Path: models/eyebrow
+    m_Weight: 1
+  - m_Path: models/head
+    m_Weight: 1
+  - m_Path: models/head_antenna
+    m_Weight: 1
+  - m_Path: root
+    m_Weight: 1
+  - m_Path: root/Hip
+    m_Weight: 1
+  - m_Path: root/Hip/Back_Skirt01
+    m_Weight: 1
+  - m_Path: root/Hip/Back_Skirt01/Back_Skirt02
+    m_Weight: 1
+  - m_Path: root/Hip/Front_Skirt01
+    m_Weight: 1
+  - m_Path: root/Hip/Front_Skirt01/Front_Skirt02
+    m_Weight: 1
+  - m_Path: root/Hip/Left_Skirt01
+    m_Weight: 1
+  - m_Path: root/Hip/Left_Skirt01/Left_Skirt02
+    m_Weight: 1
+  - m_Path: root/Hip/LeftUpLeg
+    m_Weight: 1
+  - m_Path: root/Hip/LeftUpLeg/LeftLeg
+    m_Weight: 1
+  - m_Path: root/Hip/LeftUpLeg/LeftLeg/LeftFoot
+    m_Weight: 1
+  - m_Path: root/Hip/Right_Skirt01
+    m_Weight: 1
+  - m_Path: root/Hip/Right_Skirt01/Right_Skirt02
+    m_Weight: 1
+  - m_Path: root/Hip/RightUpLeg
+    m_Weight: 1
+  - m_Path: root/Hip/RightUpLeg/RightLeg
+    m_Weight: 1
+  - m_Path: root/Hip/RightUpLeg/RightLeg/RightFoot
+    m_Weight: 1
+  - m_Path: root/Hip/Spine
+    m_Weight: 1
+  - m_Path: root/Hip/Spine/Head
+    m_Weight: 1
+  - m_Path: root/Hip/Spine/Head/Antenna
+    m_Weight: 1
+  - m_Path: root/Hip/Spine/Head/LeftEye
+    m_Weight: 1
+  - m_Path: root/Hip/Spine/Head/RightEye
+    m_Weight: 1
+  - m_Path: root/Hip/Spine/LeftShoulder
+    m_Weight: 1
+  - m_Path: root/Hip/Spine/LeftShoulder/LeftArm
+    m_Weight: 1
+  - m_Path: root/Hip/Spine/LeftShoulder/LeftArm/LeftForeArm
+    m_Weight: 1
+  - m_Path: root/Hip/Spine/LeftShoulder/LeftArm/LeftForeArm/LeftHand
+    m_Weight: 1
+  - m_Path: root/Hip/Spine/LeftShoulder/LeftArm/LeftForeArm/LeftHand/LeftHandIndex1
+    m_Weight: 1
+  - m_Path: root/Hip/Spine/LeftShoulder/LeftArm/LeftForeArm/LeftHand/LeftHandThumb1
+    m_Weight: 1
+  - m_Path: root/Hip/Spine/RightShoulder
+    m_Weight: 1
+  - m_Path: root/Hip/Spine/RightShoulder/RightArm
+    m_Weight: 1
+  - m_Path: root/Hip/Spine/RightShoulder/RightArm/RightForeArm
+    m_Weight: 1
+  - m_Path: root/Hip/Spine/RightShoulder/RightArm/RightForeArm/RightHand
+    m_Weight: 1
+  - m_Path: root/Hip/Spine/RightShoulder/RightArm/RightForeArm/RightHand/RightHandIndex1
+    m_Weight: 1
+  - m_Path: root/Hip/Spine/RightShoulder/RightArm/RightForeArm/RightHand/RightHandThumb1
+    m_Weight: 1

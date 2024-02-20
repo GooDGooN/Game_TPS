@@ -13,6 +13,6 @@ public class Constants
 
     public const int EnemyTypeAmount = 3;
 
-    public const float LevelUpTime = 20.0f;
+    public const float LevelUpTime = 30.0f;
 
 }

@@ -66,18 +66,31 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d1dcb37fd4f8ab143ac2af349e3ae4f0, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5761199585688590239}
+      addedObject: {fileID: 6804878028354994602}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d1dcb37fd4f8ab143ac2af349e3ae4f0, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 6804878028354994602}
+      addedObject: {fileID: -1095026592280370563}
   m_SourcePrefab: {fileID: 100100000, guid: d1dcb37fd4f8ab143ac2af349e3ae4f0, type: 3}
 --- !u!1 &3700931796835141855 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: d1dcb37fd4f8ab143ac2af349e3ae4f0, type: 3}
   m_PrefabInstance: {fileID: 4583872830344770958}
   m_PrefabAsset: {fileID: 0}
---- !u!65 &5761199585688590239
-BoxCollider:
+--- !u!114 &6804878028354994602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3700931796835141855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1c48fccb02a2df439c330d2826afe9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MyType: 6
+--- !u!135 &-1095026592280370563
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -95,18 +108,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 0.29999998}
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6804878028354994602
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3700931796835141855}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1c48fccb02a2df439c330d2826afe9c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MyType: 6

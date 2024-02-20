@@ -22,7 +22,8 @@ public class ItemSpawner : MonoBehaviour
 
     private void Update()
     {
-        if (GameManager.Instance.IsGameStart && coroutine == null)
+        SetLimitList();
+        if (GameManager.IsGameStart && coroutine == null)
         {
             coroutine = StartCoroutine(Spawning());
         }
@@ -67,12 +68,11 @@ public class ItemSpawner : MonoBehaviour
     {
         while(PlayerControl.Instance != null) 
         {
-            yield return new WaitForSeconds(15.0f);
+            yield return new WaitForSeconds(5.0f);
             
             var randomNum = Random.Range(0, randomItem.Count);
             var randomPos = GameManager.Instance.GetRandomSpawnPosition(true);
             Instantiate(ItemPrefabs[randomNum], randomPos, Quaternion.identity);
-            SetLimitList();
         }
     }
 }

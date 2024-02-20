@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 public class EnemyObjectPool : MonoBehaviour
@@ -45,5 +46,13 @@ public class EnemyObjectPool : MonoBehaviour
                 break;
             }
         }
+    }
+
+    public int CountActiveEnemy()
+    {
+        var count = slimeRabbitPool.Count(i => i.activeSelf);
+        count += mushroomPool.Count(i => i.activeSelf);
+        count += beePool.Count(i => i.activeSelf);
+        return count;
     }
 }

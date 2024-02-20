@@ -17,7 +17,7 @@ public class BuffItem : MonoBehaviour
     }
     private void Update()
     {
-        if (GameManager.Instance.IsGameStart && startCoroutine == null)
+        if (GameManager.IsGameStart && startCoroutine == null)
         {
             StartCoroutine(Floating());
             startCoroutine = StartCoroutine(LifeTimer());
