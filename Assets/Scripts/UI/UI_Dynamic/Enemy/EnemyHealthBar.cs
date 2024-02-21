@@ -5,7 +5,7 @@ public class EnemyHealthBar : MonoBehaviour
 {
     public EnemyProperty MyTarget;
     private RectTransform myRectTransform;
-    [SerializeField] private Image healthBar;
+    public Image healthBar;
 
     private void Start()
     {

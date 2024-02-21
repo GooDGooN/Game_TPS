@@ -116,6 +116,8 @@ namespace CharacterNamespace
         #endregion
 
         #region STATUS_FIELD
+        public GameObject BloodScreen;
+
         public bool IsStaminaRecharge { get => isStaminaRecharge; }
         private bool isStaminaRecharge = false;
         public float MaxStamina { get => maxStamina; }
@@ -136,6 +138,7 @@ namespace CharacterNamespace
 
         public float MoveSpeedMutiplier { get => moveSpeedMutiplier; }
         private float moveSpeedMutiplier = 1.0f;
+
         #endregion
 
         protected override void Awake()
@@ -413,6 +416,12 @@ namespace CharacterNamespace
                     moveSpeedMutiplier = Mathf.Clamp(moveSpeedMutiplier, 1.0f, 2.0f);
                     break;
             }
+        }
+
+        public override void GetDamage(int value)
+        {
+            base.GetDamage(value);
+            BloodScreen.GetComponent<RectTransform>().localScale = Vector3.one;
         }
     }
 }

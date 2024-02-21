@@ -62,6 +62,7 @@ public class EnemyProperty : CharacterProperty
         {
             myHealthBar = Instantiate(HealthBarPrefab, EnemyStatusUI.Instance.HealthBarStorage.transform);
             myHealthBar.GetComponent<EnemyHealthBar>().MyTarget = this;
+            myHealthBar.GetComponent<EnemyHealthBar>().healthBar.color = Color.clear;
         }
 
         if(MyAttackSign == null)
