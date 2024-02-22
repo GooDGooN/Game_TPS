@@ -5,14 +5,20 @@ public class EnemyHealthBar : MonoBehaviour
 {
     public EnemyProperty MyTarget;
     private RectTransform myRectTransform;
-    public Image healthBar;
+    [SerializeField] private Image healthBar;
+
 
     private void Start()
     {
         myRectTransform = GetComponent<RectTransform>();
     }
 
-    private void Update()
+    private void Awake()
+    {
+        healthBar.color = Color.clear;
+    }
+
+    private void LateUpdate()
     {
         healthBar.fillAmount = MyTarget.Health / (float)MyTarget.MaxHealth;
         if (MyTarget.isActiveAndEnabled)

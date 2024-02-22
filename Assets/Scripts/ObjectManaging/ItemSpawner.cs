@@ -72,7 +72,7 @@ public class ItemSpawner : MonoBehaviour
             
             var randomNum = Random.Range(0, randomItem.Count);
             var randomPos = GameManager.Instance.GetRandomSpawnPosition(true);
-            Instantiate(ItemPrefabs[randomNum], randomPos, Quaternion.identity);
+            Instantiate(ItemPrefabs[randomNum], randomPos, Quaternion.identity, transform);
         }
     }
 }

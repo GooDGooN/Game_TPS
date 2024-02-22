@@ -6,7 +6,7 @@ using UnityEngine;
 public class MushroomMoveState : EnemyBaseFSM
 {
     private MushroomControl mySelf;
-    public MushroomMoveState(CharacterStateController stateController, CharacterProperty enemy) : base(stateController, enemy) { }
+    public MushroomMoveState(CharacterStateController characterStateController, CharacterProperty characterInfo) : base(characterStateController, characterInfo) { }
     public override void StateEnter()
     {
         mySelf = characterInfo as MushroomControl;
@@ -33,6 +33,11 @@ public class MushroomMoveState : EnemyBaseFSM
         if (mySelf.MyAnimator.GetBool("IsAttack"))
         {
             characterStateController.ChangeState(CharacterState.Attack);
+        }
+
+        if (mySelf.Health <= 0)
+        {
+            characterStateController.ChangeState(CharacterState.Death);
         }
     }
 }

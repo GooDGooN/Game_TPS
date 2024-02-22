@@ -60,9 +60,6 @@ public class UIDamageText : MonoBehaviour
         clampPosition.y = Mathf.Clamp(clampPosition.y, -screenHalfWH.y, screenHalfWH.y);
         GetComponent<RectTransform>().anchoredPosition = clampPosition;
 
-
-
-
         if (myTMPtext.alpha < 0.01f)
         {
             gameObject.SetActive(false);

@@ -89,6 +89,8 @@ public class CharacterStatePIcker
             switch (enemy.MyType)
             {
                 case EnemyType.SlimeRabbit: return new SlimeRabbitDeathState(stateController, enemy);
+                case EnemyType.Mushroom: return new MushroomDeathState(stateController, enemy);
+                case EnemyType.Bee: return new BeeDeathState(stateController, enemy);
             }
         }
 

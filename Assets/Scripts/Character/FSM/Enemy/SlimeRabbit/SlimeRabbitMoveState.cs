@@ -6,7 +6,7 @@ using UnityEngine;
 public class SlimeRabbitMoveState : EnemyBaseFSM
 {
     private SlimeRabbitControl mySelf;
-    public SlimeRabbitMoveState(CharacterStateController stateController, CharacterProperty enemy) : base(stateController, enemy) { }
+    public SlimeRabbitMoveState(CharacterStateController characterStateController, CharacterProperty characterInfo) : base(characterStateController, characterInfo) { }
     public override void StateEnter()
     {
         mySelf = characterInfo as SlimeRabbitControl;
@@ -31,9 +31,14 @@ public class SlimeRabbitMoveState : EnemyBaseFSM
 
     public override void StateUpdate()
     {
-        if(mySelf.MyAnimator.GetBool("IsAttack"))
+        if (mySelf.MyAnimator.GetBool("IsAttack"))
         {
             characterStateController.ChangeState(CharacterState.Attack);
+        }
+
+        if (mySelf.Health <= 0)
+        {
+            characterStateController.ChangeState(CharacterState.Death);
         }
     }
 }

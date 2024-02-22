@@ -17,15 +17,6 @@ public class MushroomControl : EnemyProperty
 
     private void Update()
     {
-        //Debug.Log($"Slime Rabbit health = {health}");
         stateController.CurrentState.StateUpdate();
-        if (health <= 0)
-        {
-            if (!MyAnimator.GetCurrentAnimatorStateInfo(0).IsName("Death"))
-            {
-                MyAnimator.SetTrigger("Death");
-                StartCoroutine(DeathBurrowDelay());
-            }
-        }
     }
 }

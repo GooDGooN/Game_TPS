@@ -6,7 +6,7 @@ using UnityEngine;
 public class BeeMoveState : EnemyBaseFSM
 {
     private BeeControl mySelf;
-    public BeeMoveState(CharacterStateController stateController, CharacterProperty enemy) : base(stateController, enemy) { }
+    public BeeMoveState(CharacterStateController characterStateController, CharacterProperty characterInfo) : base(characterStateController, characterInfo) { }
 
     public override void StateEnter()
     {
@@ -29,10 +29,6 @@ public class BeeMoveState : EnemyBaseFSM
                 mySelf.MyNavMeshAgent.SetDestination(player.transform.position - (Vector3.up * player.CapsuleColliderHeight));
             }
         }
-        /*else
-        {
-            mySelf.MyNavMeshAgent.speed = 0.0f;
-        }*/
     }
 
     public override void StateUpdate()
@@ -40,6 +36,10 @@ public class BeeMoveState : EnemyBaseFSM
         if (mySelf.MyAnimator.GetBool("IsAttack"))
         {
             characterStateController.ChangeState(CharacterState.Attack);
+        }
+        if (mySelf.Health <= 0)
+        {
+            characterStateController.ChangeState(CharacterState.Death);
         }
     }
 }

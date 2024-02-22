@@ -6,11 +6,24 @@ using UnityEngine;
 public class SlimeRabbitDeathState : EnemyBaseFSM
 {
     private SlimeRabbitControl mySelf;
-    public SlimeRabbitDeathState(CharacterStateController stateController, CharacterProperty enemy) : base(stateController, enemy) { }
+    public SlimeRabbitDeathState(CharacterStateController characterStateController, CharacterProperty characterInfo) : base(characterStateController, characterInfo) { }
     public override void StateEnter()
     {
         mySelf = characterInfo as SlimeRabbitControl;
-        mySelf.MoveSpeed = 0.0f;
+        mySelf.DeathBurrowDelay();
+        if (mySelf.IsSplit)
+        {
+            mySelf.MyAnimator.SetTrigger("Death");
+            mySelf.DeathBurrowDelay();
+        }
+        else
+        {
+            for (int i = -1; i < 2; i += 2)
+            {
+                EnemySpawner.Instance.SpawnSplitSlimeRabbit(mySelf.transform.position);
+            }
+            mySelf.gameObject.SetActive(false);
+        }
     }
 
     public override void StateExit()

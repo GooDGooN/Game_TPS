@@ -8,8 +8,7 @@ public class BeeControl : EnemyProperty
 {
     public bool Attack { get => attack; set => attack = value; }
     private bool attack = false;
-    public GameObject AttackBall { get => attackBall; }
-    private GameObject attackBall;
+    public GameObject AttackBall;
     [SerializeField] private GameObject attackBallPrefab;
 
     [SerializeField] private GameObject firePoint;
@@ -17,47 +16,40 @@ public class BeeControl : EnemyProperty
     protected override void OnEnable()
     {
         base.OnEnable();
-        flyHeight = 1.5f;
+        FlyHeight = 1.5f;
         myType = EnemyType.Bee;
     }
 
     private void Update()
     {        
         stateController.CurrentState.StateUpdate();
-        if (health <= 0)
-        {
-            flyHeight = flyHeight > 0.0f ? flyHeight - Time.deltaTime * 3.0f : 0.0f;
-            myCapsuleCollider.enabled = false;
-            myNavMeshAgent.updateRotation = false;
-            if (!MyAnimator.GetCurrentAnimatorStateInfo(0).IsName("Death"))
-            {
-                if(attackBall != null)
-                {
-                    if(attackBall.transform.parent != null)
-                    {
-                        Destroy(attackBall);
-                    }
-                }
-                MyAnimator.SetTrigger("Death");
-                StartCoroutine(DeathBurrowDelay());
-            }
-        }
-        transform.localPosition += Vector3.up * flyHeight;
+        transform.localPosition += Vector3.up * FlyHeight;
     }
 
     public void CreateAttackBall()
     {
-        attackBall = Instantiate(attackBallPrefab, firePoint.transform.position, Quaternion.identity, transform);
-        attackBall.GetComponent<BeeAttackBall>().Initialize(atkDamage, firePoint.transform);
+        AttackBall = Instantiate(attackBallPrefab, firePoint.transform.position, Quaternion.identity, transform);
+        AttackBall.GetComponent<BeeAttackBall>().Initialize(atkDamage, firePoint.transform);
     }
 
     public void FireAttackBall()
     {
-        if(attackBall != null)
+        if(AttackBall != null)
         {
-            attackBall.transform.parent = null;
-            attackBall.transform.LookAt(PlayerControl.Instance.transform.position);
-            attackBall.GetComponent<BeeAttackBall>().Fire();
+            AttackBall.transform.parent = null;
+            AttackBall.transform.LookAt(PlayerControl.Instance.transform.position);
+            AttackBall.GetComponent<BeeAttackBall>().Fire();
+        }
+    }
+
+    public void DestroyBall()
+    {
+        if (AttackBall != null)
+        {
+            if (AttackBall.transform.parent != null)
+            {
+                Destroy(AttackBall);
+            }
         }
     }
 }

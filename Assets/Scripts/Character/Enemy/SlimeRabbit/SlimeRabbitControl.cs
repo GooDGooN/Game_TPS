@@ -38,25 +38,6 @@ public class SlimeRabbitControl : EnemyProperty
     private void Update()
     {
         stateController.CurrentState.StateUpdate();
-        if (health <= 0)
-        {
-            if (IsSplit)
-            {
-                if (!MyAnimator.GetCurrentAnimatorStateInfo(0).IsName("Death"))
-                {
-                    MyAnimator.SetTrigger("Death");
-                    StartCoroutine(DeathBurrowDelay());
-                }
-            }
-            else
-            {
-                for(int i = -1; i < 2; i += 2)
-                {
-                    EnemySpawner.Instance.SpawnSplitSlimeRabbit(transform.position);
-                }
-                gameObject.SetActive(false);
-            }
-        }
         if(isMidAir || (jumping && health > 0))
         {
             myNavMeshAgent.speed = moveSpeed;

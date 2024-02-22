@@ -46,7 +46,7 @@ public class GameManager : Singleton<GameManager>
     public Vector3 GetRandomSpawnPosition(bool isItem = false)
     {
         float minimumRange = isItem ? 7.5f : 10.0f;
-        float maximumRange = isItem ? 15.0f : 20.0f;
+        float maximumRange = isItem ? 12.5f : 20.0f;
         float range = maximumRange - minimumRange;
         var playerPosition = PlayerControl.Instance.transform.position;
 

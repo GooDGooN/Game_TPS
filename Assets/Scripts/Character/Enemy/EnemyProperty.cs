@@ -10,8 +10,7 @@ public class EnemyProperty : CharacterProperty
     public bool IsMidAir { get => isMidAir; }
     protected bool isMidAir = false;
 
-    public float FlyHeight { get => flyHeight; }
-    protected float flyHeight = 0.0f;
+    public float FlyHeight = 0.0f;
 
     public bool IsBurrow { get => isBurrow; }
     protected bool isBurrow = false;
@@ -62,7 +61,7 @@ public class EnemyProperty : CharacterProperty
         {
             myHealthBar = Instantiate(HealthBarPrefab, EnemyStatusUI.Instance.HealthBarStorage.transform);
             myHealthBar.GetComponent<EnemyHealthBar>().MyTarget = this;
-            myHealthBar.GetComponent<EnemyHealthBar>().healthBar.color = Color.clear;
+            //myHealthBar.GetComponent<EnemyHealthBar>().healthBar.color = Color.clear;
         }
 
         if(MyAttackSign == null)
@@ -82,7 +81,7 @@ public class EnemyProperty : CharacterProperty
         if(!IsBurrow)
         {
             Physics.BoxCast(transform.position + new Vector3(0.0f, capsuleColliderHeight, 0.0f), new Vector3(0.4f, 0.01f, 0.4f), Vector3.down, out var groundHit, Quaternion.identity, float.PositiveInfinity, Constants.SolidLayer);
-            if (groundHit.distance != 0.0f && groundHit.distance >= capsuleColliderHeight + 0.1f + flyHeight)
+            if (groundHit.distance != 0.0f && groundHit.distance >= capsuleColliderHeight + 0.1f + FlyHeight)
             {
                 isMidAir = true;
                 if (health > 0)
@@ -123,7 +122,7 @@ public class EnemyProperty : CharacterProperty
     public override void GetDamage(int damage)
     {
         base.GetDamage(damage);
-        UIDamageTextPool.Instance.ShowDamage(transform.position, CapsuleColliderHeight * 2.5f, damage);
+        UIDamageTextPool.Instance.ShowDamage(transform.position, CapsuleColliderHeight * 3.5f, damage);
         if(health < 0)
         {
             health = 0;
@@ -134,9 +133,15 @@ public class EnemyProperty : CharacterProperty
         }
     }
 
-    protected IEnumerator DeathBurrowDelay()
+    public void DeathBurrowDelay()
+    {
+        StartCoroutine(DeathBurrowDelaying());
+    }
+
+    protected IEnumerator DeathBurrowDelaying()
     {
         myCapsuleCollider.enabled = false;
+        MyAttackSign.SetActive(false);
         GameManager.KillCount++;
         yield return new WaitForSeconds(3.0f);
         var time = 3.0f;
@@ -146,7 +151,7 @@ public class EnemyProperty : CharacterProperty
             isBurrow = true;
             myNavMeshAgent.speed = 0.0f;
             myNavMeshAgent.enabled = false;
-            transform.position += Vector3.down * Time.deltaTime * 0.2f;
+            transform.position += Vector3.down * Time.deltaTime * 0.5f;
             time -= Time.deltaTime;
             yield return null;
             if (time <= 0)
