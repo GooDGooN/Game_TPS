@@ -67,6 +67,7 @@ Transform:
   m_Children:
   - {fileID: 8514744313077827152}
   - {fileID: 2355106420644578036}
+  - {fileID: 2064898659555957232}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &5925043817480340321
@@ -175,10 +176,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myState: 0
+  FlyHeight: 0
   myType: 1
   HealthBarPrefab: {fileID: 1054122895247864111, guid: 0d5d7afbbc1f6c741a987489aa59bfd9, type: 3}
   MyAttackSignPrefab: {fileID: 7925456454862458639, guid: 0071f1e123ad8d647ba6f48f6421fe92, type: 3}
   MyAttackSign: {fileID: 0}
+  audioSource: {fileID: 3208668508114536188}
+  AttackBall: {fileID: 0}
   attackBallPrefab: {fileID: 7522353499868390610, guid: b7954d94b4e15c041b9e850c18c56092, type: 3}
   firePoint: {fileID: 2062333060472529700}
 --- !u!1 &6430680460252141445
@@ -256,6 +260,79 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1001 &816756097104259834
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1791843832524400803}
+    m_Modifications:
+    - target: {fileID: 1725526493776048906, guid: aba48ac1ae104624db88399698e2116b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.49172193
+      objectReference: {fileID: 0}
+    - target: {fileID: 1725526493776048906, guid: aba48ac1ae104624db88399698e2116b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.6433525
+      objectReference: {fileID: 0}
+    - target: {fileID: 1725526493776048906, guid: aba48ac1ae104624db88399698e2116b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.5845675
+      objectReference: {fileID: 0}
+    - target: {fileID: 1725526493776048906, guid: aba48ac1ae104624db88399698e2116b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1725526493776048906, guid: aba48ac1ae104624db88399698e2116b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1725526493776048906, guid: aba48ac1ae104624db88399698e2116b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1725526493776048906, guid: aba48ac1ae104624db88399698e2116b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1725526493776048906, guid: aba48ac1ae104624db88399698e2116b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1725526493776048906, guid: aba48ac1ae104624db88399698e2116b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1725526493776048906, guid: aba48ac1ae104624db88399698e2116b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2298159082452371598, guid: aba48ac1ae104624db88399698e2116b, type: 3}
+      propertyPath: m_Name
+      value: EnemyAudioSource
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: aba48ac1ae104624db88399698e2116b, type: 3}
+--- !u!4 &2064898659555957232 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1725526493776048906, guid: aba48ac1ae104624db88399698e2116b, type: 3}
+  m_PrefabInstance: {fileID: 816756097104259834}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3208668508114536188 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2869576183344720902, guid: aba48ac1ae104624db88399698e2116b, type: 3}
+  m_PrefabInstance: {fileID: 816756097104259834}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a6a50f7a3c24584d87260243cd560c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8519221933990717844
 PrefabInstance:
   m_ObjectHideFlags: 0

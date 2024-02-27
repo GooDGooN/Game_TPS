@@ -48,4 +48,6 @@ public class EnemySpawner : Singleton<EnemySpawner>
     {
         enemyPool.SpawnEnemyByType(EnemyType.SlimeRabbit, position, true);
     }
+    
+    public int CurrentEnemyCount() => enemyPool.CountActiveEnemy();
 }

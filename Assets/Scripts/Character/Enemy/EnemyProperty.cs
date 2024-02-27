@@ -44,8 +44,10 @@ public class EnemyProperty : CharacterProperty
             return nav;
         }
     }
-    #endregion 
+    #endregion
 
+
+    #region PREFABS
     public EnemyType MyType { get => myType; }
     [SerializeField] protected EnemyType myType;
 
@@ -55,13 +57,16 @@ public class EnemyProperty : CharacterProperty
     public GameObject MyAttackSignPrefab;
     public GameObject MyAttackSign;
 
+    [SerializeField] private EnemyAudioSource audioSource;
+
+    #endregion
+
     protected virtual void OnEnable()
     {
         if(myHealthBar == null)
         {
             myHealthBar = Instantiate(HealthBarPrefab, EnemyStatusUI.Instance.HealthBarStorage.transform);
             myHealthBar.GetComponent<EnemyHealthBar>().MyTarget = this;
-            //myHealthBar.GetComponent<EnemyHealthBar>().healthBar.color = Color.clear;
         }
 
         if(MyAttackSign == null)
@@ -122,8 +127,9 @@ public class EnemyProperty : CharacterProperty
     public override void GetDamage(int damage)
     {
         base.GetDamage(damage);
-        UIDamageTextPool.Instance.ShowDamage(transform.position, CapsuleColliderHeight * 3.5f, damage);
-        if(health < 0)
+        UIDamageTextPool.Instance.ShowDamage(transform.position, CapsuleColliderHeight * 4.0f + FlyHeight, damage);
+        audioSource.PlaySound(SoundType.Damage);
+        if (health < 0)
         {
             health = 0;
         }
@@ -145,13 +151,13 @@ public class EnemyProperty : CharacterProperty
         GameManager.KillCount++;
         yield return new WaitForSeconds(3.0f);
         var time = 3.0f;
+        isBurrow = true;
+        myNavMeshAgent.speed = 0.0f;
+        myNavMeshAgent.enabled = false;
 
         while (true)
         {
-            isBurrow = true;
-            myNavMeshAgent.speed = 0.0f;
-            myNavMeshAgent.enabled = false;
-            transform.position += Vector3.down * Time.deltaTime * 0.5f;
+            transform.localPosition += Vector3.down * Time.deltaTime * 0.5f;
             time -= Time.deltaTime;
             yield return null;
             if (time <= 0)

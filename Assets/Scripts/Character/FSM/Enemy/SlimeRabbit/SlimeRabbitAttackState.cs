@@ -34,7 +34,7 @@ public class SlimeRabbitAttackState : EnemyBaseFSM
             }
         }
 
-        if (!mySelf.MyAnimator.GetBool("IsAttack") && mySelf.MyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime % 1.0f > 0.8f)
+        if (!mySelf.MyAnimator.GetBool("IsAttack"))
         {
             characterStateController.ChangeState(CharacterState.Move);
         }

@@ -5,14 +5,13 @@ public class PlayerRifleControl : MonoBehaviour
     public int MaxImumMagazineCapacity;
     public int CurrentMagazineCapacity;
     [SerializeField] private GameObject rifleMuzzle;
-
     #region RAYCAST
     private float maxHitDist = 30.0f;
     #endregion
 
+    [Header("Bullet")]
     #region BULLET
     private const int effectMaxAmount = 15;
-
     private GameObject[] bulletTrails = new GameObject[effectMaxAmount];
     [SerializeField] private GameObject bulletTrailPrefab;
 
@@ -104,6 +103,8 @@ public class PlayerRifleControl : MonoBehaviour
         }
     }
 
-    public void ReloadMagazine() => CurrentMagazineCapacity = MaxImumMagazineCapacity;
-
+    public void ReloadMagazine()
+    {
+        CurrentMagazineCapacity = MaxImumMagazineCapacity;
+    }
 }

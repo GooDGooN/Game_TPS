@@ -14,7 +14,6 @@ public class SlimeRabbitDeathState : EnemyBaseFSM
         if (mySelf.IsSplit)
         {
             mySelf.MyAnimator.SetTrigger("Death");
-            mySelf.DeathBurrowDelay();
         }
         else
         {

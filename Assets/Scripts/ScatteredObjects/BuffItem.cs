@@ -1,4 +1,5 @@
 using CharacterNamespace;
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Core;
@@ -10,10 +11,12 @@ public class BuffItem : MonoBehaviour
     public ItemType MyType;
     private MeshRenderer myMeshRenderer;
     private Coroutine startCoroutine = null;
+    private Vector3 startPosition;
 
     private void OnEnable()
     {
         myMeshRenderer = GetComponent<MeshRenderer>();
+        startPosition = transform.position;
     }
     private void Update()
     {
@@ -26,7 +29,7 @@ public class BuffItem : MonoBehaviour
 
     private IEnumerator Floating()
     {
-        var dir = Vector3.down;
+        var dir = Vector3.up;
         var time = 0.0f;
         while (true)
         {

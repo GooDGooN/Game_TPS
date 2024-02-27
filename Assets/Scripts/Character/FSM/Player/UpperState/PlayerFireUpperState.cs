@@ -22,7 +22,7 @@ public class PlayerFireUpperState : CharacterBaseFSM
 
     public override void StateFixedUpdate()
     {
-        if (player.ReloadPressed || (player.FirePressing && playerRifle.CurrentMagazineCapacity <= 0 && playerRifle.CurrentMagazineCapacity != playerRifle.MaxImumMagazineCapacity))
+        if (player.ReloadPressed)
         {
             characterStateController.ChangeState(CharacterUpperState.Reloading);
         }
@@ -36,9 +36,18 @@ public class PlayerFireUpperState : CharacterBaseFSM
     {
         if (player.AttackDelay <= 0.0f)
         {
-            player.AttackDelay = player.AtkSpeed;
-            player.MyAnimator.Play("UpperFire", 1);
-            playerRifle.BulletFire(player.BulletHitPoint, player.AtkDamage);
+            if(player.PlayerRifle.CurrentMagazineCapacity > 0)
+            {
+                player.AttackDelay = player.AtkSpeed;
+                player.playerRifleAudio.PlaySound(SoundType.RifleFire);
+                player.MyAnimator.Play("UpperFire", 1);
+                playerRifle.BulletFire(player.BulletHitPoint, player.AtkDamage);
+            }
+            else
+            {
+                player.AttackDelay = player.AtkSpeed;
+                player.playerRifleAudio.PlaySound(SoundType.RifleMagDry);
+            }
         }
 
         if(player.MyAnimator.GetCurrentAnimatorStateInfo(1).normalizedTime > 1.0f)

@@ -40,7 +40,7 @@ public class UIDamageText : MonoBehaviour
 
     private IEnumerator DeactivateDelay()
     {
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(0.5f);
         myTMPtext.DOFade(0.0f, 0.5f);
     }
 

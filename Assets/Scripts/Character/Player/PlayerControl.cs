@@ -12,6 +12,8 @@ namespace CharacterNamespace
         public PlayerRifleControl PlayerRifle { get => playerRifle; }
         [SerializeField] private PlayerRifleControl playerRifle;
 
+        public PlayerRifleAudioSource playerRifleAudio;
+
         public Vector3 BulletHitPoint { get => bulletHitPoint; }
         private Vector3 bulletHitPoint;
 

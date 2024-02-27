@@ -35,6 +35,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8476285345859871523}
+  - {fileID: 7663735109967887659}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &1178878766915947717
@@ -85,7 +86,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 122
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!135 &2439471027514322339
 SphereCollider:
@@ -143,10 +144,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myState: 0
+  FlyHeight: 0
   myType: 2
   HealthBarPrefab: {fileID: 1054122895247864111, guid: 0d5d7afbbc1f6c741a987489aa59bfd9, type: 3}
   MyAttackSignPrefab: {fileID: 7925456454862458639, guid: 0071f1e123ad8d647ba6f48f6421fe92, type: 3}
   MyAttackSign: {fileID: 0}
+  audioSource: {fileID: 6519957835952300583}
 --- !u!1001 &8480024331632155271
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -291,3 +294,76 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36d136b6ee3f66140ad1f3fd46556a77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1001 &9054842529204719137
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 6736525674115865599}
+    m_Modifications:
+    - target: {fileID: 1725526493776048906, guid: aba48ac1ae104624db88399698e2116b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.49172193
+      objectReference: {fileID: 0}
+    - target: {fileID: 1725526493776048906, guid: aba48ac1ae104624db88399698e2116b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.6433525
+      objectReference: {fileID: 0}
+    - target: {fileID: 1725526493776048906, guid: aba48ac1ae104624db88399698e2116b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.5845675
+      objectReference: {fileID: 0}
+    - target: {fileID: 1725526493776048906, guid: aba48ac1ae104624db88399698e2116b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1725526493776048906, guid: aba48ac1ae104624db88399698e2116b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1725526493776048906, guid: aba48ac1ae104624db88399698e2116b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1725526493776048906, guid: aba48ac1ae104624db88399698e2116b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1725526493776048906, guid: aba48ac1ae104624db88399698e2116b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1725526493776048906, guid: aba48ac1ae104624db88399698e2116b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1725526493776048906, guid: aba48ac1ae104624db88399698e2116b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2298159082452371598, guid: aba48ac1ae104624db88399698e2116b, type: 3}
+      propertyPath: m_Name
+      value: EnemyAudioSource
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: aba48ac1ae104624db88399698e2116b, type: 3}
+--- !u!114 &6519957835952300583 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2869576183344720902, guid: aba48ac1ae104624db88399698e2116b, type: 3}
+  m_PrefabInstance: {fileID: 9054842529204719137}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a6a50f7a3c24584d87260243cd560c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &7663735109967887659 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1725526493776048906, guid: aba48ac1ae104624db88399698e2116b, type: 3}
+  m_PrefabInstance: {fileID: 9054842529204719137}
+  m_PrefabAsset: {fileID: 0}

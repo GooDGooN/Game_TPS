@@ -6,32 +6,65 @@ using UnityEngine;
 public class GameManager : Singleton<GameManager>
 {
     public static bool IsGameStart = false;
-    public static float SurviveTime = 0.0f;
+    public static int SurviveTime = 0;
     public static int KillCount = 0;
-    public static float LongestSurviveTime = 0.0f;
+    public static int LongestSurviveTime = 0;
     public static int HighestKillCount = 0;
     public static float EnemyStatMultiplier = 1.0f;
     public static int NowGameLevel = 0;
     private static float levelupCountDown = 0.0f;
 
+    private Coroutine timeCoroutine = null;
+
     protected override void Awake()
     {
         base.Awake();
         GetRecords();
+        Instantiate();
     }
 
     private void Update()
     {
-        if(IsGameStart)
+        if (IsGameStart)
         {
             GameLevelSet();
-            SurviveTime += Time.deltaTime;
+            if (timeCoroutine == null)
+            {
+                timeCoroutine = StartCoroutine(TimeFlow());
+            }
         }
     }
 
+    private IEnumerator TimeFlow()
+    {
+        float time = 0.0f;
+        while(PlayerControl.Instance != null)
+        {
+            time += Time.deltaTime;
+            if(time > 1.0f)
+            {
+                SurviveTime++;
+                time = 0.0f;
+            }
+            yield return null;            
+        }
+    }
+
+    private void Instantiate()
+    {
+        IsGameStart = false;
+        SurviveTime = 0;
+        KillCount = 0;
+        LongestSurviveTime = 0;
+        HighestKillCount = 0;
+        EnemyStatMultiplier = 1.0f;
+        NowGameLevel = 0;
+        levelupCountDown = 0.0f;
+}
+
     public void GetRecords()
     {
-        LongestSurviveTime = PlayerPrefs.GetFloat("LongestSurviveTime");
+        LongestSurviveTime = PlayerPrefs.GetInt("LongestSurviveTime");
         HighestKillCount = PlayerPrefs.GetInt("HighestKillCount");
         if (LongestSurviveTime == 0)
         {
@@ -42,6 +75,7 @@ public class GameManager : Singleton<GameManager>
             PlayerPrefs.SetInt("HighestKillCount", 0);
         }
     }
+
 
     public Vector3 GetRandomSpawnPosition(bool isItem = false)
     {

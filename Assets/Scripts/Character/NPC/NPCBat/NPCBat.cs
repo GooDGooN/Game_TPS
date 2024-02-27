@@ -6,6 +6,7 @@ using UnityEngine;
 public class NPCBat : NPCBase
 {
     private bool isLeave = false;
+    
 
     protected override void Start()
     {
@@ -20,8 +21,9 @@ public class NPCBat : NPCBase
         MyDialog.Add("For Free View, Press mouse middle button");
         MyDialog.Add("That's all, Happy Hunting!");
     }
-    private void Update()
+    protected override void Update()
     {
+        base.Update();
         if (Vector3.Distance(transform.position, player.transform.position) < interactDistance)
         {
             transform.eulerAngles = LookPlayerSlowly(transform);

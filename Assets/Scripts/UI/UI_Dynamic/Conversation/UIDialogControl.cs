@@ -22,6 +22,7 @@ public class UIDialogControl : Singleton<UIDialogControl>
     private int dialogNum = 0;
     public bool InConversation = false;
 
+    public NPCBase TargetConversationTarget;
     public NPCBase CurrentConversationTarget;
     public List<NPCBase> NearNPCs = new List<NPCBase>();
     #endregion
@@ -31,7 +32,8 @@ public class UIDialogControl : Singleton<UIDialogControl>
 
     private void Update()
     {
-        if(!StopConversation)
+        ChooseConversationObj();
+        if (!StopConversation)
         {
             InteractNPC();
         }
@@ -94,31 +96,43 @@ public class UIDialogControl : Singleton<UIDialogControl>
         {
             if (NearNPCs.Count > 0)
             {
-                var targetNpc = NearNPCs[0];
-                if (NearNPCs.Count > 1)
-                {
-                    var playerBodyTransform = PlayerControl.Instance.PlayerBody.transform;
-                    for (int i = 1; i < NearNPCs.Count; i++)
-                    {
-                        var normal1 = targetNpc.transform.position - playerBodyTransform.position;
-                        var normal2 = NearNPCs[i].transform.position - playerBodyTransform.position;
-                        normal1.y = normal2.y = playerBodyTransform.position.y;
-
-                        var targetNPCdotValue = Vector3.Dot(playerBodyTransform.forward, normal1.normalized);
-                        var testNPCdotValue = Vector3.Dot(playerBodyTransform.forward, normal2.normalized);
-                        var targetNPCDist = 1.0f - Vector3.Distance(playerBodyTransform.position.normalized, targetNpc.transform.position.normalized);
-                        var testNPCDist = 1.0f - Vector3.Distance(playerBodyTransform.position.normalized, NearNPCs[i].transform.position.normalized);
-
-                        if(targetNPCdotValue + targetNPCDist < testNPCdotValue + testNPCDist)
-                        {
-                            targetNpc = NearNPCs[i];
-                        }
-                    }
-                }
-                CurrentConversationTarget = targetNpc;
+                CurrentConversationTarget = TargetConversationTarget;
                 InConversation = true;
                 SetText(CurrentConversationTarget[dialogNum]);
             }
+        }
+    }
+
+    private void ChooseConversationObj()
+    {
+        if(NearNPCs.Count > 0)
+        {
+            var targetNpc = NearNPCs[0];
+            if (NearNPCs.Count > 1)
+            {
+                var playerBodyTransform = PlayerControl.Instance.PlayerBody.transform;
+                for (int i = 1; i < NearNPCs.Count; i++)
+                {
+                    var normal1 = targetNpc.transform.position - playerBodyTransform.position;
+                    var normal2 = NearNPCs[i].transform.position - playerBodyTransform.position;
+                    normal1.y = normal2.y = playerBodyTransform.position.y;
+
+                    var targetNPCdotValue = Vector3.Dot(playerBodyTransform.forward, normal1.normalized);
+                    var testNPCdotValue = Vector3.Dot(playerBodyTransform.forward, normal2.normalized);
+                    var targetNPCDist = 1.0f - Vector3.Distance(playerBodyTransform.position.normalized, targetNpc.transform.position.normalized);
+                    var testNPCDist = 1.0f - Vector3.Distance(playerBodyTransform.position.normalized, NearNPCs[i].transform.position.normalized);
+
+                    if (targetNPCdotValue + targetNPCDist < testNPCdotValue + testNPCDist)
+                    {
+                        targetNpc = NearNPCs[i];
+                    }
+                }
+            }
+            TargetConversationTarget = targetNpc;
+        }
+        else
+        {
+            TargetConversationTarget = null;
         }
     }
 

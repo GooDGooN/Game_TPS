@@ -55,3 +55,11 @@ public enum ItemType
     Stamina,
     MoveSpeed,
 }
+
+public enum SoundType
+{
+    RifleFire,
+    RifleReload,
+    RifleMagDry,
+    Damage,
+}

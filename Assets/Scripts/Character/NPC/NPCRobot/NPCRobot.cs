@@ -28,8 +28,9 @@ public class NPCRobot : NPCBase
         MyDialog.Add($"...What?");
     }
 
-    private void Update()
+    protected override void Update()
     {
+        base.Update();
         bool isInRange = Vector3.Distance(transform.position, player.transform.position) < interactDistance;
 
         bool isInSight = Vector3.Dot(transform.forward, (player.transform.position - transform.position).normalized) > 0.3f;

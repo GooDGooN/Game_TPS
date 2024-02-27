@@ -1,6 +1,8 @@
 using CharacterNamespace;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class NPCBase : MonoBehaviour
@@ -11,6 +13,7 @@ public class NPCBase : MonoBehaviour
     public List<string> MyDialog = new List<string>();
     public string NPCName = string.Empty;
     public Coroutine LeaveCoroutine = null;
+    public SkinnedMeshRenderer[] MySkinnedMesh;
 
     public Animator MyAnimator { get => myAnimator; }
     protected Animator myAnimator
@@ -45,6 +48,47 @@ public class NPCBase : MonoBehaviour
         player = FindObjectOfType<PlayerControl>();
     }
 
+    public string this[int i]
+    {
+        get
+        {
+            if(i < MyDialog.Count)
+            {
+                return MyDialog[i];
+            }
+            else
+            {
+                return MyDialog[MyDialog.Count - 1];
+            }
+        }
+    }
+
+    protected virtual void Update()
+    {
+        if (dialogControl.TargetConversationTarget != this || dialogControl.InConversation)
+        {
+            foreach(var mesh in MySkinnedMesh)
+            {
+                var material = mesh.materials.Where(i => i.name == "OutlineMaterial (Instance)").ToArray();
+                if(material.Length > 0)
+                {
+                    material[0].SetFloat("_OutlineThinkness", 0.0f);
+                }
+            }
+        }
+        else
+        {
+            foreach (var mesh in MySkinnedMesh)
+            {
+                var material = mesh.materials.Where(i => i.name == "OutlineMaterial (Instance)").ToArray();
+                if (material.Length > 0)
+                {
+                    material[0].SetFloat("_OutlineThinkness", 0.025f);
+                }
+            }
+        }
+    }
+
     protected Vector3 LookPlayerSlowly(Transform targetTransform)
     {
         var targetnormal = (player.transform.position - targetTransform.position).normalized;
@@ -67,19 +111,4 @@ public class NPCBase : MonoBehaviour
     }
 
     public virtual void EndDialog() { }
-
-    public string this[int i]
-    {
-        get
-        {
-            if(i < MyDialog.Count)
-            {
-                return MyDialog[i];
-            }
-            else
-            {
-                return MyDialog[MyDialog.Count - 1];
-            }
-        }
-    }
 }

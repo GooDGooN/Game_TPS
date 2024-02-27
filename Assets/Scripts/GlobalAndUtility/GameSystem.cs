@@ -6,10 +6,20 @@ using UnityEngine;
 
 public class GameSystem : Singleton<GameSystem>
 {
-    private float mouseSensitive = 6.0f;
-    public float MouseSensitive { get => mouseSensitive; }
+    #region OPTIONS
+    public float MouseSensitive = 6.0f;
+    public float GlobalSoundVolume = 0.5f;
+    #endregion
+
     private float playerRotDampSmoothTimeValue = 0.025f;
     public float PlayerRotDampSmoothTimeValue { get => playerRotDampSmoothTimeValue; }
+
+    protected override void Awake()
+    {
+        base.Awake();
+        MouseSensitive = 6.0f;
+        GlobalSoundVolume = 0.5f;
+    }
 
     public static bool GetKey(KeyInputs key)
     {
