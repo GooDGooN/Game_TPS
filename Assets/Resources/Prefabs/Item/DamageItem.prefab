@@ -49,6 +49,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 04b9b5d0f864c814b9a27b2949e4e82c, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 04b9b5d0f864c814b9a27b2949e4e82c, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 61a1f8e932ff44f49ab2e02885d29317, type: 2}
@@ -89,6 +93,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MyType: 0
+  itemAudioSourcePrefab: {fileID: 6861967432258898007, guid: 16ff59046bcfae74590d1900debe6c92, type: 3}
 --- !u!135 &1785757386098556573
 SphereCollider:
   m_ObjectHideFlags: 0

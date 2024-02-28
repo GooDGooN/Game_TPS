@@ -62,4 +62,6 @@ public enum SoundType
     RifleReload,
     RifleMagDry,
     Damage,
+    ItemPickUp,
+
 }

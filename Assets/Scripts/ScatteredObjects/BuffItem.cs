@@ -12,10 +12,15 @@ public class BuffItem : MonoBehaviour
     private MeshRenderer myMeshRenderer;
     private Coroutine startCoroutine = null;
     private Vector3 startPosition;
+    private ItemAudioSource itemAudioSource;
+    private Coroutine destroyCoroutine;
+
+    [SerializeField] private GameObject itemAudioSourcePrefab;
 
     private void OnEnable()
     {
         myMeshRenderer = GetComponent<MeshRenderer>();
+        itemAudioSource = Instantiate(itemAudioSourcePrefab, transform).GetComponent<ItemAudioSource>();
         startPosition = transform.position;
     }
     private void Update()
@@ -88,8 +93,19 @@ public class BuffItem : MonoBehaviour
     {
         if(PlayerControl.Instance.gameObject == other.gameObject)
         {
-            PlayerControl.Instance.GetBuff(MyType);
-            Destroy(gameObject);
+            if(destroyCoroutine == null)
+            {
+                GetComponent<MeshRenderer>().enabled = false;
+                PlayerControl.Instance.GetBuff(MyType);
+                itemAudioSource.PlaySound(SoundType.ItemPickUp);
+                destroyCoroutine = StartCoroutine(DestroyDelay());
+            }
         }
+    }
+
+    private IEnumerator DestroyDelay()
+    {
+        yield return new WaitForSeconds(3.0f);
+        Destroy(gameObject);
     }
 }

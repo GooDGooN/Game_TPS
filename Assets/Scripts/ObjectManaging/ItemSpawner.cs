@@ -41,7 +41,7 @@ public class ItemSpawner : MonoBehaviour
         {
             randomItem.Remove(ItemType.Magazine);
         }
-        if (player.MoveSpeedMutiplier >= 2.0f && randomItem.Contains(ItemType.MoveSpeed))
+        if (player.MoveSpeedMutiplier >= 1.75f && randomItem.Contains(ItemType.MoveSpeed))
         {
             randomItem.Remove(ItemType.MoveSpeed);
         }
@@ -54,11 +54,11 @@ public class ItemSpawner : MonoBehaviour
             randomItem.Remove(ItemType.Stamina);
         }
 
-        if(player.Health == 100 && randomItem.Contains(ItemType.Heal))
+        if(player.Health == player.MaxHealth && randomItem.Contains(ItemType.Heal))
         {
             randomItem.Remove(ItemType.Heal);
         }
-        else if (player.Health != 100 && !randomItem.Contains(ItemType.Heal))
+        else if (player.Health != player.MaxHealth && !randomItem.Contains(ItemType.Heal))
         {
             randomItem.Add(ItemType.Heal);
         }

@@ -13,7 +13,7 @@ public class PlayerReloadUpperState : CharacterBaseFSM
         player = characterInfo as PlayerControl;
         playerRifle = player.PlayerRifle;
         player.MyAnimator.SetBool("Reload", true);
-        player.playerRifleAudio.PlaySound(SoundType.RifleReload);
+        player.playerRifleAudio.PlaySound(SoundType.RifleReload, player.ReloadMotionSpeedMultiplier);
     }
 
     public override void StateExit()

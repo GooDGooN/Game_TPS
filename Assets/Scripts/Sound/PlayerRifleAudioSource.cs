@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class PlayerRifleAudioSource : SoundPlayer<MonoBehaviour>
 {
-    [SerializeField] private AudioClip rifleFire;
-    [SerializeField] private AudioClip rifleReload;
-    [SerializeField] private AudioClip rifleMagDry;
-    public override void PlaySound(SoundType soundType)
+    [SerializeField] private AudioClip rifleFireClip;
+    [SerializeField] private AudioClip rifleReloadClip;
+    [SerializeField] private AudioClip rifleMagDryClip;
+    public override void PlaySound(SoundType soundType, float pitch = 1.0f)
     {
-        audioSource.volume = GameSystem.Instance.GlobalSoundVolume;
+        audioSource.pitch = pitch;
         switch (soundType)
         {
-            case SoundType.RifleFire: audioSource.PlayOneShot(rifleFire); break;
-            case SoundType.RifleReload: audioSource.PlayOneShot(rifleReload); break;
-            case SoundType.RifleMagDry: audioSource.PlayOneShot(rifleMagDry); break;
+            case SoundType.RifleFire: audioSource.PlayOneShot(rifleFireClip); break;
+            case SoundType.RifleReload: audioSource.PlayOneShot(rifleReloadClip); break;
+            case SoundType.RifleMagDry: audioSource.PlayOneShot(rifleMagDryClip); break;
         }
     }
     public void CancelSound()

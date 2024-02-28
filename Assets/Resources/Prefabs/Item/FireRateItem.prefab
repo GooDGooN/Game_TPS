@@ -89,6 +89,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MyType: 1
+  itemAudioSourcePrefab: {fileID: 6861967432258898007, guid: 16ff59046bcfae74590d1900debe6c92, type: 3}
 --- !u!135 &-626100835689649797
 SphereCollider:
   m_ObjectHideFlags: 0

@@ -143,6 +143,9 @@ namespace CharacterNamespace
 
         #endregion
 
+        #region OBJECT_FIELD
+        public PlayerAudioSource PlayerAudio;
+        #endregion
         protected override void Awake()
         {
             base.Awake();
@@ -396,7 +399,7 @@ namespace CharacterNamespace
                     health += value;
                     break;
                 case ItemType.Heal:
-                    health += Mathf.CeilToInt(health * 0.15f);
+                    health += Mathf.CeilToInt(maxHealth * 0.15f);
                     health = Mathf.Clamp(health, 0, maxHealth);
                     break;
                 case ItemType.Magazine:
@@ -415,7 +418,7 @@ namespace CharacterNamespace
                 case ItemType.MoveSpeed:
                     moveSpeedMutiplier += 0.1f;
                     defaultMoveSpeed = moveSpeed = 200.0f * moveSpeedMutiplier;
-                    moveSpeedMutiplier = Mathf.Clamp(moveSpeedMutiplier, 1.0f, 2.0f);
+                    moveSpeedMutiplier = Mathf.Clamp(moveSpeedMutiplier, 1.0f, 1.75f);
                     break;
             }
         }
@@ -423,6 +426,7 @@ namespace CharacterNamespace
         public override void GetDamage(int value)
         {
             base.GetDamage(value);
+            PlayerAudio.PlaySound(SoundType.Damage);
             BloodScreen.GetComponent<RectTransform>().localScale = Vector3.one;
         }
     }

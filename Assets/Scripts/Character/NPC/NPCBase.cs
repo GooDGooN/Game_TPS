@@ -10,10 +10,12 @@ public class NPCBase : MonoBehaviour
     protected PlayerControl player;
     protected UIDialogControl dialogControl;
     protected float interactDistance = 3.0f;
+   
     public List<string> MyDialog = new List<string>();
     public string NPCName = string.Empty;
     public Coroutine LeaveCoroutine = null;
     public SkinnedMeshRenderer[] MySkinnedMesh;
+    public bool Selectable = true;
 
     public Animator MyAnimator { get => myAnimator; }
     protected Animator myAnimator
@@ -87,7 +89,13 @@ public class NPCBase : MonoBehaviour
                 }
             }
         }
+
+        if(GameManager.IsGameStart)
+        {
+            Selectable = false;
+        }
     }
+
 
     protected Vector3 LookPlayerSlowly(Transform targetTransform)
     {
@@ -111,4 +119,5 @@ public class NPCBase : MonoBehaviour
     }
 
     public virtual void EndDialog() { }
+
 }

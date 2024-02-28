@@ -128,7 +128,7 @@ public class UIDialogControl : Singleton<UIDialogControl>
                     }
                 }
             }
-            TargetConversationTarget = targetNpc;
+            TargetConversationTarget = (targetNpc.Selectable) ? targetNpc : null;
         }
         else
         {
