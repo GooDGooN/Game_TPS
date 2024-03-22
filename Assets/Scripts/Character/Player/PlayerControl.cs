@@ -185,7 +185,6 @@ namespace CharacterNamespace
 
         private void Update()
         {
-            TestInput();
             stateController.CurrentState.StateUpdate();
             stateController.CurrentUpperState.StateUpdate();
             GeneralUpdate();
@@ -240,7 +239,7 @@ namespace CharacterNamespace
         private void GeneralUpdate()
         {
             #region CHECKKEYPRESS
-            isFocus = UIDialogControl.Instance.InConversation;
+            isFocus = UIDialogControl.Instance.InConversation || Time.timeScale == 0;
             rightPressing = isFocus ? false : GameSystem.GetKey(KeyInputs.MoveRight);
             leftPressing = isFocus ? false : GameSystem.GetKey(KeyInputs.MoveLeft);
             forwardPressing = isFocus ? false : GameSystem.GetKey(KeyInputs.MoveFoward);
@@ -315,18 +314,6 @@ namespace CharacterNamespace
         {
             CharacterAngleUpdate();
             BulletHitPointUpdate();
-        }
-
-        private void TestInput()
-        {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                Application.Quit();
-            }
-            if (Input.GetKeyDown(KeyCode.F5))
-            {
-                SceneManager.LoadScene(0);
-            }
         }
 
         private void CharacterAngleUpdate()

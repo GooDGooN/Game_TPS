@@ -7,8 +7,10 @@ using UnityEngine;
 public class GameSystem : Singleton<GameSystem>
 {
     #region OPTIONS
-    public float MouseSensitive = 6.0f;
-    public float GlobalSoundVolume = 0.5f;
+    public static float MouseSensitive = 0.5f;
+    public static float GlobalSoundVolume = 0.5f;
+    public static float GlobalMusicVolume = 0.5f;
+    public static int IsFullScreen = 1;
     #endregion
 
     private float playerRotDampSmoothTimeValue = 0.025f;
@@ -17,8 +19,37 @@ public class GameSystem : Singleton<GameSystem>
     protected override void Awake()
     {
         base.Awake();
-        MouseSensitive = 6.0f;
+        MouseSensitive = 0.5f;
         GlobalSoundVolume = 0.5f;
+        GlobalMusicVolume = 0.5f;
+        IsFullScreen = 1;
+        LoadOptionValues();
+    }
+
+    private static void LoadOptionValues()
+    {
+        if(PlayerPrefs.HasKey("MouseSensitive"))
+        {
+            MouseSensitive = PlayerPrefs.GetFloat("MouseSensitive");
+            GlobalSoundVolume = PlayerPrefs.GetFloat("SoundVolume");
+            GlobalMusicVolume = PlayerPrefs.GetFloat("MusicVolume");
+            IsFullScreen = PlayerPrefs.GetInt("FullScreen");
+        }
+        else
+        {
+            PlayerPrefs.SetFloat("MouseSensitive", MouseSensitive);
+            PlayerPrefs.SetFloat("SoundVolume", GlobalSoundVolume);
+            PlayerPrefs.SetFloat("MusicVolume", GlobalMusicVolume);
+            PlayerPrefs.SetInt("FullScreen", IsFullScreen);
+        }
+    }
+
+    public static void SaveOption()
+    {
+        PlayerPrefs.SetFloat("MouseSensitive", MouseSensitive);
+        PlayerPrefs.SetFloat("SoundVolume", GlobalSoundVolume);
+        PlayerPrefs.SetFloat("MusicVolume", GlobalMusicVolume);
+        PlayerPrefs.SetInt("FullScreen", IsFullScreen);
     }
 
     public static bool GetKey(KeyInputs key)

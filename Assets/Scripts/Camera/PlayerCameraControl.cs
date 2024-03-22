@@ -30,15 +30,15 @@ namespace CharacterNamespace
 
         private void Start()
         {
-            gs = GameSystem.Instance;
         }
 
         private void FixedUpdate() 
         {
             if (!Input.GetKey(KeyCode.LeftAlt) && Application.isFocused && !isFocus)
             {
-                springArmXObj.transform.Rotate(-Input.GetAxis("Mouse Y") * gs.MouseSensitive, 0.0f, 0.0f);
-                springArmYObj.transform.Rotate(new Vector3(0.0f, Input.GetAxis("Mouse X") * gs.MouseSensitive, 0.0f));
+                var sensitive = ((GameSystem.MouseSensitive + 1.0f) * 4.0f);
+                springArmXObj.transform.Rotate(-Input.GetAxis("Mouse Y") * sensitive, 0.0f, 0.0f);
+                springArmYObj.transform.Rotate(new Vector3(0.0f, Input.GetAxis("Mouse X") * sensitive, 0.0f));
             }
         }
 

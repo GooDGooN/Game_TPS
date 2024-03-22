@@ -8,7 +8,7 @@ public abstract class SoundPlayer<T> : MonoBehaviour where T : MonoBehaviour
     public abstract void PlaySound(SoundType soundType, float pitch = 1.0f);
     protected virtual void Update()
     {
-        audioSource.volume = GameSystem.Instance.GlobalSoundVolume;
+        audioSource.volume = GameSystem.GlobalSoundVolume;
     }
     protected virtual void Awake()
     {
