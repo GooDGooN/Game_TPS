@@ -59,22 +59,19 @@ public class UIPauseMenuManager : MonoBehaviour
     {
         if(DetailMenu == OptionMenu)
         {
-            if(Input.GetMouseButtonUp(0)) 
-            {
-                GameSystem.GlobalMusicVolume = MusicVolumeSlider.value;
-                GameSystem.GlobalSoundVolume = SoundVolumeSlider.value;
-                GameSystem.MouseSensitive = MouseSensitiveSlider.value;
-                GameSystem.IsFullScreen = FullScreenToggle.isOn == true ? 1 : 0;
-                GameSystem.SaveOption();
+            GameSystem.GlobalMusicVolume = MusicVolumeSlider.value;
+            GameSystem.GlobalSoundVolume = SoundVolumeSlider.value;
+            GameSystem.MouseSensitive = MouseSensitiveSlider.value;
+            GameSystem.IsFullScreen = FullScreenToggle.isOn == true ? 1 : 0;
+            GameSystem.SaveOption();
 
-                if (GameSystem.IsFullScreen == 1)
-                {
-                    Screen.fullScreen = true;
-                }
-                else
-                {
-                    Screen.fullScreen = false;
-                }
+            if (GameSystem.IsFullScreen == 1)
+            {
+                Screen.fullScreen = true;
+            }
+            else
+            {
+                Screen.fullScreen = false;
             }
         }
     }
