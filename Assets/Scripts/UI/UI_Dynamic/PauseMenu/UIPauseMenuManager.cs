@@ -67,11 +67,11 @@ public class UIPauseMenuManager : MonoBehaviour
 
             if (GameSystem.IsFullScreen == 1)
             {
-                Screen.fullScreen = true;
+                Screen.SetResolution(1920, 1080, true);
             }
             else
             {
-                Screen.fullScreen = false;
+                Screen.SetResolution(1366, 768, false);
             }
         }
     }

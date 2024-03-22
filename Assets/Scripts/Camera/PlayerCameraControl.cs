@@ -36,7 +36,7 @@ namespace CharacterNamespace
         {
             if (!Input.GetKey(KeyCode.LeftAlt) && Application.isFocused && !isFocus)
             {
-                var sensitive = ((GameSystem.MouseSensitive + 1.0f) * 4.0f);
+                var sensitive = ((GameSystem.MouseSensitive + 1.25f) * 2.0f);
                 springArmXObj.transform.Rotate(-Input.GetAxis("Mouse Y") * sensitive, 0.0f, 0.0f);
                 springArmYObj.transform.Rotate(new Vector3(0.0f, Input.GetAxis("Mouse X") * sensitive, 0.0f));
             }

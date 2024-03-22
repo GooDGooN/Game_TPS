@@ -24,6 +24,15 @@ public class GameSystem : Singleton<GameSystem>
         GlobalMusicVolume = 0.5f;
         IsFullScreen = 1;
         LoadOptionValues();
+
+        if (IsFullScreen == 1)
+        {
+            Screen.SetResolution(1920, 1080, true);
+        }
+        else
+        {
+            Screen.SetResolution(1366, 786, false);
+        }
     }
 
     private static void LoadOptionValues()
