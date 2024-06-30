@@ -116,10 +116,6 @@ public class PlayerAnimatorControl : MonoBehaviour
         #endregion
     }
 
-    public void PlayerReloadStart()
-    {
-    }
-
     public void PlayerReloadEnd()
     {
         myAnimator.SetBool("Reload", false);
@@ -129,6 +125,4 @@ public class PlayerAnimatorControl : MonoBehaviour
     {
         playerControl.ReloadComplete = true;
     }
-
-
 }

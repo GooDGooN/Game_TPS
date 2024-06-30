@@ -318,7 +318,8 @@ namespace CharacterNamespace
 
         private void CharacterAngleUpdate()
         {
-            var camTransform = dummyCameraObj.transform;
+            // dummyCameraObj = Spring arm camera object
+            // playerSpine = SpineObject
             cameraLookForward = dummyCameraObj.transform.forward;
             playerBody.transform.eulerAngles = new Vector3(0.0f, playerCameraControlScr.RotationYSave.y, 0.0f);
             if (myState != CharacterState.Dash)
@@ -327,12 +328,13 @@ namespace CharacterNamespace
             }
             if(!isFreeViewClick && !isFocus)
             {
-                sightHitPoint = cameraLookForward * 10.0f + camTransform.position;
+                sightHitPoint = cameraLookForward * 10.0f + dummyCameraObj.transform.position;
                 spineRotationSave = Quaternion.LookRotation(sightHitPoint - playerSpine.transform.position, playerSpine.transform.up).eulerAngles;
             }
             var spineAxis = Vector3.Cross(playerSpine.transform.up, playerBody.transform.forward);
             if (myState != CharacterState.Dash)
             {
+                // Y rotation correction value = 52.5f
                 playerSpine.transform.eulerAngles = Vector3.up * (spineRotationSave.y + 52.5f);
                 playerSpine.transform.Rotate(spineAxis, spineRotationSave.x, Space.World);
             }

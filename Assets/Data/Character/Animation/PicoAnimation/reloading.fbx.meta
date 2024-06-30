@@ -57,13 +57,6 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0
-        functionName: PlayerReloadStart
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: cc8b89b3fd8908f449c96563ba7e0333, type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
       - time: 0.7817305
         functionName: PlayerReloadEnd
         data: 
